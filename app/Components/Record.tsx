@@ -4,12 +4,20 @@ export interface Recorder {
 }
 
 export const createScreenRecorder = async (): Promise<Recorder> => {
+    // Request both video and audio
     const stream = await navigator.mediaDevices.getDisplayMedia({
         video: true,
         audio: true,
     });
 
-    const mediaRecorder = new MediaRecorder(stream);
+    // Optionally, include the microphone audio
+    const audioStream = await navigator.mediaDevices.getUserMedia({ audio: true });
+    const combinedStream = new MediaStream([
+        ...stream.getTracks(),
+        ...audioStream.getTracks(),
+    ]);
+
+    const mediaRecorder = new MediaRecorder(combinedStream);
     let chunks: BlobPart[] = [];
 
     mediaRecorder.ondataavailable = (event) => {
@@ -27,10 +35,11 @@ export const createScreenRecorder = async (): Promise<Recorder> => {
                     resolve(blob);
                 };
                 mediaRecorder.stop();
-                stream.getTracks().forEach((track) => track.stop());
+                combinedStream.getTracks().forEach((track) => track.stop());
             }),
     };
 };
+
 
 export const downloadBlob = (blob: Blob, filename = "recorded-video.webm") => {
     const url = URL.createObjectURL(blob);
