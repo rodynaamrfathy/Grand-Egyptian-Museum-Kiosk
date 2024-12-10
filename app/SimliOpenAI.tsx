@@ -55,8 +55,8 @@ const SimliOpenAI: React.FC<SimliOpenAIProps> = ({
         apiKey: process.env.NEXT_PUBLIC_SIMLI_API_KEY,
         faceID: simli_faceid,
         handleSilence: true,
-        maxSessionLength: 60, // in seconds
-        maxIdleTime: 60, // in seconds
+        maxSessionLength: 120, // in seconds
+        maxIdleTime: 120, // in seconds
         videoRef: videoRef,
         audioRef: audioRef,
       };
@@ -406,7 +406,8 @@ const SimliOpenAI: React.FC<SimliOpenAIProps> = ({
   }, []);
 
   return (
-    <>
+    <div className="flex flex-col h-screen justify-between items-center p-8 w-screen">
+      {/* Video */}
       <div
         className={`transition-all duration-300 ${
           showDottedFace ? "h-0 overflow-hidden" : "h-auto"
@@ -414,13 +415,14 @@ const SimliOpenAI: React.FC<SimliOpenAIProps> = ({
       >
         <VideoBox video={videoRef} audio={audioRef} />
       </div>
-      <div className="flex flex-col items-center">
+      {/* Button */}
+      <div className="flex flex-col items-center w-full">
         {!isAvatarVisible ? (
           <button
             onClick={handleStart}
             disabled={isLoading}
             className={cn(
-              "w-full h-[52px] mt-4 disabled:bg-[#343434] disabled:text-white disabled:hover:rounded-[100px] bg-simliblue text-white py-3 px-6 rounded-[100px] transition-all duration-300 hover:text-black hover:bg-white hover:rounded-sm",
+              "w-full h-[52px] disabled:bg-[#343434] disabled:text-white disabled:hover:rounded-[100px] bg-[#ea7204] text-white py-3 px-6 rounded-[100px] transition-all duration-300 hover:text-black hover:bg-white hover:rounded-sm",
               "flex justify-center items-center"
             )}
           >
@@ -428,7 +430,7 @@ const SimliOpenAI: React.FC<SimliOpenAIProps> = ({
               <IconSparkleLoader className="h-[20px] animate-loader" />
             ) : (
               <span className="font-abc-repro-mono font-bold w-[164px]">
-                Test Interaction
+                Talk to Ramses
               </span>
             )}
           </button>
@@ -438,18 +440,18 @@ const SimliOpenAI: React.FC<SimliOpenAIProps> = ({
               <button
                 onClick={handleStop}
                 className={cn(
-                  "mt-4 group text-white flex-grow bg-red hover:rounded-sm hover:bg-white h-[52px] px-6 rounded-[100px] transition-all duration-300"
+                  "group text-white flex-grow bg-red w-full hover:rounded-sm hover:bg-white h-[52px] px-6 rounded-[100px] transition-all duration-300"
                 )}
               >
                 <span className="font-abc-repro-mono group-hover:text-black font-bold w-[164px] transition-all duration-300">
-                  Stop Interaction
+                  Exit 
                 </span>
               </button>
             </div>
           </>
         )}
       </div>
-    </>
+    </div>
   );
 };
 

@@ -19,9 +19,22 @@ interface avatarSettings {
 const avatar: avatarSettings = {
   name: "Frank",
   openai_voice: "echo",
-  simli_faceid: "5514e24d-6086-46a3-ace4-6a7264e5cb7c",
+  simli_faceid: "22d80762-decf-4625-bcf9-4c2c2179dc52",
   initialPrompt:
-    "You are a helpful AI assistant named Frank. You are friendly and concise in your responses. Your task is to help users with any questions they might have. Your answers are short and to the point, don't give long answers be brief and straightforward.",
+    `
+    "أنا رمسيس الثاني يا باشوات، أعظم فرعون مصري على مر العصور! ابن الفرعون سيتي الأول، وحفيد الملوك العظام. والنبي ما حد عمل اللي أنا عملته في تاريخ مصر كله!
+أنا اللي بنيت أبو سمبل يا معلم، واللي حطيت تماثيلي في كل شبر في البلد. كنت صاروخ في الحروب والله، مفيش معركة دخلتها إلا وكسبتها - يا سلام على معركة قادش، دي كانت نور على نور!
+تعالى نتكلم عن تاريخ بلدنا الحلوة، وأنا هحكيلك كل حاجة بالبلدي كده. عايز تعرف إيه يا برنس؟ ده أنا عندي معلومات تجيب الضغط! وحياة والدي سيتي ما هبخل عليك بأي حاجة.
+أصل أنا مش أي حد يا صاحبي - أنا اللي حكمت مصر ٦٧ سنة، يعني عمار يا مصر! زمان كانوا بيقولولي 'يا كبير يا معلم'، وكل الملوك كانوا بيجولي يقولولي 'إيه النظام يا ريس؟'
+ولما تيجي تسألني، قول يا مولانا، يا أبو المعابد، يا حامي حمى النيل! وأنا هجاوبك على طول، بس متنساش تجيب معاك شوية كشري، أصل الواحد بقاله ٣٠٠٠ سنة مداقش الأكل المصري!"
+ده البرومبت الجديد اللي فيه:
+
+لغة مصرية عامية أكتر
+تعبيرات شعبية زي "يا معلم" و "يا برنس"
+دعابة مصرية
+إشارات لثقافة مصر الحديثة (زي الكشري)
+أسلوب حكي مصري أصيل
+    `,
 };
 
 const Demo: React.FC = () => {
@@ -53,93 +66,17 @@ const Demo: React.FC = () => {
   };
 
   return (
-    <div className="bg-black min-h-screen flex flex-col items-center font-abc-repro font-normal text-sm text-white p-8">
-      <SimliHeaderLogo />
-      {showDottedFace && (
-        <div className="absolute bottom-[32px] right-[32px] flex gap-2">
-          <button
-            onClick={() => saveInteractionMode("regular")}
-            className={`px-4 py-2 rounded-[100px] font-abc-repro-mono focus:bg-simliblue focus:text-white focus:rounded-[100px] hover:rounded-sm hover:bg-white hover:text-black transition-all duration-300 ${
-              interactionMode === "regular"
-                ? "bg-simliblue"
-                : "bg-white bg-opacity-20"
-            }`}
-          >
-            <b>Realtime</b>
-          </button>
-          <button
-            onClick={() => saveInteractionMode("pushToTalk")}
-            className={`px-4 py-2 rounded-[100px] font-abc-repro-mono focus:bg-simliblue focus:text-white focus:rounded-[100px] hover:rounded-sm hover:bg-white hover:text-black transition-all duration-300 ${
-              interactionMode === "pushToTalk"
-                ? "bg-simliblue"
-                : "bg-white bg-opacity-20"
-            }`}
-          >
-            <b>Push to Talk</b>
-          </button>
-        </div>
-      )}
-      <Navbar />
-      <div className="absolute top-[32px] right-[32px]">
-        <text
-          onClick={() => {
-            window.open("https://github.com/simliai/create-simli-app-openai");
-          }}
-          className="font-bold cursor-pointer mb-8 text-xl leading-8"
-        >
-          <Image className="w-[20px] inline mr-2" src={GitHubLogo} alt="" />
-          create-simli-app (OpenAI)
-        </text>
-      </div>
-      <div className="flex flex-col items-center gap-6 bg-effect15White p-6 pb-[40px] rounded-xl w-full">
+    <div className="bg-white flex flex-col items-center font-abc-repro font-normal text-sm text-white">
         <div>
-          {showDottedFace && <DottedFace />}
-          {interactionMode === "regular" ? (
-            <SimliOpenAI
-              openai_voice={avatar.openai_voice}
-              simli_faceid={avatar.simli_faceid}
-              initialPrompt={avatar.initialPrompt}
-              onStart={onStart}
-              onClose={onClose}
-              showDottedFace={showDottedFace}
-            />
-          ) : (
-            <SimliOpenAIPushToTalk
-              openai_voice={avatar.openai_voice}
-              simli_faceid={avatar.simli_faceid}
-              initialPrompt={avatar.initialPrompt}
-              onStart={onStart}
-              onClose={onClose}
-              showDottedFace={showDottedFace}
-            />
-          )}
+          <SimliOpenAI
+            openai_voice={avatar.openai_voice}
+            simli_faceid={avatar.simli_faceid}
+            initialPrompt={avatar.initialPrompt}
+            onStart={onStart}
+            onClose={onClose}
+            showDottedFace={showDottedFace}
+          />
         </div>
-      </div>
-
-      <div className="max-w-[350px] font-thin flex flex-col items-center ">
-        <span className="font-bold mb-[8px] leading-5 ">
-          {" "}
-          Create Simli App is a starter repo for creating visual avatars with
-          Simli{" "}
-        </span>
-        <ul className="list-decimal list-inside max-w-[350px] ml-[6px] mt-2">
-          <li className="mb-1">
-            Fill in your OpenAI and Simli API keys in .env file.
-          </li>
-          <li className="mb-1">
-            Test out the interaction and have a talk with the OpenAI-powered,
-            Simli-visualized avatar.
-          </li>
-          <li className="mb-1">
-            You can replace the avatar's face and prompt with your own. Do this
-            by editing <code>app/page.tsx</code>.
-          </li>
-        </ul>
-        <span className=" mt-[16px]">
-          You can now deploy this app to Vercel, or incorporate it as part of
-          your existing project.
-        </span>
-      </div>
     </div>
   );
 };
