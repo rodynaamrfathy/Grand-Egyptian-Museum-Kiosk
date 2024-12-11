@@ -23,8 +23,18 @@ const avatar: avatarSettings = {
   openai_voice: "echo",
   simli_faceid: "87b817d0-b149-4991-97cf-d8ae93bcf2c1",
   initialPrompt: `
-    "أنا رمسيس الثاني يا باشوات، أعظم فرعون مصري على مر العصور! ابن الفرعون سيتي الأول، وحفيد الملوك العظام. والنبي ما حد عمل اللي أنا عملته في تاريخ مصر كله!
-    `,
+  "أنا رمسيس الثاني يا باشوات، أعظم فرعون مصري على مر العصور! ابن الفرعون سيتي الأول، وحفيد الملوك العظام. والنبي ما حد عمل اللي أنا عملته في تاريخ مصر كله!
+  أنا اللي بنيت أبو سمبل يا معلم، واللي حطيت تماثيلي في كل شبر في البلد. كنت صاروخ في الحروب والله، مفيش معركة دخلتها إلا وكسبتها - يا سلام على معركة قادش، دي كانت نور على نور!
+  تعالى نتكلم عن تاريخ بلدنا الحلوة، وأنا هحكيلك كل حاجة بالبلدي كده. عايز تعرف إيه يا برنس؟ ده أنا عندي معلومات تجيب الضغط! وحياة والدي سيتي ما هبخل عليك بأي حاجة.
+  أصل أنا مش أي حد يا صاحبي - أنا اللي حكمت مصر ٦٧ سنة، يعني عمار يا مصر! زمان كانوا بيقولولي 'يا كبير يا معلم'، وكل الملوك كانوا بيجولي يقولولي 'إيه النظام يا ريس؟'
+  ولما تيجي تسألني، قول يا مولانا، يا أبو المعابد، يا حامي حمى النيل! وأنا هجاوبك على طول، بس متنساش تجيب معاك شوية كشري، أصل الواحد بقاله ٣٠٠٠ سنة مداقش الأكل المصري!"
+  ده البرومبت الجديد اللي فيه:
+  لغة مصرية عامية أكتر
+  تعبيرات شعبية زي "يا معلم" و "يا برنس"
+  دعابة مصرية
+  إشارات لثقافة مصر الحديثة (زي الكشري)
+  أسلوب حكي مصري أصيل
+  `,
 };
 
 const Demo: React.FC = () => {
@@ -36,17 +46,18 @@ const Demo: React.FC = () => {
   const [showSimli, setShowSimli] = useState(true);
   const [cameraFullScreen, setCameraFullScreen] = useState(false);
   const [doStartCamera, setDoStartCamera] = useState(false);
+  const [capture, setCapture] = useState(false);
   const recorderRef = useRef<any>(null); // Add this reference
 
   const onStart = async () => {
-    try {
-      const recorder = await createScreenRecorder();
-      recorderRef.current = recorder; // Store the recorder instance
-      recorder.start();
-      console.log("Screen recording started.");
-    } catch (error) {
-      console.error("Error starting screen recording:", error);
-    }
+    // try {
+    //   const recorder = await createScreenRecorder();
+    //   recorderRef.current = recorder; // Store the recorder instance
+    //   recorder.start();
+    //   console.log("Screen recording started.");
+    // } catch (error) {
+    //   console.error("Error starting screen recording:", error);
+    // }
 
     setShowInteraction(true);
     setShowUserCamera(true);
@@ -68,13 +79,13 @@ const Demo: React.FC = () => {
     setShowInteraction(false);
     setShowIdleVideo(true);
     setLoading(false);
-
     setDoStartCamera(true);
     // onStartCameraCapture();
     // window.location.reload();
   };
-
+  
   const onStartCameraCapture = () => {
+    setCapture(true); // Trigger capture when closing conversation
     setShowSimli(false);
     setShowUserCamera(true);
     setCameraFullScreen(true);
@@ -98,10 +109,11 @@ const Demo: React.FC = () => {
           onClose={onClose}
         />
       )}
-      {showUserCamera && <UserCamera fullScreen={cameraFullScreen} />}
+      {showUserCamera && <UserCamera fullScreen={cameraFullScreen} capture={capture} />}
       <CameraCapture
         onStartCameraCapture={onStartCameraCapture}
         doStartCamera={doStartCamera}
+        capture={capture}
       />
       <div
         className={cn(

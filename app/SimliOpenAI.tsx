@@ -393,7 +393,7 @@ const SimliOpenAI: React.FC<SimliOpenAIProps> = ({
         simliClient?.sendAudioData(audioData);
         console.log("Sent initial audio data");
         // Initialize OpenAI client
-        // initializeOpenAIClient();
+        initializeOpenAIClient();
       });
 
       simliClient?.on("disconnected", () => {
