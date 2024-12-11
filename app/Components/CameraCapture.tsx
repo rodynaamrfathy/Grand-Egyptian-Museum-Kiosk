@@ -4,6 +4,7 @@ import GEMLOGO from "@/media/GEM LOGO.png";
 import Image from "next/image";
 import countdown from "@/media/countdown.gif";
 import QRCode, { QRCodeSVG } from "qrcode.react"; // Correct import
+import cn from "../utils/TailwindMergeAndClsx";
 
 interface CameraCaptureProps {
   onStartCameraCapture(): void;
@@ -42,7 +43,9 @@ const CameraCapture = ({
 
   const capturedImage = () => {
     setShowCountdown(false); // Remove countdown after capture
-    setShowQRCode(true); // Show QR code after capture
+    setTimeout(() => {
+      setShowQRCode(true); // Show QR code after capture
+    }, 2000);
   };
 
   return (
@@ -78,14 +81,14 @@ const CameraCapture = ({
               className="w-80 object-contain left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 absolute z-20"
             />
           )}
-          {showQRCode && (
-            <div className="absolute z-30 w-full h-full flex justify-center items-center bg-black bg-opacity-70">
-              <div className="bg-white p-4 rounded-lg shadow-lg flex flex-col items-center">
-                <h2 className="text-lg font-bold mb-4">Scan to Open Mobile App</h2>
-                <QRCodeSVG value="https://visit-gem.com/en/GEMIntro" />,
-                </div>
-            </div>
-          )}
+          <div className={cn(`bg-white absolute scale-75 z-30 p-2 rounded-lg shadow-lg flex flex-col items-center transition-all duration-1000`,
+            showQRCode ? 'opacity-100 bottom-8' : 'opacity-0 -bottom-20'
+          )}>
+            <h2 className="text-md text-black font-bold mb-4">
+              Scan and Download
+            </h2>
+            <QRCodeSVG value="https://visit-gem.com/en/GEMIntro" />,
+          </div>
         </>
       )}
     </>
