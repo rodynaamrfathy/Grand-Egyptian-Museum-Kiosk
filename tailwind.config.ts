@@ -43,10 +43,17 @@ const config: Config = {
           '0%': { transform: 'rotate(0deg)' },
           '100%': { transform: 'rotate(359deg)' },
         },
+        customFade: {
+          '0%': { opacity: '0' },
+          '40%': { opacity: '1' },
+          '80%': { opacity: '1' },
+          '100%': { opacity: '0' },
+        },
       },
       animation: {
         fadeIn: 'fadeIn 1s ease-in-out',
         loader: 'spin 5s linear infinite',
+        customFade: 'customFade 4s ease-in-out',
       },
     },
   },

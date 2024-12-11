@@ -1,12 +1,12 @@
 "use client";
 import React, { use, useEffect, useState } from "react";
 import SimliOpenAI from "./SimliOpenAI";
-import SimliOpenAIPushToTalk from "./SimliOpenAIPushToTalk";
-import DottedFace from "./Components/DottedFace";
-import SimliHeaderLogo from "./Components/Logo";
-import Navbar from "./Components/Navbar";
+import UserCamera from "./Components/SquareCamera";
+import IdleVideoLoop from "./Components/IdleVideoLoop";
+import cn from "./utils/TailwindMergeAndClsx";
+import { Camera } from "lucide-react";
 import Image from "next/image";
-import GitHubLogo from "@/media/github-mark-white.svg";
+import GEMLOGO from "@/media/GEM LOGO.png"
 
 interface avatarSettings {
   name: string;
@@ -19,9 +19,8 @@ interface avatarSettings {
 const avatar: avatarSettings = {
   name: "Frank",
   openai_voice: "echo",
-  simli_faceid: "22d80762-decf-4625-bcf9-4c2c2179dc52",
-  initialPrompt:
-    `
+  simli_faceid: "87b817d0-b149-4991-97cf-d8ae93bcf2c1",
+  initialPrompt: `
     "أنا رمسيس الثاني يا باشوات، أعظم فرعون مصري على مر العصور! ابن الفرعون سيتي الأول، وحفيد الملوك العظام. والنبي ما حد عمل اللي أنا عملته في تاريخ مصر كله!
 أنا اللي بنيت أبو سمبل يا معلم، واللي حطيت تماثيلي في كل شبر في البلد. كنت صاروخ في الحروب والله، مفيش معركة دخلتها إلا وكسبتها - يا سلام على معركة قادش، دي كانت نور على نور!
 تعالى نتكلم عن تاريخ بلدنا الحلوة، وأنا هحكيلك كل حاجة بالبلدي كده. عايز تعرف إيه يا برنس؟ ده أنا عندي معلومات تجيب الضغط! وحياة والدي سيتي ما هبخل عليك بأي حاجة.
@@ -38,45 +37,56 @@ const avatar: avatarSettings = {
 };
 
 const Demo: React.FC = () => {
-  const [showDottedFace, setShowDottedFace] = useState(true);
-  const [interactionMode, setInteractionMode] = useState<
-    "regular" | "pushToTalk" | undefined
-  >("regular");
-
-  useEffect(() => {
-    const storedInteractionMode = localStorage.getItem("interactionMode");
-    if (storedInteractionMode) {
-      setInteractionMode(storedInteractionMode as "regular" | "pushToTalk");
-    }
-  }, []);
-
-  const saveInteractionMode = (mode: "regular" | "pushToTalk") => {
-    localStorage.setItem("interactionMode", mode);
-    setInteractionMode(mode);
-  }
+  const [showInteraction, setShowInteraction] = useState(false);
+  const [showUserCamera, setShowUserCamera] = useState(false);
+  const [startFadeIn, setStartFadeIn] = useState(false);
+  const [showIdleVideo, setShowIdleVideo] = useState(true);
+  const [loading, setLoading] = useState(false);
 
   const onStart = () => {
-    console.log("Setting setshowDottedface to false...");
-    setShowDottedFace(false);
+    setShowInteraction(true);
+    setShowUserCamera(true);
+    setStartFadeIn(true);
+    setTimeout(() => {
+      setShowIdleVideo(false);
+      setLoading(false);
+    }, 3000);
   };
 
   const onClose = () => {
-    console.log("Setting setshowDottedface to true...");
-    setShowDottedFace(true);
+    setShowInteraction(false);
+    setShowUserCamera(false);
+    setShowIdleVideo(true);
+    setLoading(false);
+    window.location.reload();
   };
 
   return (
-    <div className="bg-white flex flex-col items-center font-abc-repro font-normal text-sm text-white">
-        <div>
-          <SimliOpenAI
-            openai_voice={avatar.openai_voice}
-            simli_faceid={avatar.simli_faceid}
-            initialPrompt={avatar.initialPrompt}
-            onStart={onStart}
-            onClose={onClose}
-            showDottedFace={showDottedFace}
-          />
-        </div>
+    <div className="bg-white flex flex-col items-center font-abc-repro font-normal text-sm text-white h-screen overflow-hidden">
+      {showIdleVideo && <IdleVideoLoop zoomIn={loading} />}
+      <div className="absolute z-10 w-20 rounded-r-full h-12 bg-[#ea7204] animate-pulse hover:opacity-15 left-0 bottom-10 flex justify-center items-center">
+        <Camera />
+      </div>
+      <div className="absolute top-16 w-56 h-56 ">
+        <Image src={GEMLOGO} alt=""/>
+      </div>
+      <SimliOpenAI
+        openai_voice={avatar.openai_voice}
+        simli_faceid={avatar.simli_faceid}
+        initialPrompt={avatar.initialPrompt}
+        onStart={onStart}
+        onLoading={() => {
+          setLoading(true);
+        }}
+        onClose={onClose}
+      />
+      {showUserCamera && <UserCamera />}
+      <div
+        className={cn(
+          "w-full h-full bg-white absolute z-20 opacity-0 pointer-events-none transition-all duration-[2000ms] select-none",
+          loading && "opacity-100"
+        )}
+      ></div>
     </div>
   );
 };

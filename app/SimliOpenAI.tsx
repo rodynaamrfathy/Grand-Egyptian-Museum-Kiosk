@@ -3,17 +3,15 @@ import { RealtimeClient } from "@openai/realtime-api-beta";
 import { SimliClient } from "simli-client";
 import VideoBox from "./Components/VideoBox";
 import cn from "./utils/TailwindMergeAndClsx";
-import IconExit from "@/media/IconExit";
-import IconSparkleLoader from "@/media/IconSparkleLoader";
-import { on } from "events";
+import { Pointer } from "lucide-react";
 
 interface SimliOpenAIProps {
   simli_faceid: string;
   openai_voice: "echo" | "alloy" | "shimmer";
   initialPrompt: string;
   onStart: () => void;
+  onLoading: () => void;
   onClose: () => void;
-  showDottedFace: boolean;
 }
 
 const simliClient = new SimliClient();
@@ -23,8 +21,8 @@ const SimliOpenAI: React.FC<SimliOpenAIProps> = ({
   openai_voice,
   initialPrompt,
   onStart,
+  onLoading,
   onClose,
-  showDottedFace,
 }) => {
   // State management
   const [isLoading, setIsLoading] = useState(false);
@@ -344,8 +342,8 @@ const SimliOpenAI: React.FC<SimliOpenAIProps> = ({
    */
   const handleStart = useCallback(async () => {
     setIsLoading(true);
+    onLoading();
     setError("");
-    onStart();
 
     try {
       console.log("Starting...");
@@ -356,8 +354,11 @@ const SimliOpenAI: React.FC<SimliOpenAIProps> = ({
       console.error("Error starting interaction:", error);
       setError(`Error starting interaction: ${error.message}`);
     } finally {
-      setIsAvatarVisible(true);
-      setIsLoading(false);
+      onStart();
+      setTimeout(() => {
+        setIsAvatarVisible(true);
+        setIsLoading(false);
+      }, 4000);
     }
   }, [onStart]);
 
@@ -392,7 +393,7 @@ const SimliOpenAI: React.FC<SimliOpenAIProps> = ({
         simliClient?.sendAudioData(audioData);
         console.log("Sent initial audio data");
         // Initialize OpenAI client
-        initializeOpenAIClient();
+        // initializeOpenAIClient();
       });
 
       simliClient?.on("disconnected", () => {
@@ -406,45 +407,44 @@ const SimliOpenAI: React.FC<SimliOpenAIProps> = ({
   }, []);
 
   return (
-    <div className="flex flex-col h-screen justify-between items-center p-8 w-screen">
+    <div className="flex flex-col h-screen justify-end items-center p-8 w-screen absolute">
       {/* Video */}
-      <div
-        className={`transition-all duration-300 ${
-          showDottedFace ? "h-0 overflow-hidden" : "h-auto"
-        }`}
-      >
+      <div className={`${!isAvatarVisible ? "hidden" : ""}`}>
         <VideoBox video={videoRef} audio={audioRef} />
       </div>
       {/* Button */}
-      <div className="flex flex-col items-center w-full">
-        {!isAvatarVisible ? (
-          <button
+      <div className="flex flex-col items-center w-full z-10">
+        {/* Start Button */}
+        {!isAvatarVisible && !isLoading && (
+          <div
             onClick={handleStart}
-            disabled={isLoading}
             className={cn(
-              "w-full h-[52px] disabled:bg-[#343434] disabled:text-white disabled:hover:rounded-[100px] bg-[#ea7204] text-white py-3 px-6 rounded-[100px] transition-all duration-300 hover:text-black hover:bg-white hover:rounded-sm",
-              "flex justify-center items-center"
+              "h-[600px] w-80 pt-96 text-white rounded-[100px] bg-gray-500 bg-opacity-0",
             )}
           >
-            {isLoading ? (
-              <IconSparkleLoader className="h-[20px] animate-loader" />
-            ) : (
-              <span className="font-abc-repro-mono font-bold w-[164px]">
-                Talk to Ramses
+            <div className="flex flex-col justify-center items-center animate-bounce gap-10">
+              <Pointer className="scale-[3]" />
+              <span className=" text-3xl w-full text-nowrap font-abc-repro-mono text-center font-bold">
+                Touch to start
               </span>
-            )}
-          </button>
-        ) : (
+            </div>
+          </div>
+        )}
+
+        {isLoading && <div className="">{/* <TransitionVideo /> */}</div>}
+
+        {/* Exit button */}
+        {isAvatarVisible && (
           <>
-            <div className="flex items-center gap-4 w-full">
+            <div className="flex items-center gap-4">
               <button
                 onClick={handleStop}
                 className={cn(
-                  "group text-white flex-grow bg-red w-full hover:rounded-sm hover:bg-white h-[52px] px-6 rounded-[100px] transition-all duration-300"
+                  "group text-white flex-grow bg-red w-[80px] hover:rounded-sm hover:bg-white h-[52px] rounded-[100px] transition-all duration-300"
                 )}
               >
                 <span className="font-abc-repro-mono group-hover:text-black font-bold w-[164px] transition-all duration-300">
-                  Exit 
+                  Exit
                 </span>
               </button>
             </div>
