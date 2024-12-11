@@ -8,7 +8,7 @@ import IdleVideoLoop from "./Components/IdleVideoLoop";
 import cn from "./utils/TailwindMergeAndClsx";
 import { Camera } from "lucide-react";
 import Image from "next/image";
-import GEMLOGO from "@/media/GEM LOGO.png"
+import GEMLOGO from "@/media/GEM LOGO.png";
 
 interface avatarSettings {
   name: string;
@@ -74,11 +74,14 @@ const Demo: React.FC = () => {
   return (
     <div className="bg-white flex flex-col items-center font-abc-repro font-normal text-sm text-white h-screen overflow-hidden">
       {showIdleVideo && <IdleVideoLoop zoomIn={loading} />}
-      <div className="absolute z-10 w-20 rounded-r-full h-12 bg-[#ea7204] animate-pulse hover:opacity-15 left-0 bottom-10 flex justify-center items-center">
+      <div
+        className="absolute z-10 w-20 rounded-r-full h-12 bg-[#ea7204] animate-pulse hover:opacity-15 left-0 bottom-10 flex justify-center items-center"
+        onClick={() => {}}
+      >
         <Camera />
       </div>
       <div className="absolute top-16 w-56 h-56 ">
-        <Image src={GEMLOGO} alt=""/>
+        <Image src={GEMLOGO} alt="" />
       </div>
       <SimliOpenAI
         openai_voice={avatar.openai_voice}
