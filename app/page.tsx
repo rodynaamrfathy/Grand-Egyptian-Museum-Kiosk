@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import SimliOpenAI from "./SimliOpenAI";
 import { createScreenRecorder, downloadBlob } from "./Components/Record";
 import UserCamera from "./Components/SquareCamera";
@@ -80,8 +80,6 @@ const Demo: React.FC = () => {
     setShowIdleVideo(true);
     setLoading(false);
     setDoStartCamera(true);
-    // onStartCameraCapture();
-    // window.location.reload();
   };
   
   const onStartCameraCapture = () => {
@@ -115,6 +113,7 @@ const Demo: React.FC = () => {
         doStartCamera={doStartCamera}
         capture={capture}
       />
+      <canvas ref={canvasRef} className="hidden" width="640" height="480"></canvas>
       <div
         className={cn(
           "w-full h-full bg-white absolute z-20 opacity-0 pointer-events-none transition-all duration-[2000ms] select-none",
