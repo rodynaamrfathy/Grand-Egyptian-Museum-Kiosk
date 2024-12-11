@@ -53,7 +53,7 @@ const SimliOpenAI: React.FC<SimliOpenAIProps> = ({
         apiKey: process.env.NEXT_PUBLIC_SIMLI_API_KEY,
         faceID: simli_faceid,
         handleSilence: true,
-        maxSessionLength: 120, // in seconds
+        maxSessionLength: 60, // in seconds
         maxIdleTime: 120, // in seconds
         videoRef: videoRef,
         audioRef: audioRef,

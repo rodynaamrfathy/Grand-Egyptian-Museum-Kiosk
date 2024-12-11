@@ -96,7 +96,7 @@ const CameraCapture = ({
             <h2 className="text-md text-black font-bold mb-4">
               Scan and Download
             </h2>
-            <QRCodeSVG value="https://visit-gem.com/en/GEMIntro" />,
+            <QRCodeSVG value="https://rodynaamrfathygoda.pythonanywhere.com/" />,
           </div>
         </>
       )}
