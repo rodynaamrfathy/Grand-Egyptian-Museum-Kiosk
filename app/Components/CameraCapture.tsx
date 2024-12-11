@@ -1,8 +1,9 @@
 import { Camera, Undo2 } from "lucide-react";
-import { use, useEffect, useState } from "react";
+import { useState, useEffect } from "react";
 import GEMLOGO from "@/media/GEM LOGO.png";
 import Image from "next/image";
 import countdown from "@/media/countdown.gif";
+import QRCode, { QRCodeSVG } from "qrcode.react"; // Correct import
 
 interface CameraCaptureProps {
   onStartCameraCapture(): void;
@@ -15,19 +16,9 @@ const CameraCapture = ({
   doStartCamera,
   capture = false,
 }: CameraCaptureProps) => {
-    const [startCamera, setStartCamera] = useState(false);
-    const [showCountdown, setShowCountdown] = useState(true);
-
-  useEffect(() => {
-    if (capture) {
-      // Start 5s countdown then capture
-      setTimeout(() => {
-        capturedImage();
-      }, 5000);
-    }
-  }, [capture]);
-
-
+  const [startCamera, setStartCamera] = useState(false);
+  const [showCountdown, setShowCountdown] = useState(true);
+  const [showQRCode, setShowQRCode] = useState(false); // State to toggle QR code display
 
   useEffect(() => {
     if (capture) {
@@ -51,6 +42,7 @@ const CameraCapture = ({
 
   const capturedImage = () => {
     setShowCountdown(false); // Remove countdown after capture
+    setShowQRCode(true); // Show QR code after capture
   };
 
   return (
@@ -85,6 +77,14 @@ const CameraCapture = ({
               alt=""
               className="w-80 object-contain left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 absolute z-20"
             />
+          )}
+          {showQRCode && (
+            <div className="absolute z-30 w-full h-full flex justify-center items-center bg-black bg-opacity-70">
+              <div className="bg-white p-4 rounded-lg shadow-lg flex flex-col items-center">
+                <h2 className="text-lg font-bold mb-4">Scan to Open Mobile App</h2>
+                <QRCodeSVG value="https://visit-gem.com/en/GEMIntro" />,
+                </div>
+            </div>
           )}
         </>
       )}

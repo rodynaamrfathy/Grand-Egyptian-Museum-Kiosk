@@ -47,17 +47,18 @@ const Demo: React.FC = () => {
   const [cameraFullScreen, setCameraFullScreen] = useState(false);
   const [doStartCamera, setDoStartCamera] = useState(false);
   const [capture, setCapture] = useState(false);
-  const recorderRef = useRef<any>(null); // Add this reference
+  const recorderRef = useRef<any>(null); // Screen recorder reference
+  const canvasRef = useRef<HTMLCanvasElement>(null); // Canvas reference
 
   const onStart = async () => {
-    // try {
-    //   const recorder = await createScreenRecorder();
-    //   recorderRef.current = recorder; // Store the recorder instance
-    //   recorder.start();
-    //   console.log("Screen recording started.");
-    // } catch (error) {
-    //   console.error("Error starting screen recording:", error);
-    // }
+    try {
+      const recorder = await createScreenRecorder();
+      recorderRef.current = recorder; // Store the recorder instance
+      recorder.start();
+      console.log("Screen recording started.");
+    } catch (error) {
+      console.error("Error starting screen recording:", error);
+    }
 
     setShowInteraction(true);
     setShowUserCamera(true);
@@ -81,7 +82,7 @@ const Demo: React.FC = () => {
     setLoading(false);
     setDoStartCamera(true);
   };
-  
+
   const onStartCameraCapture = () => {
     setCapture(true); // Trigger capture when closing conversation
     setShowSimli(false);
