@@ -5,6 +5,7 @@ import Image from "next/image";
 import countdown from "@/media/countdown.gif";
 import QRCode, { QRCodeSVG } from "qrcode.react"; // Correct import
 import cn from "../utils/TailwindMergeAndClsx";
+import bg from "@/media/bg.jpeg";
 
 interface CameraCaptureProps {
   onStartCameraCapture(): void;
@@ -60,7 +61,12 @@ const CameraCapture = ({
       )}
       {startCamera && (
         <>
-          <div className="absolute h-screen w-full from-white to-[#ea7204] bg-gradient-to-t"></div>
+          <Image
+            src={bg}
+            alt=""
+            className="absolute inset-0 object-cover z-10 scale-105"
+          />
+          {/* <div className="absolute h-screen w-full from-white to-[#ea7204] bg-gradient-to-t"></div> */}
           <div
             className="absolute z-20 w-20 rounded-r-full h-12 bg-[#ea7204] hover:opacity-15 left-0 bottom-24 flex justify-center items-center"
             onClick={() => {
@@ -81,9 +87,12 @@ const CameraCapture = ({
               className="w-80 object-contain left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 absolute z-20"
             />
           )}
-          <div className={cn(`bg-white absolute scale-75 z-30 p-2 rounded-lg shadow-lg flex flex-col items-center transition-all duration-1000`,
-            showQRCode ? 'opacity-100 bottom-8' : 'opacity-0 -bottom-20'
-          )}>
+          <div
+            className={cn(
+              `bg-white absolute scale-75 z-30 p-2 rounded-lg shadow-lg flex flex-col items-center transition-all duration-1000`,
+              showQRCode ? "opacity-100 bottom-8" : "opacity-0 -bottom-20"
+            )}
+          >
             <h2 className="text-md text-black font-bold mb-4">
               Scan and Download
             </h2>
