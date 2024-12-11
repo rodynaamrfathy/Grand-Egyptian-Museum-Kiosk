@@ -1,7 +1,12 @@
 import { useState, useEffect, useRef } from "react";
 import { Camera } from "lucide-react";
+import cn from "../utils/TailwindMergeAndClsx";
 
-const UserCamera = () => {
+interface UserCameraProps {
+  fullScreen?: boolean;
+}
+
+const UserCamera = ({ fullScreen = false }: UserCameraProps) => {
   const videoRef = useRef(null);
   const [error, setError] = useState(null);
   const [isStreamActive, setIsStreamActive] = useState(false);
@@ -43,13 +48,16 @@ const UserCamera = () => {
   }, []);
 
   return (
-    <div className="flex flex-col items-end justify-end animate-fadeIn w-full h-screen absolute p-2">
-      <div className="relative w-1/3 h-1/3 brightness-100 saturate-100 contrast-100 overflow-hidden shadow-lg z-20">
+    <div className={cn("flex flex-col items-end animate-fadeIn w-full h-screen absolute p-8 justify-end",
+    )}>
+      <div className={cn("relative brightness-100 saturate-100 contrast-125 z-20 transition-all duration-500",
+      fullScreen ? "h-full w-full" : "w-1/3 h-1/3"
+      )}>
         <video
           ref={videoRef}
           autoPlay
           playsInline
-          className="w-full h-full object-cover scale-x-[-1]"
+          className="w-full h-full object-cover scale-x-[-1] shadow-black rounded-sm"
         />
       </div>
     </div>

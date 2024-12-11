@@ -3,7 +3,7 @@ import { RealtimeClient } from "@openai/realtime-api-beta";
 import { SimliClient } from "simli-client";
 import VideoBox from "./Components/VideoBox";
 import cn from "./utils/TailwindMergeAndClsx";
-import { Pointer } from "lucide-react";
+import { Pointer, Undo2 } from "lucide-react";
 
 interface SimliOpenAIProps {
   simli_faceid: string;
@@ -354,11 +354,11 @@ const SimliOpenAI: React.FC<SimliOpenAIProps> = ({
       console.error("Error starting interaction:", error);
       setError(`Error starting interaction: ${error.message}`);
     } finally {
-      onStart();
       setTimeout(() => {
+        onStart();
         setIsAvatarVisible(true);
         setIsLoading(false);
-      }, 4000);
+      }, 1000);
     }
   }, [onStart]);
 
@@ -402,6 +402,7 @@ const SimliOpenAI: React.FC<SimliOpenAIProps> = ({
         if (audioContextRef.current) {
           audioContextRef.current?.close();
         }
+        onClose();
       });
     }
   }, []);
@@ -419,7 +420,7 @@ const SimliOpenAI: React.FC<SimliOpenAIProps> = ({
           <div
             onClick={handleStart}
             className={cn(
-              "h-[600px] w-80 pt-96 text-white rounded-[100px] bg-gray-500 bg-opacity-0",
+              "h-[600px] w-80 pt-96 text-white rounded-[100px] bg-gray-500 bg-opacity-0"
             )}
           >
             <div className="flex flex-col justify-center items-center animate-bounce gap-10">
@@ -436,17 +437,11 @@ const SimliOpenAI: React.FC<SimliOpenAIProps> = ({
         {/* Exit button */}
         {isAvatarVisible && (
           <>
-            <div className="flex items-center gap-4">
-              <button
-                onClick={handleStop}
-                className={cn(
-                  "group text-white flex-grow bg-red w-[80px] hover:rounded-sm hover:bg-white h-[52px] rounded-[100px] transition-all duration-300"
-                )}
-              >
-                <span className="font-abc-repro-mono group-hover:text-black font-bold w-[164px] transition-all duration-300">
-                  Exit
-                </span>
-              </button>
+            <div
+              className="absolute z-10 w-20 rounded-r-full h-12 bg-[#ea7204] hover:opacity-15 left-0 bottom-24 flex justify-center items-center"
+              onClick={handleStop}
+            >
+              <Undo2 className="w-6 h-6" />
             </div>
           </>
         )}

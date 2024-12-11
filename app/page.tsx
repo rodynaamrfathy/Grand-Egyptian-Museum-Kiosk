@@ -9,6 +9,7 @@ import cn from "./utils/TailwindMergeAndClsx";
 import { Camera } from "lucide-react";
 import Image from "next/image";
 import GEMLOGO from "@/media/GEM LOGO.png";
+import CameraCapture from "./Components/CameraCapture";
 
 interface avatarSettings {
   name: string;
@@ -43,6 +44,9 @@ const Demo: React.FC = () => {
   const [startFadeIn, setStartFadeIn] = useState(false);
   const [showIdleVideo, setShowIdleVideo] = useState(true);
   const [loading, setLoading] = useState(false);
+  const [showSimli, setShowSimli] = useState(true);
+  const [cameraFullScreen, setCameraFullScreen] = useState(false);
+  const [doStartCamera, setDoStartCamera] = useState(false);
 
   const onStart = () => {
     // try {
@@ -65,35 +69,43 @@ const Demo: React.FC = () => {
 
   const onClose = () => {
     setShowInteraction(false);
-    setShowUserCamera(false);
     setShowIdleVideo(true);
     setLoading(false);
-    window.location.reload();
+
+    setDoStartCamera(true);
+    // onStartCameraCapture();
+    // window.location.reload();
+  };
+
+  const onStartCameraCapture = () => {
+    setShowSimli(false);
+    setShowUserCamera(true);
+    setCameraFullScreen(true);
   };
 
   return (
     <div className="bg-white flex flex-col items-center font-abc-repro font-normal text-sm text-white h-screen overflow-hidden">
       {showIdleVideo && <IdleVideoLoop zoomIn={loading} />}
-      <div
-        className="absolute z-10 w-20 rounded-r-full h-12 bg-[#ea7204] animate-pulse hover:opacity-15 left-0 bottom-10 flex justify-center items-center"
-        onClick={() => {}}
-      >
-        <Camera />
-      </div>
       <div className="absolute top-16 w-56 h-56 ">
         <Image src={GEMLOGO} alt="" />
       </div>
-      <SimliOpenAI
-        openai_voice={avatar.openai_voice}
-        simli_faceid={avatar.simli_faceid}
-        initialPrompt={avatar.initialPrompt}
-        onStart={onStart}
-        onLoading={() => {
-          setLoading(true);
-        }}
-        onClose={onClose}
+      {showSimli && (
+        <SimliOpenAI
+          openai_voice={avatar.openai_voice}
+          simli_faceid={avatar.simli_faceid}
+          initialPrompt={avatar.initialPrompt}
+          onStart={onStart}
+          onLoading={() => {
+            setLoading(true);
+          }}
+          onClose={onClose}
+        />
+      )}
+      {showUserCamera && <UserCamera fullScreen={cameraFullScreen} />}
+      <CameraCapture
+        onStartCameraCapture={onStartCameraCapture}
+        doStartCamera={doStartCamera}
       />
-      {showUserCamera && <UserCamera />}
       <div
         className={cn(
           "w-full h-full bg-white absolute z-20 opacity-0 pointer-events-none transition-all duration-[2000ms] select-none",
