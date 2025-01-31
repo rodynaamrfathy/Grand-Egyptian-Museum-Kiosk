@@ -8,7 +8,7 @@ export default function Home() {
       <header className="bg-gray-500 text-white text-center p-5">
         <div className="flex flex-col items-center justify-center gap-4 sm:flex-row sm:gap-8">
           <Image src="/images/img-3185-1.png" alt="Logo" width={100} height={100} />
-          <h1 className="text-xl font-bold sm:text-2xl">المتحف المصري الكبير</h1>
+          <h1 className="text-xl font-bold sm:text-2xl"> Grand Egyptian Museum</h1>
         </div>
       </header>
 
