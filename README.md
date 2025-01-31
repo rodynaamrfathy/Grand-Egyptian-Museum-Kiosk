@@ -1,10 +1,10 @@
 # Grand Egyptian Museum Kiosk Software
 
-## Overview
+### Overview
 
 The GEM Kiosk Software is an AI-powered interactive guide designed for The Grand Egyptian Museum, providing visitors with an engaging and informative experience. This project was initially developed during the GEM Hackathon 2024, where our team secured first place. Following our success, we joined the GEM Incubation Program (January–April 2025) to further refine and implement our solution.
 
-## The Hackathon & Incubation Program
+### The Hackathon & Incubation Program
 
 The GEM Hackathon was an intensive *36-hour competition* where teams developed innovative solutions for museum engagement. Our team, despite having no prior collaboration, built a fully functional prototype that impressed the judges. Winning first place granted us the opportunity to participate in the GEM Incubation Program, where we are now working to develop our project into a production-ready solution.
 
