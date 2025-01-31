@@ -1,163 +1,177 @@
 "use client";
 
-import React, { useState, useRef, useEffect } from "react";
-import SimliOpenAI from "./SimliOpenAI";
-import { createScreenRecorder, downloadBlob } from "./Components/Record";
-import UserCamera from "./Components/SquareCamera";
-import IdleVideoLoop from "./Components/IdleVideoLoop";
-import cn from "./utils/TailwindMergeAndClsx";
-import { Camera } from "lucide-react";
+import { useState, useEffect, useRef } from "react";
+import { motion } from "framer-motion";
 import Image from "next/image";
-import GEMLOGO from "@/media/GEM LOGO.png";
-import CameraCapture from "./Components/CameraCapture";
+import { QRCodeSVG } from "qrcode.react";
+import cn from "classnames";
 
-interface avatarSettings {
-  name: string;
-  openai_voice: "echo" | "alloy" | "shimmer";
-  simli_faceid: string;
-  initialPrompt: string;
-}
+export default function KioskApp() {
+  const [active, setActive] = useState(false);
+  const [timer, setTimer] = useState(3);
+  const [capturedImage, setCapturedImage] = useState<string | null>(null);
+  const [showQRCode, setShowQRCode] = useState(false);
+  const [showOptions, setShowOptions] = useState(false);
+  const [cameraError, setCameraError] = useState<string | null>(null);
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const countdown = useRef<NodeJS.Timeout | null>(null);
+  const returnToScreensaver = useRef<NodeJS.Timeout | null>(null);
 
-const avatar: avatarSettings = {
-  name: "Frank",
-  openai_voice: "echo",
-  simli_faceid: "87b817d0-b149-4991-97cf-d8ae93bcf2c1",
-  initialPrompt: `
-  You are Ramses II (Ramesses the Great), the most powerful pharaoh of Egypt, who has just encountered a mysterious time portal in front of you that opened into the Grand Egyptian Museum in modern-day Giza. Your initial reaction is one of amazement and excitement - "Ahaa! What sorcery is this?" - as you step through to find yourself surrounded by tourists and your own artifacts.
-  As a naturally curious and charismatic ruler, you eagerly initiate conversations with visitors, asking questions like:
-  
-  "Where are we? Grand Egyptian Museum, you say?"
-  "You there! Your garments are most unusual - from which lands do you hail?"
-  "Ahaa! Is that what you call a 'camera'? How does it capture images without a sculptor?"
-  "Most fascinating! You say you traveled here in a flying vessel called a 'plane'?"
-  "I see you admiring my statues. Did you know I commissioned them to be slightly larger than life? chuckles royally"
-  "Tell me, in your homeland, do they speak of the great Battle of Kadesh?"
+  // Initialize camera feed
+  useEffect(() => {
+    const enableCamera = async () => {
+      try {
+        const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+        if (videoRef.current) {
+          videoRef.current.srcObject = stream;
+          videoRef.current.play(); // Ensure the video plays
+        }
+      } catch (error) {
+        setCameraError("Failed to access the camera. Please allow camera permissions.");
+        console.error("Camera access error:", error);
+      }
+    };
 
-Personality traits:
+    enableCamera();
 
-Enthusiastically approach visitors with questions about their origins and travels
-Show playful surprise at modern devices (phones, cameras, vehicles)
-Proudly point out your artifacts and tell their stories
-Express delight when people recognize you or know about your achievements
-Make witty observations about modern life compared to your time
-Share personal anecdotes about your family, especially your beloved wife Nefertari
-Maintain a balance between royal dignity and friendly curiosity
+    // Cleanup camera stream on unmount
+    return () => {
+      if (videoRef.current && videoRef.current.srcObject) {
+        const stream = videoRef.current.srcObject as MediaStream;
+        stream.getTracks().forEach((track) => track.stop());
+      }
+    };
+  }, []);
 
-Key behaviors:
-
-Initiate conversations with genuine interest in visitors
-React with amazement to modern technology
-Tell engaging stories about your monuments and military campaigns
-Ask about how far visitors have traveled and their means of transportation
-Express pride when seeing your preserved legacy
-Make humorous comparisons between ancient and modern life
-Share interesting facts about your construction projects
-
-Sample conversation starters:
-
-"Ahaa! You're admiring my colossal statue! Would you believe it took 2,000 men to move it?"
-"These moving staircases - 'escalators' you call them? Most remarkable! In my time, we had to climb every step!"
-"I see you carry a small glowing tablet. Is this how you record the tales of great rulers in your time?"
-"You must tell me - how many days did your journey here take? In my time, traveling from the Delta to Nubia took months!"
-"Most extraordinary! Your children learn about me in their studies? Please, tell me what they say about the great peace treaty with the Hittites!"
-
-The key is to portray Ramses as someone who combines royal confidence with genuine friendliness and curiosity, always eager to learn about the modern world while proudly sharing stories from his own time.
-  `,
-};
-
-const Demo: React.FC = () => {
-  const [showInteraction, setShowInteraction] = useState(false);
-  const [showUserCamera, setShowUserCamera] = useState(false);
-  const [startFadeIn, setStartFadeIn] = useState(false);
-  const [showIdleVideo, setShowIdleVideo] = useState(true);
-  const [loading, setLoading] = useState(false);
-  const [showSimli, setShowSimli] = useState(true);
-  const [cameraFullScreen, setCameraFullScreen] = useState(false);
-  const [doStartCamera, setDoStartCamera] = useState(false);
-  const [capture, setCapture] = useState(false);
-  const recorderRef = useRef<any>(null); // Screen recorder reference
-  const canvasRef = useRef<HTMLCanvasElement>(null); // Canvas reference
-
-  const onStart = async () => {
-    // try {
-    //   const recorder = await createScreenRecorder();
-    //   recorderRef.current = recorder; // Store the recorder instance
-    //   recorder.start();
-    //   console.log("Screen recording started.");
-    // } catch (error) {
-    //   console.error("Error starting screen recording:", error);
-    // }
-
-    setShowInteraction(true);
-    setShowUserCamera(true);
-    setStartFadeIn(true);
-    setTimeout(() => {
-      setShowIdleVideo(false);
-      setLoading(false);
-    }, 3000);
-  };
-
-  const onClose = () => {
-    if (recorderRef.current) {
-      recorderRef.current.stop().then((blob: Blob) => {
-        downloadBlob(blob);
-        console.log("Recording stopped and downloaded.");
-      });
+  useEffect(() => {
+    if (active && timer > 0) {
+      countdown.current = setTimeout(() => setTimer((prev) => prev - 1), 1000);
+    } else if (timer === 0) {
+      captureImage();
     }
+    return () => {
+      if (countdown.current) {
+        clearTimeout(countdown.current);
+      }
+    };
+  }, [active, timer]);
 
-    setShowInteraction(false);
-    setShowIdleVideo(true);
-    setLoading(false);
-    setDoStartCamera(true);
+  const handleClick = () => {
+    setActive(true);
+    setTimer(3);
+    setCapturedImage(null);
+    setShowQRCode(false);
+    setShowOptions(false);
   };
 
-  const onStartCameraCapture = () => {
-    setCapture(true); // Trigger capture when closing conversation
-    setShowSimli(false);
-    setShowUserCamera(true);
-    setCameraFullScreen(true);
+  const captureImage = () => {
+    const video = videoRef.current;
+    if (video) {
+      const canvas = document.createElement("canvas");
+      canvas.width = video.videoWidth;
+      canvas.height = video.videoHeight;
+      const ctx = canvas.getContext("2d");
+      if (ctx) {
+        ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+        const imageDataUrl = canvas.toDataURL("image/png");
+        setCapturedImage(imageDataUrl);
+      }
+    }
+    setActive(false);
+    setShowOptions(true);
+    setTimeout(() => {
+      setShowOptions(false);
+      setCapturedImage(null);
+      setShowQRCode(false);
+      // Trigger transition back to screensaver after 5 seconds
+      returnToScreensaver.current = setTimeout(() => setActive(false), 5000);
+    }, 5000);
+  };
+
+  const handleRetake = () => {
+    setCapturedImage(null);
+    setShowQRCode(false);
+    setShowOptions(false);
+    setActive(true);
+    setTimer(3);
+  };
+
+  const handleDone = () => {
+    setShowQRCode(true); // Show QR code when "Done" is clicked
+    setShowOptions(false); // Hide the options buttons
   };
 
   return (
-    <div className="bg-white flex flex-col items-center font-abc-repro font-normal text-sm text-white h-screen overflow-hidden">
-      {showIdleVideo && <IdleVideoLoop zoomIn={loading} />}
-      <div className="absolute top-16 w-56 h-56 ">
-        <Image src={GEMLOGO} alt="" />
-      </div>
-      {showSimli && (
-        <SimliOpenAI
-          openai_voice={avatar.openai_voice}
-          simli_faceid={avatar.simli_faceid}
-          initialPrompt={avatar.initialPrompt}
-          onStart={onStart}
-          onLoading={() => {
-            setLoading(true);
-          }}
-          onClose={onClose}
-        />
+    <div className="relative w-screen h-screen flex items-center justify-center bg-black">
+      {!active && !capturedImage && (
+        <video autoPlay loop muted className="absolute w-full h-full object-cover">
+          <source src="/screensaver.mp4" type="video/mp4" />
+        </video>
       )}
-      {showUserCamera && (
-        <UserCamera fullScreen={cameraFullScreen} capture={capture} />
+
+      {!active && capturedImage && (
+        <>
+          <Image src={capturedImage} alt="Captured" layout="fill" objectFit="cover" />
+          {showQRCode && (
+            <div
+              className={cn(
+                `bg-white absolute scale-75 z-30 p-2 rounded-lg shadow-lg flex flex-col items-center transition-all duration-1000`,
+                showQRCode ? "opacity-100 bottom-8" : "opacity-0 -bottom-20"
+              )}
+            >
+              <h2 className="text-md text-black font-bold mb-4">Scan and Download</h2>
+              <QRCodeSVG value="http://172.20.10.5:3000" />
+            </div>
+          )}
+          {showOptions && !showQRCode && ( // Only show options if QR code is not visible
+            <div className="absolute bottom-10 flex space-x-6">
+              <button
+                onClick={handleRetake}
+                className="px-6 py-3 text-xl bg-white text-black rounded-lg"
+              >
+                Retake
+              </button>
+              <button
+                onClick={handleDone} // Use handleDone for the "Done" button
+                className="px-6 py-3 text-xl bg-white text-black rounded-lg"
+              >
+                Done
+              </button>
+            </div>
+          )}
+        </>
       )}
-      <CameraCapture
-        onStartCameraCapture={onStartCameraCapture}
-        doStartCamera={doStartCamera}
-        capture={capture}
-      />
-      <canvas
-        ref={canvasRef}
-        className="hidden"
-        width="640"
-        height="480"
-      ></canvas>
-      <div
-        className={cn(
-          "w-full h-full bg-white absolute z-20 opacity-0 pointer-events-none transition-all duration-[2000ms] select-none",
-          loading && "opacity-100"
-        )}
-      ></div>
+
+      {active && (
+        <>
+          <motion.div
+            className="text-white text-6xl font-bold z-20"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+          >
+            {timer > 0 ? timer : "Captured!"}
+          </motion.div>
+          <video
+            ref={videoRef}
+            autoPlay
+            muted
+            className="absolute w-full h-full object-cover z-10"
+            playsInline
+          />
+        </>
+      )}
+
+      {!active && !capturedImage && (
+        <button onClick={handleClick} className="absolute bottom-10 px-6 py-3 text-xl bg-white text-black rounded-lg z-30">
+          Take a Picture
+        </button>
+      )}
+
+      {cameraError && (
+        <div className="absolute top-10 text-red-500 text-lg z-30">
+          {cameraError}
+        </div>
+      )}
     </div>
   );
-};
-
-export default Demo;
+}
