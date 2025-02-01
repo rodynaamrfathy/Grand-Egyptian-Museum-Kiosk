@@ -1,13 +1,17 @@
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef } from "react";
 import { Camera, RefreshCw, Check } from "lucide-react";
-import cn from "../utils/TailwindMergeAndClsx";
+import { QRCodeSVG } from "qrcode.react";
+import cn from "@/utils/TailwindMergeAndClsx";
+import Image from "next/image";
+
 
 const CameraCapture = () => {
   const [startCamera, setStartCamera] = useState(false);
   const [countdown, setCountdown] = useState(0);
-  const [capturedImage, setCapturedImage] = useState(null);
-  const videoRef = useRef(null);
-  const canvasRef = useRef(null);
+  const [capturedImage, setCapturedImage] = useState<string | null>(null);
+  const [showQRCode, setShowQRCode] = useState(false);
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const canvasRef = useRef<HTMLCanvasElement>(null);
 
   const startCountdown = () => {
     setCountdown(3);
@@ -35,7 +39,9 @@ const CameraCapture = () => {
   const captureImage = () => {
     if (videoRef.current && canvasRef.current) {
       const context = canvasRef.current.getContext("2d");
-      context.drawImage(videoRef.current, 0, 0, 640, 480);
+      if (context) {
+        context.drawImage(videoRef.current, 0, 0, 640, 480);
+      }
       setCapturedImage(canvasRef.current.toDataURL("image/png"));
       stopCamera();
     }
@@ -43,10 +49,19 @@ const CameraCapture = () => {
 
   const stopCamera = () => {
     if (videoRef.current && videoRef.current.srcObject) {
-      const stream = videoRef.current.srcObject;
+      const stream = videoRef.current.srcObject as MediaStream;
       const tracks = stream.getTracks();
       tracks.forEach(track => track.stop());
     }
+  };
+
+  const handleDone = () => {
+    setShowQRCode(true);
+    setTimeout(() => {
+      setShowQRCode(false);
+      setCapturedImage(null);
+      setStartCamera(false);
+    }, 5000);
   };
 
   return (
@@ -80,8 +95,8 @@ const CameraCapture = () => {
 
       {capturedImage && (
         <div className="absolute w-full h-full flex flex-col items-center justify-center bg-black">
-          <img src={capturedImage} alt="Captured" className="w-80 h-auto rounded-lg shadow-lg" />
-          <div className="mt-4 flex gap-4">
+        <Image src={capturedImage} alt="Captured" width={640} height={480} className="rounded-lg shadow-lg" />
+        <div className="mt-4 flex gap-4">
             <button
               className="bg-gray-700 text-white p-3 rounded-full shadow hover:scale-110"
               onClick={startCameraCapture} // Restart countdown and retake photo
@@ -90,16 +105,23 @@ const CameraCapture = () => {
             </button>
             <button
               className="bg-green-500 text-white p-3 rounded-full shadow hover:scale-110"
-              onClick={() => {
-                setCapturedImage(null);
-                setStartCamera(false); // Return to screensaver
-              }}
+              onClick={handleDone} // Show QR code then return to screensaver
             >
               <Check size={24} />
             </button>
           </div>
         </div>
       )}
+
+      {showQRCode && (
+        <div className={cn(
+          "bg-white absolute scale-75 z-30 p-2 rounded-lg shadow-lg flex flex-col items-center transition-all duration-1000 opacity-100 bottom-8"
+        )}>
+          <h2 className="text-md text-black font-bold mb-4">Scan and Download</h2>
+          <QRCodeSVG value="http://172.20.10.5:3000" />
+          </div>
+      )}
+
       <canvas ref={canvasRef} width={640} height={480} className="hidden" />
     </div>
   );

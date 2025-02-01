@@ -1,5 +1,5 @@
 "use client";
-import CameraCapture from "./components/CameraCapture.tsx";
+import CameraCapture from "./components/CameraCapture";
 
 const Page = () => {
   return (
