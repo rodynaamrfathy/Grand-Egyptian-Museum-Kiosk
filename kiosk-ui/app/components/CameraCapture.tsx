@@ -1,9 +1,9 @@
+"use client"
 import { useState, useRef } from "react";
-import { Camera, RefreshCw, Check } from "lucide-react";
-import { QRCodeSVG } from "qrcode.react";
-import cn from "@/utils/TailwindMergeAndClsx";
-import Image from "next/image";
-
+import CameraButton from "./CameraButton";
+import Countdown from "./Countdown";
+import CapturedImage from "./CapturedImage";
+import QRCodeDisplay from "./QRCodeDisplay";
 
 const CameraCapture = () => {
   const [startCamera, setStartCamera] = useState(false);
@@ -75,53 +75,27 @@ const CameraCapture = () => {
             muted
             className="w-full h-full object-cover"
           ></video>
-          <button
-            className="absolute bottom-12 left-1/2 -translate-x-1/2 bg-orange-500 p-4 rounded-full shadow-lg hover:scale-110 transition-all"
-            onClick={startCameraCapture}
-          >
-            <Camera size={32} className="text-white" />
-          </button>
+          <CameraButton onClick={startCameraCapture} />
         </div>
       )}
 
       {startCamera && !capturedImage && (
         <div className="absolute w-full h-full flex items-center justify-center">
           <video ref={videoRef} autoPlay className="w-full h-full object-cover" />
-          {countdown > 0 && (
-            <div className="absolute text-white text-6xl font-bold">{countdown}</div>
-          )}
+          {countdown > 0 && <Countdown countdown={countdown} />}
         </div>
       )}
 
       {capturedImage && (
-        <div className="absolute w-full h-full flex flex-col items-center justify-center bg-black">
-        <Image src={capturedImage} alt="Captured" width={640} height={480} className="rounded-lg shadow-lg" />
-        <div className="mt-4 flex gap-4">
-            <button
-              className="bg-gray-700 text-white p-3 rounded-full shadow hover:scale-110"
-              onClick={startCameraCapture} // Restart countdown and retake photo
-            >
-              <RefreshCw size={24} />
-            </button>
-            <button
-              className="bg-green-500 text-white p-3 rounded-full shadow hover:scale-110"
-              onClick={handleDone} // Show QR code then return to screensaver
-            >
-              <Check size={24} />
-            </button>
-          </div>
-        </div>
+        <CapturedImage 
+          image={capturedImage}
+          onRetake={startCameraCapture}
+          onDone={handleDone}
+        />
       )}
 
-      {showQRCode && (
-        <div className={cn(
-          "bg-white absolute scale-75 z-30 p-2 rounded-lg shadow-lg flex flex-col items-center transition-all duration-1000 opacity-100 bottom-8"
-        )}>
-          <h2 className="text-md text-black font-bold mb-4">Scan and Download</h2>
-          <QRCodeSVG value="http://172.20.10.5:3000" />
-          </div>
-      )}
-
+      {showQRCode && <QRCodeDisplay />}
+      
       <canvas ref={canvasRef} width={640} height={480} className="hidden" />
     </div>
   );
