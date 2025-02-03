@@ -4,12 +4,14 @@ import CameraButton from "./CameraButton";
 import Countdown from "./Countdown";
 import CapturedImage from "./CapturedImage";
 import QRCodeDisplay from "./QRCodeDisplay";
+import { uploadImage } from "@/utils/uploadImage"; // Import the upload function
 
 const CameraCapture = () => {
   const [startCamera, setStartCamera] = useState(false);
   const [countdown, setCountdown] = useState(0);
   const [capturedImage, setCapturedImage] = useState<string | null>(null);
   const [showQRCode, setShowQRCode] = useState(false);
+  const [imageUrl, setImageUrl] = useState<string | null>(null); // Store the image URL
   const videoRef = useRef<HTMLVideoElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
@@ -55,13 +57,19 @@ const CameraCapture = () => {
     }
   };
 
-  const handleDone = () => {
-    setShowQRCode(true);
-    setTimeout(() => {
-      setShowQRCode(false);
-      setCapturedImage(null);
-      setStartCamera(false);
-    }, 5000);
+  const handleDone = async () => {
+    try {
+      const uploadedImageUrl = await uploadImage(capturedImage!); // Upload the captured image
+      setImageUrl(uploadedImageUrl); // Store the uploaded image URL
+      setShowQRCode(true);
+      setTimeout(() => {
+        setShowQRCode(false);
+        setCapturedImage(null);
+        setStartCamera(false);
+      }, 5000);
+    } catch (error) {
+      console.error("Upload failed", error);
+    }
   };
 
   return (
@@ -94,8 +102,10 @@ const CameraCapture = () => {
         />
       )}
 
-      {showQRCode && <QRCodeDisplay />}
-      
+      {showQRCode && imageUrl && (
+        <QRCodeDisplay imageUrl={imageUrl} /> // Pass the image URL to QR code display
+      )}
+
       <canvas ref={canvasRef} width={640} height={480} className="hidden" />
     </div>
   );
