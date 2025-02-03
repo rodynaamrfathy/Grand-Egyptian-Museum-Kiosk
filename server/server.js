@@ -1,9 +1,13 @@
 const express = require("express");
 const multer = require("multer");
 const path = require("path");
+const cors = require("cors"); // Import CORS
 
 const app = express();
 const port = 3000;
+
+// Enable CORS for all origins
+app.use(cors()); // This will allow all origins by default
 
 // Set up multer to store uploaded images in the 'uploads' folder
 const storage = multer.diskStorage({

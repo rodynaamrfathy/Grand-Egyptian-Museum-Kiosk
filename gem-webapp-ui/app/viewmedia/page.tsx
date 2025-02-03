@@ -1,6 +1,21 @@
+"use client"
+import { useState, useEffect } from "react";
 import Image from "next/image";
+const serverIp = process.env.NEXT_PUBLIC_SERVER_IP;
 
 export default function ViewMedia() {
+  const [imageUrl, setImageUrl] = useState<string | null>(null);
+
+  // Fetch the uploaded image URL (You can pass the URL dynamically here)
+  useEffect(() => {
+    const fetchImage = async () => {
+      const imageUrlFromServer = `http://${serverIp}:3000/uploads/your_uploaded_image_name.png`; // Update with the actual URL
+      setImageUrl(imageUrlFromServer);
+    };
+    
+    fetchImage();
+  }, []);
+
   return (
     <div className="flex flex-col min-h-screen bg-gray-100 text-gray-900">
       {/* Header */}
@@ -31,13 +46,17 @@ export default function ViewMedia() {
         <section className="w-full max-w-md">
           <h2 className="text-lg font-bold mb-2 text-center">Your Picture!</h2>
           <div className="flex justify-center">
-            <Image
-              src="/images/sample-image.jpg"
-              alt="Sample Picture"
-              width={400}
-              height={300}
-              className="rounded-lg shadow-lg w-full sm:w-96"
-            />
+            {imageUrl ? (
+              <Image
+                src={imageUrl}
+                alt="Uploaded Picture"
+                width={400}
+                height={300}
+                className="rounded-lg shadow-lg w-full sm:w-96"
+              />
+            ) : (
+              <p>Loading image...</p>
+            )}
           </div>
           <div className="flex justify-between mt-3 flex-col sm:flex-row">
             <button className="bg-orange-500 text-white px-4 py-2 rounded-lg mb-3 sm:mb-0">Download</button>

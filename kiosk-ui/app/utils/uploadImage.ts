@@ -1,10 +1,12 @@
+const serverIp = process.env.NEXT_PUBLIC_SERVER_IP;
+
 export const uploadImage = async (imageData: string) => {
   try {
     const blob = await fetch(imageData).then((res) => res.blob());
     const formData = new FormData();
     formData.append("image", blob, "capturedImage.png");
 
-    const response = await fetch("http://localhost:3000/api/upload-image", {
+    const response = await fetch(`http://${serverIp}:3000/api/upload-image`, {
       method: "POST",
       body: formData,
     });

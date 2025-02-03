@@ -1,5 +1,6 @@
-"use client";
+"use client"
 import { useState } from "react";
+const serverIp = process.env.NEXT_PUBLIC_SERVER_IP;
 
 export default function UploadImage() {
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
@@ -21,13 +22,13 @@ export default function UploadImage() {
     formData.append("image", selectedFile);
 
     try {
-      const response = await fetch("http://localhost:3000/api/upload-image", {
+      const response = await fetch(`http://${serverIp}:3000/api/upload-image`, {
         method: "POST",
         body: formData,
       });
 
       const data = await response.json();
-      setImageUrl(data.imageUrl);
+      setImageUrl(data.imageUrl); // Save the image URL after successful upload
     } catch (error) {
       console.error("Upload failed:", error);
     }

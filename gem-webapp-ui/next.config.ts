@@ -1,7 +1,10 @@
 import type { NextConfig } from "next";
+const serverIp = process.env.NEXT_PUBLIC_SERVER_IP;
 
 const nextConfig: NextConfig = {
-  /* config options here */
+  images: {
+    domains: ['localhost', `${serverIp}`], 
+  },
 };
 
 export default nextConfig;
