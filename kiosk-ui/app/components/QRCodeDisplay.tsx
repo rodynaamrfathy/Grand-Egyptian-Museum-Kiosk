@@ -1,6 +1,6 @@
-import { QRCodeSVG } from "qrcode.react";
-
 const serverIp = process.env.NEXT_PUBLIC_SERVER_IP;
+
+import { QRCodeSVG } from "qrcode.react";
 
 const QRCodeDisplay = ({ imageUrl }: { imageUrl: string }) => {
   const qrCodeUrl = `http://${serverIp}:3002/viewmedia?image=${encodeURIComponent(imageUrl)}`;

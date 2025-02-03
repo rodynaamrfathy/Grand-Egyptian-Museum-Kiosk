@@ -1,5 +1,6 @@
-"use client"
+"use client";
 import { useState } from "react";
+
 const serverIp = process.env.NEXT_PUBLIC_SERVER_IP;
 
 export default function UploadImage() {
@@ -28,7 +29,10 @@ export default function UploadImage() {
       });
 
       const data = await response.json();
-      setImageUrl(data.imageUrl); // Save the image URL after successful upload
+      setImageUrl(data.imageUrl); // Save the image URL returned from the server
+
+      // For example, redirect to the ViewMedia page with the image URL as a query parameter:
+      // router.push(`/viewmedia?image=${encodeURIComponent(data.imageUrl)}`);
     } catch (error) {
       console.error("Upload failed:", error);
     }
