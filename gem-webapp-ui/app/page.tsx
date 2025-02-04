@@ -1,7 +1,23 @@
+"use client"
 import Image from "next/image";
 import Link from "next/link";
+import { useEffect, useState } from "react";
 
 export default function Home() {
+  const [imageName, setImageName] = useState("");
+
+  useEffect(() => {
+    // Extract the image URL from the query parameter
+    const urlParams = new URLSearchParams(window.location.search);
+    const imageUrl = urlParams.get("image");
+
+    if (imageUrl) {
+      // Extract the image name from the image URL
+      const name = imageUrl.split('/').pop();
+      setImageName(name || "");
+    }
+  }, []);
+
   return (
     <div className="flex flex-col min-h-screen bg-gray-100 text-gray-900">
       {/* Header */}
@@ -17,7 +33,8 @@ export default function Home() {
         <div className="space-y-6 text-center sm:space-y-0 sm:flex sm:gap-8 sm:flex-row">
           {/* View Media Button */}
           <Link
-            href="/viewmedia"
+            // Send the image URL as a query parameter to viewmedia
+            href={`/viewmedia?image=http://172.20.10.5:3000/uploads/${imageName}`}
             className="flex items-center justify-center text-white bg-orange-500 w-32 h-32 text-lg font-bold rounded-full shadow-lg transition hover:bg-orange-700"
           >
             View Media
