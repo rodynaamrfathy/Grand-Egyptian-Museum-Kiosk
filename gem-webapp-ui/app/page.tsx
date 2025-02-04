@@ -3,6 +3,8 @@ import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 
+const serverIp = process.env.NEXT_PUBLIC_SERVER_IP;
+
 export default function Home() {
   const [imageName, setImageName] = useState("");
 
@@ -34,7 +36,7 @@ export default function Home() {
           {/* View Media Button */}
           <Link
             // Send the image URL as a query parameter to viewmedia
-            href={`/viewmedia?image=http://172.20.10.5:3000/uploads/${imageName}`}
+            href={`/viewmedia?image=http://${serverIp}:3000/uploads/${imageName}`}
             className="flex items-center justify-center text-white bg-orange-500 w-32 h-32 text-lg font-bold rounded-full shadow-lg transition hover:bg-orange-700"
           >
             View Media
