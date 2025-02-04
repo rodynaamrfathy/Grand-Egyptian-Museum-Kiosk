@@ -1,13 +1,13 @@
-"use client"
+"use client";
 import { useState, useEffect } from "react";
 import Image from "next/image";
-
+import ShareButton from "../components/ShareButton";
+import DownloadButton from "../components/DownloadButton"; // Import the DownloadButton
 
 export default function ViewMedia() {
   const [imageUrl, setImageUrl] = useState<string | null>(null);
 
   useEffect(() => {
-    // Extract the image URL from the query parameter
     const urlParams = new URLSearchParams(window.location.search);
     const imageUrlFromUrl = urlParams.get("image");
 
@@ -45,8 +45,8 @@ export default function ViewMedia() {
             )}
           </div>
           <div className="flex justify-between mt-3 flex-col sm:flex-row">
-            <button className="bg-orange-500 text-white px-4 py-2 rounded-lg mb-3 sm:mb-0">Download</button>
-            <button className="bg-orange-500 text-white px-4 py-2 rounded-lg">Share</button>
+            {imageUrl && <DownloadButton imageUrl={imageUrl} />} {/* Use DownloadButton */}
+            {imageUrl && <ShareButton imageUrl={imageUrl} />} {/* Use ShareButton */}
           </div>
         </section>
       </main>
