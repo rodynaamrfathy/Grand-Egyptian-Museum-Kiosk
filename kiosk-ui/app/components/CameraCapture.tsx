@@ -29,14 +29,26 @@ const CameraCapture = () => {
   };
 
   const startCameraCapture = async () => {
-    setStartCamera(true);
-    setCapturedImage(null);
-    const stream = await navigator.mediaDevices.getUserMedia({ video: true });
-    if (videoRef.current) {
-      videoRef.current.srcObject = stream;
+    try {
+      setStartCamera(true);
+      setCapturedImage(null);
+  
+      const stream = await navigator.mediaDevices.getUserMedia({
+        video: { facingMode: "user" }, // Use front camera if available
+      });
+  
+      if (videoRef.current) {
+        videoRef.current.srcObject = stream;
+        await videoRef.current.play(); // Ensure playback starts
+      }
+      
+      startCountdown();
+    } catch (error) {
+      console.error("Error accessing camera:", error);
+      alert("Failed to access camera. Please check permissions and try again.");
+      setStartCamera(false);
     }
-    startCountdown();
-  };
+  };  
 
   const captureImage = () => {
     if (videoRef.current && canvasRef.current) {
