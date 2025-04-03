@@ -1,11 +1,13 @@
 "use client";
-import React from "react";
+import React, { useState } from "react";
 
 interface ShareButtonProps {
   imageUrl: string;
 }
 
 const ShareButton: React.FC<ShareButtonProps> = ({ imageUrl }) => {
+  const [isSharing, setIsSharing] = useState(false);  // Track sharing state
+
   const handleShare = async () => {
     console.log("navigator.share available:", !!navigator.share);
 
@@ -15,7 +17,13 @@ const ShareButton: React.FC<ShareButtonProps> = ({ imageUrl }) => {
     }
 
     if (navigator.share) {
+      if (isSharing) {
+        console.warn("A share action is already in progress.");
+        return; // Prevent share if already in progress
+      }
+
       try {
+        setIsSharing(true); // Set sharing in progress
         await navigator.share({
           title: "Check out this picture!",
           text: "Look at this amazing image from the Grand Egyptian Museum!",
@@ -28,6 +36,8 @@ const ShareButton: React.FC<ShareButtonProps> = ({ imageUrl }) => {
         } else {
           console.error("Error sharing:", error);
         }
+      } finally {
+        setIsSharing(false); // Reset sharing state after completion
       }
     } else {
       alert("Sharing is not supported on this browser.");
@@ -35,8 +45,8 @@ const ShareButton: React.FC<ShareButtonProps> = ({ imageUrl }) => {
   };
 
   return (
-    <button onClick={handleShare} className="bg-orange-500 text-white px-4 py-2 rounded-lg">
-      Share
+    <button onClick={handleShare} className="bg-orange-500 text-white px-4 py-2 rounded-lg" disabled={isSharing}>
+      {isSharing ? "Sharing..." : "Share"}
     </button>
   );
 };

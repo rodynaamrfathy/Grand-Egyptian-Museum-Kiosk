@@ -1,45 +1,73 @@
-require('dotenv').config();  // Add this line to load the .env file
-
+require("dotenv").config(); // Load .env file
 const express = require("express");
 const multer = require("multer");
-const path = require("path");
-const cors = require("cors"); // Import CORS
+const cors = require("cors");
+const { v2: cloudinary } = require("cloudinary");
+const { CloudinaryStorage } = require("multer-storage-cloudinary");
 
 const app = express();
 
-// Access the values from .env file
-const port = process.env.PORT || 3000; // Default to 3000 if not specified in .env
-const ip = process.env.IP || "127.0.0.1"; // Default to localhost if not specified
+// Enable CORS
+app.use(cors());
 
-// Enable CORS for all origins
-app.use(cors()); // This will allow all origins by default
+// Configure Cloudinary
+cloudinary.config({
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET,
+});
 
-// Set up multer to store uploaded images in the 'uploads' folder
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, "uploads/");
-  },
-  filename: (req, file, cb) => {
-    cb(null, Date.now() + path.extname(file.originalname));
+// Configure Multer to store images on Cloudinary
+const storage = new CloudinaryStorage({
+  cloudinary: cloudinary,
+  params: {
+    folder: "uploads", // Folder name in Cloudinary
+    format: async (req, file) => "png", // Convert all images to PNG
+    public_id: (req, file) => `image_${Date.now()}`, // Create a predictable ID
   },
 });
 
-const upload = multer({ storage: storage });
+const upload = multer({ storage });
 
-// Create an endpoint to upload the image
-app.post("/api/upload-image", upload.single("image"), (req, res) => {
+// Upload Image Endpoint
+app.post("/api/upload-image", upload.single("image"), async (req, res) => {
   if (!req.file) {
     return res.status(400).json({ message: "No image uploaded" });
   }
 
-  // Return the image URL to be used in the QR code
-  const imageUrl = `http://${ip}:${port}/uploads/${req.file.filename}`;
-  res.json({ imageUrl });
+  const imageUrl = req.file.path; // Cloudinary URL
+
+  // Return both imageUrl and publicId in the response
+  res.json({
+    imageUrl: imageUrl
+  });
 });
 
-// Serve the uploaded images
-app.use("/uploads", express.static("uploads"));
+// Retrieve Uploaded Image by Public ID
+app.get("/api/upload-image/:publicId", async (req, res) => {
+  const { publicId } = req.params; // Get image public ID from URL
 
+  try {
+    const image = await cloudinary.api.resource(publicId); // Fetch image using public_id
+    res.json({ imageUrl: image.secure_url }); // Return the image URL
+  } catch (error) {
+    res.status(500).json({ message: "Failed to fetch image", error });
+  }
+});
+
+// Verify Cloudinary connection
+cloudinary.api.ping()
+  .then(() => {
+    console.log("Cloudinary connected successfully!");
+  })
+  .catch((err) => {
+    console.error("Cloudinary connection failed:", err);
+  });
+
+// Add this line to make the server listen on a port
+const port = process.env.PORT || 3000; // Use port from environment or default to 3000
 app.listen(port, () => {
-  console.log(`Server is running on http://${ip}:${port}`);
+  console.log(`Server is running on http://localhost:${port}`);
 });
+
+module.exports = app; // For deployment to Vercel

@@ -1,22 +1,18 @@
-"use client"
+"use client";
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 
-const serverIp = process.env.NEXT_PUBLIC_SERVER_IP;
-
 export default function Home() {
-  const [imageName, setImageName] = useState("");
+  const [imageUrl, setImageUrl] = useState(""); // State to hold the image URL
 
   useEffect(() => {
     // Extract the image URL from the query parameter
     const urlParams = new URLSearchParams(window.location.search);
-    const imageUrl = urlParams.get("image");
+    const queryImageUrl = urlParams.get("image");
 
-    if (imageUrl) {
-      // Extract the image name from the image URL
-      const name = imageUrl.split('/').pop();
-      setImageName(name || "");
+    if (queryImageUrl) {
+      setImageUrl(queryImageUrl); // Set the image URL
     }
   }, []);
 
@@ -26,7 +22,7 @@ export default function Home() {
       <header className="bg-gray-500 text-white text-center p-5">
         <div className="flex flex-col items-center justify-center gap-4 sm:flex-row sm:gap-8">
           <Image src="/images/img-3185-1.png" alt="Logo" width={100} height={100} />
-          <h1 className="text-xl font-bold sm:text-2xl"> Grand Egyptian Museum</h1>
+          <h1 className="text-xl font-bold sm:text-2xl">Grand Egyptian Museum</h1>
         </div>
       </header>
 
@@ -35,8 +31,7 @@ export default function Home() {
         <div className="space-y-6 text-center sm:space-y-0 sm:flex sm:gap-8 sm:flex-row">
           {/* View Media Button */}
           <Link
-            // Send the image URL as a query parameter to viewmedia
-            href={`/viewmedia?image=http://${serverIp}:3000/uploads/${imageName}`}
+            href={imageUrl ? `/viewmedia?image=${imageUrl}` : "/"} // Dynamically set the URL if imageUrl is available
             className="flex items-center justify-center text-white bg-orange-500 w-32 h-32 text-lg font-bold rounded-full shadow-lg transition hover:bg-orange-700"
           >
             View Media
