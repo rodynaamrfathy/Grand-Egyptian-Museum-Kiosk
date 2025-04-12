@@ -6,23 +6,33 @@ interface DownloadButtonProps {
 }
 
 const DownloadButton: React.FC<DownloadButtonProps> = ({ imageUrl }) => {
+  const downloadFile = async (url: string, filename: string) => {
+    const response = await fetch(url);
+    const blob = await response.blob();
+    const objectUrl = URL.createObjectURL(blob);
+
+    const link = document.createElement("a");
+    link.href = objectUrl;
+    link.download = filename;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+
+    URL.revokeObjectURL(objectUrl);
+  };
+
   const handleDownload = async () => {
     try {
-      const response = await fetch(imageUrl);
-      const blob = await response.blob();
-      const url = URL.createObjectURL(blob);
+      // Download the main image
+      const imageFilename = imageUrl.split("/").pop() || "image.jpg";
+      await downloadFile(imageUrl, imageFilename);
 
-      const link = document.createElement("a");
-      link.href = url;
-      link.download = imageUrl.split("/").pop() || "image.jpg"; // Extracts filename or defaults to "image.jpg"
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-
-      URL.revokeObjectURL(url);
+      // Download card.png from public folder
+      const cardUrl = "/image/card.png";
+      await downloadFile(cardUrl, "card.png");
     } catch (error) {
-      console.error("Error downloading image:", error);
-      alert("Failed to download the image.");
+      console.error("Error downloading images:", error);
+      alert("Failed to download one or more images.");
     }
   };
 

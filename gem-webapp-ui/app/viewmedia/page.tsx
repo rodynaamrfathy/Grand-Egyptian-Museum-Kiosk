@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import Image from "next/image";
 import ShareButton from "../components/ShareButton";
 import DownloadButton from "../components/DownloadButton"; // Import the DownloadButton
+import ImageFlip from "./ImageFlip";
 
 export default function ViewMedia() {
   const [imageUrl, setImageUrl] = useState<string | null>(null);
@@ -33,12 +34,8 @@ export default function ViewMedia() {
           <h2 className="text-lg font-bold mb-2 text-center">Your Picture!</h2>
           <div className="flex justify-center">
             {imageUrl ? (
-              <Image
-                src={imageUrl}
-                alt="Uploaded Picture"
-                width={400}
-                height={300}
-                className="rounded-lg shadow-lg w-full sm:w-96"
+              <ImageFlip 
+              imageUrl={imageUrl} 
               />
             ) : (
               <p>Loading image...</p>
