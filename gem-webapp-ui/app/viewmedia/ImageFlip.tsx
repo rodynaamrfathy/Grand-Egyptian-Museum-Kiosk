@@ -23,7 +23,7 @@ export default function ImageFlip({ imageUrl }: { imageUrl: string }) {
 
   return (
     <div
-      className="w-[336px] h-[479px] mx-auto cursor-pointer perspective"
+      className="w-full h-full mx-auto cursor-pointer perspective"
       onClick={handleClick}
     >
       <div

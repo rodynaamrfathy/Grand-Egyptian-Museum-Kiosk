@@ -19,24 +19,24 @@ export default function ViewMedia() {
   }, []);
 
   return (
-    <div className="relative min-h-screen bg-black-100 text-white-900">
+    <div className="relative h-screen bg-black-100 text-white-900 overflow-hidden">
       <VideoBackground />
       
-      <main className="relative z-10 flex-1 p-5 flex flex-col items-center mt-10">
-        {/* Title - Medium 20px */}
-        <h2 className="text-[20px] font-medium mb-6 text-center font-satoshi tracking-[0.22em]">
+      <main className="relative z-10 h-full w-full p-4 flex flex-col items-center justify-between">
+        {/* Title - Removed mt-10 and adjusted padding */}
+        <h2 className="text-[4vw] sm:text-[20px] font-medium text-center font-satoshi tracking-[0.22em] pt-2">
           CAPTURE YOUR MEMORY
         </h2>
 
-        <div className="w-full max-w-md flex justify-center mb-8 relative">
+        <div className="flex-1 flex items-center justify-center w-full max-w-[90vw] my-2 relative">
           {imageUrl ? (
-            <div className="relative">
+            <div className="relative w-full h-full max-w-[336px] max-h-[479px] flex items-center justify-center">
               {/* Shadow box */}
-              <div className="absolute w-[336px] h-[479px] inset-0 bg-black/50 transform translate-y-[4px] blur-[24.5px] scale-[1.2] -z-10 rounded-lg" />
+              <div className="absolute w-[90%] h-[90%] inset-0 bg-black/50 transform translate-y-[4px] blur-[24.5px] scale-[1.2] -z-10 rounded-lg" />
               
               {/* Image */}
-              <div className="">
-              <ImageFlip imageUrl={imageUrl} />
+              <div className="w-full h-full">
+                <ImageFlip imageUrl={imageUrl} />
               </div>
             </div>
           ) : (
@@ -45,32 +45,29 @@ export default function ViewMedia() {
         </div>
 
         {/* Action Buttons */}
-        <div className="w-full max-w-md px-7">
-          {/* Bold 22px */}
-          <h2 className="text-[22px] font-bold mb-1 text-left font-satoshi tracking-[0.15em]">
+        <div className="w-full max-w-md px-4 pb-4">
+          <h2 className="text-[5vw] sm:text-[22px] font-bold mb-1 text-left font-satoshi tracking-[0.15em]">
             CLICK!
           </h2>
-          {/* Medium 22px */}
-          <h2 className="text-[22px] font-medium mb-6 text-left font-satoshi tracking-[0.15em]">
+          <h2 className="text-[5vw] sm:text-[22px] font-medium mb-4 text-left font-satoshi tracking-[0.15em]">
             TO VIEW YOUR IMAGE <br/>
             ON THE BACK!
           </h2>
           
-          {/* Buttons - Regular 16px */}
-          <div className="flex justify-between mt-4">
+          <div className="flex justify-between">
             {imageUrl && (
               <DownloadButton 
                 imageUrl={imageUrl} 
-                className="mr-2 font-satoshi text-[16px] font-normal" 
+                className="mr-2 font-satoshi text-[4vw] sm:text-[16px] font-normal" 
               />
             )}
             {imageUrl && (
               <ShareButton 
                 imageUrl={imageUrl} 
-                className="mx-2 font-satoshi text-[16px] font-normal" 
+                className="mx-2 font-satoshi text-[4vw] sm:text-[16px] font-normal" 
               />
             )}
-            <EditButton className="ml-2 font-satoshi text-[16px] font-normal" />
+            <EditButton className="ml-2 font-satoshi text-[4vw] sm:text-[16px] font-normal" />
           </div>
         </div>
       </main>
