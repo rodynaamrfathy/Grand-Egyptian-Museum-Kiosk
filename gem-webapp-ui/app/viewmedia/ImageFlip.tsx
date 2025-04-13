@@ -4,47 +4,51 @@ import Image from "next/image";
 
 export default function ImageFlip({ imageUrl }: { imageUrl: string }) {
   const [flipped, setFlipped] = useState(false);
-  const [manualFlip, setManualFlip] = useState(false); // To override auto if user clicks
+  const [manualFlip, setManualFlip] = useState(false);
 
   useEffect(() => {
-    if (manualFlip) return; // Stop auto flipping after manual interaction
+    if (manualFlip) return;
 
     const interval = setInterval(() => {
       setFlipped((prev) => !prev);
-    }, 3000); // Flip every 3 seconds
+    }, 3000);
 
     return () => clearInterval(interval);
   }, [manualFlip]);
 
   const handleClick = () => {
     setFlipped((prev) => !prev);
-    setManualFlip(true); // Stop auto flipping
+    setManualFlip(true);
   };
 
   return (
-    <div className="w-full max-w-sm perspective" onClick={handleClick}>
+    <div
+      className="w-[336px] h-[479px] mx-auto cursor-pointer perspective"
+      onClick={handleClick}
+    >
       <div
-        className={`relative w-full h-64 transition-transform duration-[1500ms] transform-style preserve-3d ${
+        className={`relative w-full h-full transition-transform duration-[1500ms] transform-style preserve-3d ${
           flipped ? "rotate-y-180" : ""
         }`}
       >
-        {/* Front Side */}
-        <div className="absolute w-full h-full backface-hidden">
+        {/* Front Side: Post Card */}
+        <div className="absolute inset-0 backface-hidden">
           <Image
             src="/images/card.png"
             alt="Post Card"
-            layout="fill"
-            className="object-cover rounded-lg shadow-xl"
+            fill
+            className="object-cover shadow-xl"
+            priority
           />
         </div>
 
-        {/* Back Side (Uploaded Image) */}
-        <div className="absolute w-full h-full backface-hidden rotate-y-180">
+        {/* Back Side: Uploaded Image */}
+        <div className="absolute inset-0 backface-hidden rotate-y-180">
           <Image
             src={imageUrl}
             alt="Uploaded"
-            layout="fill"
-            className="object-cover rounded-lg shadow-xl"
+            fill
+            className="object-cover shadow-xl"
           />
         </div>
       </div>
