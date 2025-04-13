@@ -1,9 +1,11 @@
 "use client";
+
 import { useState, useEffect } from "react";
-import Image from "next/image";
 import ShareButton from "../components/ShareButton";
-import DownloadButton from "../components/DownloadButton"; // Import the DownloadButton
+import DownloadButton from "../components/DownloadButton";
+import EditButton from "../components/EditButton";
 import ImageFlip from "./ImageFlip";
+import VideoBackground from "../components/VideoBackground";
 
 export default function ViewMedia() {
   const [imageUrl, setImageUrl] = useState<string | null>(null);
@@ -11,47 +13,67 @@ export default function ViewMedia() {
   useEffect(() => {
     const urlParams = new URLSearchParams(window.location.search);
     const imageUrlFromUrl = urlParams.get("image");
-
     if (imageUrlFromUrl) {
       setImageUrl(imageUrlFromUrl);
     }
   }, []);
 
   return (
-    <div className="flex flex-col min-h-screen bg-gray-100 text-gray-900">
-      {/* Header */}
-      <header className="bg-gray-500 text-white text-center p-5">
-        <div className="flex items-center justify-center gap-4">
-          <Image src="/images/img-3185-1.png" alt="Logo" width={100} height={100} />
-          <h1 className="text-xl font-bold sm:text-2xl">المتحف المصري الكبير</h1>
+    <div className="relative min-h-screen bg-black-100 text-white-900">
+      <VideoBackground />
+      
+      <main className="relative z-10 flex-1 p-5 flex flex-col items-center mt-10">
+        {/* Title - Medium 20px */}
+        <h2 className="text-[20px] font-medium mb-6 text-center font-satoshi tracking-[0.22em]">
+          CAPTURE YOUR MEMORY
+        </h2>
+
+        <div className="w-full max-w-md flex justify-center mb-8 relative">
+          {imageUrl ? (
+            <div className="relative">
+              {/* Shadow box */}
+              <div className="absolute w-[336px] h-[479px] inset-0 bg-black/50 transform translate-y-[4px] blur-[24.5px] scale-[1.2] -z-10 rounded-lg" />
+              
+              {/* Image */}
+              <div className="">
+              <ImageFlip imageUrl={imageUrl} />
+              </div>
+            </div>
+          ) : (
+            <p className="text-white font-satoshi">Loading image...</p>
+          )}
         </div>
-      </header>
 
-      {/* Main Content */}
-      <main className="flex-1 p-5 flex flex-col items-center">
-        {/* Picture Section */}
-        <section className="w-full max-w-md">
-          <h2 className="text-lg font-bold mb-2 text-center">Your Picture!</h2>
-          <div className="flex justify-center">
-            {imageUrl ? (
-              <ImageFlip 
-              imageUrl={imageUrl} 
+        {/* Action Buttons */}
+        <div className="w-full max-w-md px-7">
+          {/* Bold 22px */}
+          <h2 className="text-[22px] font-bold mb-1 text-left font-satoshi tracking-[0.15em]">
+            CLICK!
+          </h2>
+          {/* Medium 22px */}
+          <h2 className="text-[22px] font-medium mb-6 text-left font-satoshi tracking-[0.15em]">
+            TO VIEW YOUR IMAGE <br/>
+            ON THE BACK!
+          </h2>
+          
+          {/* Buttons - Regular 16px */}
+          <div className="flex justify-between mt-4">
+            {imageUrl && (
+              <DownloadButton 
+                imageUrl={imageUrl} 
+                className="mr-2 font-satoshi text-[16px] font-normal" 
               />
-            ) : (
-              <p>Loading image...</p>
             )}
+            {imageUrl && (
+              <ShareButton 
+                imageUrl={imageUrl} 
+                className="mx-2 font-satoshi text-[16px] font-normal" 
+              />
+            )}
+            <EditButton className="ml-2 font-satoshi text-[16px] font-normal" />
           </div>
-          <div className="flex justify-between mt-3 flex-col sm:flex-row">
-            {imageUrl && <DownloadButton imageUrl={imageUrl} />} {/* Use DownloadButton */}
-            {imageUrl && <ShareButton imageUrl={imageUrl} />} {/* Use ShareButton */}
-          </div>
-        </section>
+        </div>
       </main>
-
-      {/* Footer */}
-      <footer className="text-center p-5 bg-gray-800 text-white">
-        <p>&copy; 2024 المتحف المصري الكبير. All Rights Reserved.</p>
-      </footer>
     </div>
   );
 }

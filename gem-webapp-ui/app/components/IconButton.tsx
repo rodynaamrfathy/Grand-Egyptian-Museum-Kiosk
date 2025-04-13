@@ -1,16 +1,23 @@
+"use client";
 import React from "react";
 
-const IconButton = ({ icon: Icon, label, onClick }) => {
+interface IconButtonProps {
+  icon: React.ElementType;
+  label: string;
+  onClick: () => void;
+}
+
+const IconButton: React.FC<IconButtonProps> = ({ icon: Icon, label, onClick }) => {
   return (
-    <button
-      onClick={onClick}
-      className="flex flex-col items-center justify-center m-2"
-    >
-      <div className="bg-[#2a2a2a] rounded-xl w-16 h-16 flex items-center justify-center shadow-md">
-        <Icon className="text-white w-6 h-6" />
-      </div>
-      <span className="text-xs text-white mt-1 tracking-wider">{label}</span>
-    </button>
+    <div className="flex flex-col items-center gap-2">
+      <button
+        onClick={onClick}
+        className="p-4 bg-[rgba(255,255,255,0.18)] text-white hover:bg-[rgba(255,255,255,0.3)] transition duration-200 w-16 h-16 flex items-center justify-center shadow-[0_4px_4px_#353434] rounded-[28px]"
+      >
+        <Icon className="text-2xl" />
+      </button>
+      <span className="text-sm text-white text-center">{label}</span>
+    </div>
   );
 };
 

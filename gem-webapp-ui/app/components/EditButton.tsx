@@ -5,6 +5,7 @@ import IconButton from "./IconButton";
 
 interface EditButtonProps {
   onEdit?: () => void;
+  className?: string;
 }
 
 const EditButton: React.FC<EditButtonProps> = ({ onEdit }) => {

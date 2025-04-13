@@ -5,6 +5,7 @@ import IconButton from "./IconButton";
 
 interface DownloadButtonProps {
   imageUrl: string;
+  className?: string;
 }
 
 const DownloadButton: React.FC<DownloadButtonProps> = ({ imageUrl }) => {

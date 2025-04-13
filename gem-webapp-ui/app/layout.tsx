@@ -23,9 +23,26 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+<html lang="en">
+      <head>
+        {/* Preload Satoshi fonts */}
+        <link
+          rel="preload"
+          href="/fonts/satoshi-cdnfonts/Satoshi-Regular.otf"
+          as="font"
+          type="font/otf"
+          crossOrigin="anonymous"
+        />
+        <link
+          rel="preload"
+          href="/fonts/satoshi-cdnfonts/Satoshi-Bold.otf"
+          as="font"
+          type="font/otf"
+          crossOrigin="anonymous"
+        />
+      </head>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} font-satoshi antialiased`}
       >
         {children}
       </body>

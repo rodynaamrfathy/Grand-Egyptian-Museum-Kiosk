@@ -5,6 +5,7 @@ import IconButton from "./IconButton";
 
 interface ShareButtonProps {
   imageUrl: string;
+  className?: string;
 }
 
 const ShareButton: React.FC<ShareButtonProps> = ({ imageUrl }) => {
