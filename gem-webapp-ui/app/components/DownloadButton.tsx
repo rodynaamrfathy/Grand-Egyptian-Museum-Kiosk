@@ -1,5 +1,7 @@
 "use client";
 import React from "react";
+import { FiDownload } from "react-icons/fi";
+import IconButton from "./IconButton";
 
 interface DownloadButtonProps {
   imageUrl: string;
@@ -23,11 +25,9 @@ const DownloadButton: React.FC<DownloadButtonProps> = ({ imageUrl }) => {
 
   const handleDownload = async () => {
     try {
-      // Download the main image
       const imageFilename = imageUrl.split("/").pop() || "image.jpg";
       await downloadFile(imageUrl, imageFilename);
 
-      // Download card.png from public folder
       const cardUrl = "/image/card.png";
       await downloadFile(cardUrl, "card.png");
     } catch (error) {
@@ -37,9 +37,7 @@ const DownloadButton: React.FC<DownloadButtonProps> = ({ imageUrl }) => {
   };
 
   return (
-    <button onClick={handleDownload} className="bg-orange-500 text-white px-4 py-2 rounded-lg mb-3 sm:mb-0">
-      Download
-    </button>
+    <IconButton icon={FiDownload} label="DOWNLOAD" onClick={handleDownload} />
   );
 };
 
