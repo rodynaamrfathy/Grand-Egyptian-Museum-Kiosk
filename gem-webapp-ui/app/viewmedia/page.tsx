@@ -11,7 +11,7 @@ export default function ViewMedia() {
   const [editText, setEditText] = useState("Customize Your Memory");
   
   // Define your card URL
-  const cardUrl = "";
+  const cardUrl = "https://res.cloudinary.com/dynfn6e5m/image/upload/v1744666061/uploads/1744666061594.png";
 
   useEffect(() => {
     const urlParams = new URLSearchParams(window.location.search);
