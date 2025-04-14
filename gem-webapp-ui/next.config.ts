@@ -3,7 +3,7 @@ const serverIp = process.env.NEXT_PUBLIC_SERVER_IP;
 
 const nextConfig: NextConfig = {
   images: {
-    domains: ['localhost', `${serverIp}`, 'res.cloudinary.com', 'asset.cloudinary.com'], 
+    domains: ['localhost', `${serverIp}`, 'res.cloudinary.com'], 
   },
 };
 

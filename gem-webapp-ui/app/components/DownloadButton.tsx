@@ -4,11 +4,18 @@ import { FiDownload } from "react-icons/fi";
 import IconButton from "./IconButton";
 
 interface DownloadButtonProps {
+  cardUrl: string;
   imageUrl: string;
+  overlayText: string;
   className?: string;
 }
 
-const DownloadButton: React.FC<DownloadButtonProps> = ({ imageUrl }) => {
+const DownloadButton: React.FC<DownloadButtonProps> = ({
+  cardUrl,
+  imageUrl,
+  overlayText,
+}) => {
+  // Helper to download a URL directly
   const downloadFile = async (url: string, filename: string) => {
     const response = await fetch(url);
     const blob = await response.blob();
@@ -26,11 +33,52 @@ const DownloadButton: React.FC<DownloadButtonProps> = ({ imageUrl }) => {
 
   const handleDownload = async () => {
     try {
+      // Download the uploaded image
       const imageFilename = imageUrl.split("/").pop() || "image.jpg";
       await downloadFile(imageUrl, imageFilename);
 
-      const cardUrl = "/image/card.png";
-      await downloadFile(cardUrl, "card.png");
+      // Create the canvas for the card with text
+      const img = new Image();
+      img.crossOrigin = "anonymous";
+      img.src = cardUrl;
+
+      img.onload = () => {
+        const canvas = document.createElement("canvas");
+        canvas.width = img.width;
+        canvas.height = img.height;
+
+        const ctx = canvas.getContext("2d");
+        if (!ctx) return;
+
+        ctx.drawImage(img, 0, 0);
+
+        // Text style
+        const fontSize = Math.floor(canvas.width * 0.05);
+        ctx.font = `bold ${fontSize}px sans-serif`;
+        ctx.fillStyle = "white";
+        ctx.textAlign = "center";
+        ctx.textBaseline = "middle";
+
+        // Shadow
+        ctx.shadowColor = "rgba(0,0,0,0.7)";
+        ctx.shadowBlur = 8;
+
+        // Draw text in the center
+        ctx.fillText(overlayText, canvas.width / 2, canvas.height / 2);
+
+        canvas.toBlob((blob) => {
+          if (!blob) return;
+          const link = document.createElement("a");
+          link.href = URL.createObjectURL(blob);
+          link.download = "card_with_text.png";
+          link.click();
+          URL.revokeObjectURL(link.href);
+        }, "image/png");
+      };
+
+      img.onerror = () => {
+        alert("Failed to load the card image.");
+      };
     } catch (error) {
       console.error("Error downloading images:", error);
       alert("Failed to download one or more images.");

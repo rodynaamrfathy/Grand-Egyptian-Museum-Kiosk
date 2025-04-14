@@ -5,11 +5,10 @@ import Image from "next/image";
 interface ImageFlipProps {
   imageUrl: string;
   cardUrl: string;
-  editText: string;
+  overlayText: string;
 }
 
-
-export default function ImageFlip({ imageUrl, cardUrl, editText }: ImageFlipProps) {
+export default function ImageFlip({ imageUrl, cardUrl, overlayText }: ImageFlipProps) {
   const [flipped, setFlipped] = useState(false);
   const [manualFlip, setManualFlip] = useState(false);
   const [cardError, setCardError] = useState(false);
@@ -40,38 +39,35 @@ export default function ImageFlip({ imageUrl, cardUrl, editText }: ImageFlipProp
           flipped ? "rotate-y-180" : ""
         }`}
       >
-        {/* Front Side: Post Card */}
+        {/* Front Side: Card with text */}
         <div className="absolute inset-0 backface-hidden">
-        {cardError ? (
-          <div className="absolute inset-0 bg-gray-200 flex items-center justify-center">
-            <span>Card image failed to load</span>
-          </div>
-        ) : (
-          <>
-            <Image
-              src={cardUrl}
-              alt="Post Card"
-              fill
-              className="object-cover shadow-xl"
-              priority
-              onError={() => setCardError(true)}
-            />
-            <div className="absolute inset-0 flex items-center justify-center px-4 text-center">
-              <p className="text-white text-[4vw] sm:text-xl font-semibold drop-shadow-lg font-satoshi">
-                {editText}
+          <div className="w-full h-full relative">
+            {!cardError && (
+              <Image
+                src={cardUrl}
+                alt="Post Card"
+                fill
+                className="object-cover shadow-xl"
+                priority
+                onError={() => setCardError(true)}
+              />
+            )}
+            {cardError && (
+              <div className="absolute inset-0 bg-gray-200 flex items-center justify-center">
+                <span>Card image failed to load</span>
+              </div>
+            )}
+            <div className="absolute inset-0 flex items-center justify-center px-4">
+              <p className="text-white text-center text-[1.2rem] sm:text-[1.5rem] md:text-[2rem] font-bold drop-shadow-lg">
+                {overlayText}
               </p>
             </div>
-          </>
-        )}
-      </div>
+          </div>
+        </div>
 
         {/* Back Side: Uploaded Image */}
         <div className="absolute inset-0 backface-hidden rotate-y-180">
-          {imageError ? (
-            <div className="absolute inset-0 bg-gray-200 flex items-center justify-center">
-              <span>Image failed to load</span>
-            </div>
-          ) : (
+          {!imageError && (
             <Image
               src={imageUrl}
               alt="Uploaded"
@@ -79,6 +75,11 @@ export default function ImageFlip({ imageUrl, cardUrl, editText }: ImageFlipProp
               className="object-cover shadow-xl"
               onError={() => setImageError(true)}
             />
+          )}
+          {imageError && (
+            <div className="absolute inset-0 bg-gray-200 flex items-center justify-center">
+              <span>Image failed to load</span>
+            </div>
           )}
         </div>
       </div>
