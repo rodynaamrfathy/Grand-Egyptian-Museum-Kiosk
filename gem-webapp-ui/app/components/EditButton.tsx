@@ -32,7 +32,7 @@ const EditButton: React.FC<EditButtonProps> = ({
     <>
       <IconButton
         icon={FiEdit2}
-        label="EDIT TEXT"
+        label="WRITE"
         onClick={handleClick}
       />
       

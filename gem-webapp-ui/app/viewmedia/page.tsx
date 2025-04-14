@@ -18,9 +18,10 @@ export default function ViewMedia() {
     const imageUrlFromUrl = urlParams.get("image");
     if (imageUrlFromUrl) {
       setBaseImageUrl(imageUrlFromUrl);
-      setImageWithTextUrl(getCloudinaryImageWithText(imageUrlFromUrl, editText));
+      setImageWithTextUrl(getCloudinaryImageWithText(cardUrl, editText)); 
     }
-  }, []);
+  }, [editText]);
+
 
   const getCloudinaryImageWithText = (baseUrl: string, text: string): string => {
     const encodedText = encodeURIComponent(text);
@@ -82,9 +83,10 @@ export default function ViewMedia() {
             )}
             {imageWithTextUrl && (
               <ShareButton
-                imageUrl={imageWithTextUrl}
-                className="mx-2 font-satoshi text-[4vw] sm:text-[16px] font-normal"
-              />
+              imageUrl={baseImageUrl || ""}
+              cardUrl={imageWithTextUrl}
+              className="mx-2 font-satoshi text-[4vw] sm:text-[16px] font-normal"
+            />            
             )}
             <EditButton
               textToEdit={editText}
