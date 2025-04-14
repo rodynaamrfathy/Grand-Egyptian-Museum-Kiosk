@@ -1,5 +1,4 @@
 "use client";
-
 import { useState, useEffect } from "react";
 import ShareButton from "../components/ShareButton";
 import DownloadButton from "../components/DownloadButton";
@@ -9,6 +8,10 @@ import VideoBackground from "../components/VideoBackground";
 
 export default function ViewMedia() {
   const [imageUrl, setImageUrl] = useState<string | null>(null);
+  const [editText, setEditText] = useState("Customize Your Memory");
+  
+  // Define your card URL
+  const cardUrl = "";
 
   useEffect(() => {
     const urlParams = new URLSearchParams(window.location.search);
@@ -18,12 +21,16 @@ export default function ViewMedia() {
     }
   }, []);
 
+  const handleTextUpdate = (newText: string) => {
+    setEditText(newText);
+    console.log("Updated text:", newText);
+  };
+
   return (
     <div className="relative h-screen bg-black-100 text-white-900 overflow-hidden">
       <VideoBackground />
       
       <main className="relative z-10 h-full w-full p-4 flex flex-col items-center justify-between">
-        {/* Title - Removed mt-10 and adjusted padding */}
         <h2 className="text-[4vw] sm:text-[20px] font-medium text-center font-satoshi tracking-[0.22em] pt-2">
           CAPTURE YOUR MEMORY
         </h2>
@@ -36,7 +43,10 @@ export default function ViewMedia() {
               
               {/* Image */}
               <div className="w-full h-full">
-                <ImageFlip imageUrl={imageUrl} />
+                <ImageFlip 
+                  imageUrl={imageUrl} 
+                  cardUrl={cardUrl}  // Pass the card URL here
+                />
               </div>
             </div>
           ) : (
@@ -44,7 +54,7 @@ export default function ViewMedia() {
           )}
         </div>
 
-        {/* Action Buttons */}
+        {/* Rest of your component remains the same */}
         <div className="w-full max-w-md px-4 pb-4">
           <h2 className="text-[5vw] sm:text-[22px] font-bold mb-1 text-left font-satoshi tracking-[0.15em]">
             CLICK!
@@ -67,7 +77,11 @@ export default function ViewMedia() {
                 className="mx-2 font-satoshi text-[4vw] sm:text-[16px] font-normal" 
               />
             )}
-            <EditButton className="ml-2 font-satoshi text-[4vw] sm:text-[16px] font-normal" />
+            <EditButton 
+              textToEdit={editText}
+              onSave={handleTextUpdate}
+              className="ml-2 font-satoshi text-[4vw] sm:text-[16px] font-normal" 
+            />
           </div>
         </div>
       </main>
