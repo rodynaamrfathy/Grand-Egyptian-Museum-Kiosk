@@ -5,9 +5,11 @@ import Image from "next/image";
 interface ImageFlipProps {
   imageUrl: string;
   cardUrl: string;
+  editText: string;
 }
 
-export default function ImageFlip({ imageUrl, cardUrl }: ImageFlipProps) {
+
+export default function ImageFlip({ imageUrl, cardUrl, editText }: ImageFlipProps) {
   const [flipped, setFlipped] = useState(false);
   const [manualFlip, setManualFlip] = useState(false);
   const [cardError, setCardError] = useState(false);
@@ -40,11 +42,12 @@ export default function ImageFlip({ imageUrl, cardUrl }: ImageFlipProps) {
       >
         {/* Front Side: Post Card */}
         <div className="absolute inset-0 backface-hidden">
-          {cardError ? (
-            <div className="absolute inset-0 bg-gray-200 flex items-center justify-center">
-              <span>Card image failed to load</span>
-            </div>
-          ) : (
+        {cardError ? (
+          <div className="absolute inset-0 bg-gray-200 flex items-center justify-center">
+            <span>Card image failed to load</span>
+          </div>
+        ) : (
+          <>
             <Image
               src={cardUrl}
               alt="Post Card"
@@ -53,8 +56,14 @@ export default function ImageFlip({ imageUrl, cardUrl }: ImageFlipProps) {
               priority
               onError={() => setCardError(true)}
             />
-          )}
-        </div>
+            <div className="absolute inset-0 flex items-center justify-center px-4 text-center">
+              <p className="text-white text-[4vw] sm:text-xl font-semibold drop-shadow-lg font-satoshi">
+                {editText}
+              </p>
+            </div>
+          </>
+        )}
+      </div>
 
         {/* Back Side: Uploaded Image */}
         <div className="absolute inset-0 backface-hidden rotate-y-180">

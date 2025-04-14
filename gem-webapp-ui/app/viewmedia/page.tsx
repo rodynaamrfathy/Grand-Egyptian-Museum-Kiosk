@@ -43,9 +43,10 @@ export default function ViewMedia() {
               
               {/* Image */}
               <div className="w-full h-full">
-                <ImageFlip 
+              <ImageFlip 
                   imageUrl={imageUrl} 
-                  cardUrl={cardUrl}  // Pass the card URL here
+                  cardUrl={cardUrl}
+                  editText={editText}
                 />
               </div>
             </div>
