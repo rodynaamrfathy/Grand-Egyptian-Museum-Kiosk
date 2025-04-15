@@ -1,6 +1,5 @@
 "use client";
 import React, { useState } from "react";
-import { FiShare2 } from "react-icons/fi";
 import IconButton from "./IconButton";
 
 interface ShareButtonProps {
@@ -73,7 +72,13 @@ const ShareButton: React.FC<ShareButtonProps> = ({ imageUrl, cardUrl }) => {
     }
   };
 
-  return <IconButton icon={FiShare2} label="SHARE" onClick={handleShare} />;
+  return (
+    <IconButton
+      iconPath="/images/Share.svg"  // Path to the public folder icon
+      label="SHARE"
+      onClick={handleShare}
+    />
+  );
 };
 
 export default ShareButton;

@@ -1,6 +1,5 @@
 "use client";
 import React from "react";
-import { FiDownload } from "react-icons/fi";
 import IconButton from "./IconButton";
 
 interface DownloadButtonProps {
@@ -15,7 +14,6 @@ const DownloadButton: React.FC<DownloadButtonProps> = ({
   imageUrl,
   overlayText,
 }) => {
-  // Helper to download a URL directly
   const downloadFile = async (url: string, filename: string) => {
     const response = await fetch(url);
     const blob = await response.blob();
@@ -33,11 +31,9 @@ const DownloadButton: React.FC<DownloadButtonProps> = ({
 
   const handleDownload = async () => {
     try {
-      // Download the uploaded image
       const imageFilename = imageUrl.split("/").pop() || "image.jpg";
       await downloadFile(imageUrl, imageFilename);
 
-      // Create the canvas for the card with text
       const img = new Image();
       img.crossOrigin = "anonymous";
       img.src = cardUrl;
@@ -52,18 +48,15 @@ const DownloadButton: React.FC<DownloadButtonProps> = ({
 
         ctx.drawImage(img, 0, 0);
 
-        // Text style
         const fontSize = Math.floor(canvas.width * 0.05);
         ctx.font = `bold ${fontSize}px sans-serif`;
         ctx.fillStyle = "white";
         ctx.textAlign = "center";
         ctx.textBaseline = "middle";
 
-        // Shadow
         ctx.shadowColor = "rgba(0,0,0,0.7)";
         ctx.shadowBlur = 8;
 
-        // Draw text in the center
         ctx.fillText(overlayText, canvas.width / 2, canvas.height / 2);
 
         canvas.toBlob((blob) => {
@@ -86,7 +79,11 @@ const DownloadButton: React.FC<DownloadButtonProps> = ({
   };
 
   return (
-    <IconButton icon={FiDownload} label="DOWNLOAD" onClick={handleDownload} />
+    <IconButton
+      iconPath="/images/Download.svg"
+      label="DOWNLOAD"
+      onClick={handleDownload}
+    />
   );
 };
 

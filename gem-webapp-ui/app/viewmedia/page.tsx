@@ -75,19 +75,21 @@ export default function ViewMedia() {
 
           <div className="flex justify-between">
           {imageWithTextUrl && (
-              <DownloadButton
-                imageUrl={baseImageUrl || ""}
-                cardUrl={cardUrl}
-                overlayText={editText}
-              />
-            )}
-            {imageWithTextUrl && (
               <ShareButton
               imageUrl={baseImageUrl || ""}
               cardUrl={imageWithTextUrl}
               className="mx-2 font-satoshi text-[4vw] sm:text-[16px] font-normal"
             />            
             )}
+            
+          {imageWithTextUrl && (
+              <DownloadButton
+                imageUrl={baseImageUrl || ""}
+                cardUrl={cardUrl}
+                overlayText={editText}
+              />
+            )}
+            
             <EditButton
               textToEdit={editText}
               onSave={handleTextUpdate}

@@ -1,6 +1,5 @@
 "use client";
 import React, { useState } from "react";
-import { FiEdit2 } from "react-icons/fi";
 import IconButton from "./IconButton";
 
 interface EditButtonProps {
@@ -18,7 +17,7 @@ const EditButton: React.FC<EditButtonProps> = ({
 
   const handleClick = () => {
     setIsOpen(true);
-    setText(textToEdit); // Reset to original text when opening
+    setText(textToEdit);
   };
 
   const handleSave = () => {
@@ -31,32 +30,38 @@ const EditButton: React.FC<EditButtonProps> = ({
   return (
     <>
       <IconButton
-        icon={FiEdit2}
+        iconPath="/images/Write.svg" 
         label="WRITE"
         onClick={handleClick}
       />
       
       {isOpen && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-white p-6 rounded-lg max-w-md w-full">
-            <h3 className="text-black font-bold mb-4">Edit Your Text</h3>
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+          <div className="bg-[#AFAFAF]/20 border border-white/10 
+                          backdrop-blur-lg 
+                          shadow-[0_4px_4px_rgba(0,0,0,0.25)] 
+                          p-4 rounded-[32px] max-w-sm w-full text-white">
+            <h3 className="font-bold mb-3 text-lg text-white text-center">
+              Edit Your Text
+            </h3>
             <textarea
-              className="w-full p-2 border border-gray-300 rounded mb-4 text-black"
-              rows={4}
+              className="w-full p-2 rounded-[16px] bg-white/10 border border-white/20 text-white placeholder-white/50 focus:outline-none"
+              rows={3}
               value={text}
+              placeholder="Type something..."
               onChange={(e) => setText(e.target.value)}
             />
-            <div className="flex justify-end space-x-2">
+            <div className="flex justify-end space-x-2 mt-3">
               <button
                 onClick={() => setIsOpen(false)}
-                className="px-4 py-2 bg-gray-300 text-black rounded"
+                className="px-3 py-1.5 bg-white/20 border border-white/30 text-white rounded-[16px] hover:bg-white/30 transition"
               >
                 Cancel
               </button>
               <button
                 onClick={handleSave}
-                className="px-4 py-2 bg-blue-500 text-white rounded"
-                disabled={!text.trim()} // Disable if empty
+                className="px-3 py-1.5 bg-white text-black rounded-[16px] hover:bg-blue-500 hover:text-white transition disabled:opacity-40"
+                disabled={!text.trim()}
               >
                 Save
               </button>
