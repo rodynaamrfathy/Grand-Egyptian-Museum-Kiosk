@@ -22,7 +22,6 @@ export default function ViewMedia() {
     }
   }, [editText]);
 
-
   const getCloudinaryImageWithText = (baseUrl: string, text: string): string => {
     const encodedText = encodeURIComponent(text);
     const overlay = `l_text:arial_40:${encodedText},co_rgb:ffffff,g_center,y_30/fl_layer_apply`;
@@ -38,25 +37,25 @@ export default function ViewMedia() {
   };
 
   return (
-    <div className="relative h-screen bg-black-100 text-white-900 overflow-hidden">
+    <div className="relative h-screen bg-black-100 text-white-900 overflow-hidden px-4">
       <VideoBackground />
 
-      <main className="relative z-10 h-full w-full p-4 flex flex-col items-center justify-between">
-        <h2 className="text-[4vw] sm:text-[20px] font-medium text-center font-satoshi tracking-[0.22em] pt-2">
+      <main className="relative z-10 h-full w-full flex flex-col items-center justify-between">
+        <h2 className="text-[4vw] sm:text-[20px] md:text-[24px] font-medium text-center font-satoshi tracking-[0.22em] pt-2">
           CAPTURE YOUR MEMORY
         </h2>
 
-        <div className="flex-1 flex items-center justify-center w-full max-w-[90vw] my-2 relative">
+        <div className="flex-1 flex items-center justify-center w-full max-w-[80vw] my-2 relative">
           {imageWithTextUrl ? (
-            <div className="relative w-full h-full max-w-[336px] max-h-[479px] flex items-center justify-center">
+            <div className="relative w-full aspect-[0.5568] max-w-[70vw] flex items-center justify-center">
               <div className="absolute w-[90%] h-[90%] inset-0 bg-black/50 transform translate-y-[4px] blur-[24.5px] scale-[1.2] -z-10 rounded-lg" />
 
               <div className="w-full h-full">
-              <ImageFlip
-                imageUrl={baseImageUrl || ""}
-                cardUrl={cardUrl}
-                overlayText={editText}
-              />
+                <ImageFlip
+                  imageUrl={baseImageUrl || ""}
+                  cardUrl={cardUrl}
+                  overlayText={editText}
+                />
               </div>
             </div>
           ) : (
@@ -65,35 +64,36 @@ export default function ViewMedia() {
         </div>
 
         <div className="w-full max-w-md px-4 pb-4">
-          <h2 className="text-[5vw] sm:text-[22px] font-bold mb-1 text-left font-satoshi tracking-[0.15em]">
+          <h2 className="text-[4vw] sm:text-[20px] md:text-[22px] font-bold mb-1 text-left font-satoshi tracking-[0.15em] px-5">
             CLICK!
           </h2>
-          <h2 className="text-[5vw] sm:text-[22px] font-medium mb-4 text-left font-satoshi tracking-[0.15em]">
+          <h2 className="text-[4vw] sm:text-[20px] md:text-[22px] font-medium mb-4 text-left font-satoshi tracking-[0.15em] px-5">
             TO VIEW YOUR IMAGE <br />
             ON THE BACK!
           </h2>
 
-          <div className="flex justify-between">
-          {imageWithTextUrl && (
+          <div className="flex justify-between flex-wrap px-4">
+            {imageWithTextUrl && (
               <ShareButton
-              imageUrl={baseImageUrl || ""}
-              cardUrl={imageWithTextUrl}
-              className="mx-2 font-satoshi text-[4vw] sm:text-[16px] font-normal"
-            />            
+                imageUrl={baseImageUrl || ""}
+                cardUrl={imageWithTextUrl}
+                className="mx-2 font-satoshi text-[5vw] sm:text-[16px] md:text-[18px] font-normal"
+              />
             )}
             
-          {imageWithTextUrl && (
+            {imageWithTextUrl && (
               <DownloadButton
                 imageUrl={baseImageUrl || ""}
                 cardUrl={cardUrl}
                 overlayText={editText}
+                className="mx-2 font-satoshi text-[5vw] sm:text-[16px] md:text-[18px] font-normal"
               />
             )}
             
             <EditButton
               textToEdit={editText}
               onSave={handleTextUpdate}
-              className="ml-2 font-satoshi text-[4vw] sm:text-[16px] font-normal"
+              className="ml-2 font-satoshi text-[5vw] sm:text-[16px] md:text-[18px] font-normal"
             />
           </div>
         </div>
