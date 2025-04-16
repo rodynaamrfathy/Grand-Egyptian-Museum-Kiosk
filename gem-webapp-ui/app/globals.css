@@ -83,6 +83,14 @@
   font-display: swap;
 }
 
+.font-mariam {
+  font-family: 'Mariam', serif;
+}
+
+.font-averia {
+  font-family: 'Averia', sans-serif;
+}
+
 :root {
   --background: #ffffff;
   --foreground: #937777;

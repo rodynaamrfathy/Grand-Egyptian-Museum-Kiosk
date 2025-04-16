@@ -68,8 +68,8 @@ useEffect(() => {
                 <span>Card image failed to load</span>
               </div>
             )}
-            <div className="absolute top-[-15%] inset-0 flex items-center justify-center px-4">
-              <p className="font-mariam text-white text-center text-[1rem] sm:text-[1.5rem] md:text-[2rem] font-bold drop-shadow-lg">
+            <div className="absolute top-[-18%] inset-0 flex items-center justify-center px-4">
+              <p className="font-mariam text-white text-center text-[1.4rem] sm:text-[1.5rem] md:text-[2rem] font-bold drop-shadow-lg">
                 {overlayText}
               </p>
             </div>
