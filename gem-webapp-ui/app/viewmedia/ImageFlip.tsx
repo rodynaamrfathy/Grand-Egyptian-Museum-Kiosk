@@ -13,6 +13,17 @@ export default function ImageFlip({ imageUrl, cardUrl, overlayText }: ImageFlipP
   const [manualFlip, setManualFlip] = useState(false);
   const [cardError, setCardError] = useState(false);
   const [imageError, setImageError] = useState(false);
+  const [currentDate, setCurrentDate] = useState<string>("");
+
+// Format current date as "DD.MM.YYYY"
+useEffect(() => {
+  const date = new Date();
+  const day = String(date.getDate()).padStart(2, '0'); // Ensure 2 digits (e.g., "05")
+  const month = String(date.getMonth() + 1).padStart(2, '0'); // Months are 0-indexed
+  const year = date.getFullYear();
+  const formattedDate = `${day}.${month}.${year}`; // "DD.MM.YYYY" format
+  setCurrentDate(formattedDate);
+}, []);
 
   useEffect(() => {
     if (manualFlip) return;
@@ -47,7 +58,7 @@ export default function ImageFlip({ imageUrl, cardUrl, overlayText }: ImageFlipP
                 src={cardUrl}
                 alt="Post Card"
                 fill
-                className="object-cover shadow-xl"
+                className="object-contain shadow-xl max-h-[90%] max-w-[90%] m-auto"
                 priority
                 onError={() => setCardError(true)}
               />
@@ -57,10 +68,14 @@ export default function ImageFlip({ imageUrl, cardUrl, overlayText }: ImageFlipP
                 <span>Card image failed to load</span>
               </div>
             )}
-            <div className="absolute inset-0 flex items-center justify-center px-4">
-              <p className="text-white text-center text-[1.2rem] sm:text-[1.5rem] md:text-[2rem] font-bold drop-shadow-lg">
+            <div className="absolute top-[-15%] inset-0 flex items-center justify-center px-4">
+              <p className="font-mariam text-white text-center text-[1rem] sm:text-[1.5rem] md:text-[2rem] font-bold drop-shadow-lg">
                 {overlayText}
               </p>
+            </div>
+            {/* Date Overlay */}
+            <div className="font-averia absolute bottom-[45%] right-[20%] text-[#393939] text-[0.7rem] sm:text-[1rem] md:text-[1.5rem] font-bold drop-shadow-lg">
+              {currentDate}
             </div>
           </div>
         </div>
@@ -72,7 +87,7 @@ export default function ImageFlip({ imageUrl, cardUrl, overlayText }: ImageFlipP
               src={imageUrl}
               alt="Uploaded"
               fill
-              className="object-cover shadow-xl"
+              className="object-contain shadow-xl max-h-[90%] max-w-[90%] m-auto"
               onError={() => setImageError(true)}
             />
           )}

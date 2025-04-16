@@ -67,6 +67,22 @@
   font-display: swap;
 }
 
+@font-face {
+  font-family: 'Mariam';
+  src: url('/fonts/Mariam-Regular.otf') format('opentype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Averia Libre';
+  src: url('/fonts/Averia-Libre/AveriaLibre-Regular.otf') format('opentype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
 :root {
   --background: #ffffff;
   --foreground: #937777;
@@ -82,7 +98,7 @@
 body {
   color: var(--foreground);
   background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: 'Satoshi', 'Mariam', 'Averia', Arial, Helvetica, sans-serif;
 }
 
 .perspective {
