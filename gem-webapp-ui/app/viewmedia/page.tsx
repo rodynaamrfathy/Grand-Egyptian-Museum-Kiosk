@@ -80,6 +80,7 @@ export default function ViewMedia() {
               <ShareButton
                 imageUrl={baseImageUrl || ""}
                 cardUrl={imageWithTextUrl}
+                overlayText={editText}
                 className="mx-2 font-satoshi text-[5vw] sm:text-[16px] md:text-[18px] font-normal"
               />
             )}
