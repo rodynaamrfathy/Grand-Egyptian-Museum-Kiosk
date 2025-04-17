@@ -67,7 +67,6 @@ export default function ViewMedia() {
 
         <div className="w-full max-w-md px-4 pb-4">
           <h2 className="text-[5vw] sm:text-[20px] md:text-[22px] font-bold mb-1 text-left font-satoshi tracking-[0.15em] px-5">
-          <br />
             CLICK!<br />
           </h2>
           <h2 className="text-[4vw] sm:text-[20px] md:text-[22px] font-medium mb-4 text-left font-satoshi tracking-[0.15em] px-5">
@@ -79,7 +78,7 @@ export default function ViewMedia() {
             {imageWithTextUrl && (
               <ShareButton
                 imageUrl={baseImageUrl || ""}
-                cardUrl={imageWithTextUrl}
+                cardUrl={cardUrl}
                 overlayText={editText}
                 className="mx-2 font-satoshi text-[5vw] sm:text-[16px] md:text-[18px] font-normal"
               />
