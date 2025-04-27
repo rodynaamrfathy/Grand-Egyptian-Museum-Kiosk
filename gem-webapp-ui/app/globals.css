@@ -83,6 +83,15 @@
   font-display: swap;
 }
 
+@font-face {
+  font-family: "Greta Arabic AR LT";
+  src: url("/fonts/GretaArabicARLT.woff2") format("woff2"),
+       url("/fonts/GretaArabicARLT.woff") format("woff");
+  font-weight: normal;
+  font-style: normal;
+}
+
+
 .font-mariam {
   font-family: 'Mariam', serif;
 }
@@ -106,7 +115,7 @@
 body {
   color: var(--foreground);
   background: var(--background);
-  font-family: 'Satoshi', 'Mariam', 'Averia', Arial, Helvetica, sans-serif;
+  font-family: 'Greta Arabic AR LT', 'Satoshi', 'Mariam', 'Averia', Arial, Helvetica, sans-serif;
 }
 
 .perspective {

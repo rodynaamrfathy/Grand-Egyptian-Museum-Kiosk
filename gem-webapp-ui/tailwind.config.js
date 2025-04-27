@@ -6,6 +6,7 @@ module.exports = {
         satoshi: ['Satoshi', 'sans-serif'],
         mariam: ['Mariam', 'sans-serif'],
         averia: ['Averia Libre', 'sans-serif'],
+        greta: ["'Greta Arabic AR LT'", "sans-serif"],
       },
       fontWeight: {
         // Add these if you want to use Tailwind's font-weight classes
