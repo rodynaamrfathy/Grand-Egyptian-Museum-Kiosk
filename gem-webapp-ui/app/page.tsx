@@ -18,7 +18,7 @@ export default function Home() {
     }
   }, []);
 
-  const handlePhotoBoothClick = (e: any) => {
+  const handlePhotoBoothClick = (e: React.MouseEvent) => {
     if (!imageUrl) {
       e.preventDefault();
       setShowAlert(true);
@@ -103,13 +103,5 @@ export default function Home() {
       <Footer />
 
     </div>
-  );
-}
-
-function ChangeLanguageButton() {
-  return (
-    <button className="text-2xl font-bold bg-orange-500 text-white rounded-[8px] w-10 h-10 flex items-center justify-center hover:bg-orange-600 transition">
-      ع
-    </button>
   );
 }
