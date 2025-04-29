@@ -29,7 +29,7 @@ const SlidingBanner: React.FC<SlidingBannerProps> = ({ slides }) => {
   };
 
   return (
-    <section className="relative w-full aspect-[396/114] overflow-hidden">
+    <section className="relative w-full aspect-[396/114] overflow-hidden" dir="ltr">
       {/* Arrows */}
       <button onClick={scrollLeft} className="absolute left-2 top-1/2 -translate-y-1/2 z-10 text-white text-2xl">❮</button>
       <button onClick={scrollRight} className="absolute right-2 top-1/2 -translate-y-1/2 z-10 text-white text-2xl">❯</button>
@@ -58,6 +58,7 @@ const SlidingBanner: React.FC<SlidingBannerProps> = ({ slides }) => {
         ))}
       </div>
     </section>
+
   );
 };
 
