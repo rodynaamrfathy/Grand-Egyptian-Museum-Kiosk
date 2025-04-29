@@ -3,11 +3,14 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
 import SlidingBanner from "./components/SlidingBanner";
+import "../lib/i18n"; 
 
 export default function Home() {
+  const { t } = useTranslation();
   const [imageUrl, setImageUrl] = useState("");
   const [showAlert, setShowAlert] = useState(false);
   const [animateButtons, setAnimateButtons] = useState(true);
@@ -41,14 +44,13 @@ export default function Home() {
           <div className="bg-gray-800 rounded-2xl w-[60%] p-6 flex flex-col items-center relative">
             <button onClick={() => setShowAlert(false)} className="absolute top-2 right-2 text-white text-2xl font-bold">&times;</button>
             <Image src="/images/photo-booth-banner.png" alt="Photo Booth" width={200} height={150} />
-            <p className="mt-4 text-xl font-bold text-center">Looks like you want to try the Photo Booth!</p>
+            <p className="mt-4 text-xl font-bold text-center">{t("alertPhotoBooth")}</p>
           </div>
         </div>
       )}
 
       <Header />
 
-      {/* Main Content */}
       <main className="flex-1 bg-[url('/images/dark_mode_background.svg')] dark:bg-[url('/images/dark_mode_background.svg')] bg-cover bg-center">
         <div className="flex flex-col space-y-5 md:space-y-8">
           <SlidingBanner
@@ -58,20 +60,16 @@ export default function Home() {
             ]}
           />
 
-          {/* Highlight Text Section */}
           <section className="text-center px-4">
-            <h2 className="text-[#333333] text-3xl md:text-4xl font-bold leading-snug">
-              THE HOUSE OF <br />
-              OVER <span className="text-[#E87518]">100,000</span> ARTIFACTS
+            <h2 className="text-[#FFFFFF] text-3xl md:text-4xl font-bold leading-snug">
+              {t("hero.line1")}<br />
+              {t("hero.line2")} <span className="text-[#E87518]">100,000</span> {t("hero.line3")}
             </h2>
           </section>
 
-          {/* Ramesses Rewind Section */}
+          {/* Ramses Section */}
           <section className="relative w-full h-[32vw] max-h-[130px] flex items-center justify-center text-white">
-            <div
-              className="absolute inset-0 bg-cover bg-center"
-              style={{ backgroundImage: 'url(/images/King_Ramses.svg)' }}
-            ></div>
+            <div className="absolute inset-0 bg-cover bg-center" style={{ backgroundImage: 'url(/images/King_Ramses.svg)' }}></div>
             <div className="absolute inset-0">
               <Image src="/images/overlay.png" alt="Overlay" layout="fill" objectFit="cover" />
             </div>
@@ -86,7 +84,7 @@ export default function Home() {
                   className="w-full h-auto group-hover:scale-105 transition-transform duration-300"
                 />
                 <span className="absolute inset-0 flex items-center justify-center text-white font-bold text-lg md:text-xl font-greta group-hover:scale-105 transition-transform duration-300">
-                  MEET RAMSES
+                  {t("buttons.meetRamses")}
                 </span>
               </div>
             </Link>
@@ -94,10 +92,7 @@ export default function Home() {
 
           {/* Photo Booth Section */}
           <section className="relative w-full h-[32vw] max-h-[130px] flex items-center justify-center text-white">
-            <div
-              className="absolute inset-0 bg-cover bg-center"
-              style={{ backgroundImage: 'url(/images/photo-booth-banner.svg)' }}
-            ></div>
+            <div className="absolute inset-0 bg-cover bg-center" style={{ backgroundImage: 'url(/images/photo-booth-banner.svg)' }}></div>
             <div className="absolute inset-0">
               <Image src="/images/overlay.png" alt="Overlay" layout="fill" objectFit="cover" />
             </div>
@@ -116,7 +111,7 @@ export default function Home() {
                   className="w-full h-auto group-hover:scale-105 transition-transform duration-300"
                 />
                 <span className="absolute inset-0 flex items-center justify-center text-white font-bold text-lg md:text-xl font-greta group-hover:scale-105 transition-transform duration-300">
-                  PHOTO BOOTH
+                  {t("buttons.photoBooth")}
                 </span>
               </div>
             </Link>

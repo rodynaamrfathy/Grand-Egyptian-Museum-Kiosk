@@ -1,16 +1,21 @@
 "use client";
+
 import { useState, useEffect } from "react";
+import { useTranslation } from "react-i18next";
 import ShareButton from "../components/ShareButton";
 import DownloadButton from "../components/DownloadButton";
 import EditButton from "../components/EditButton";
 import ImageFlip from "./ImageFlip";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
+import "../../lib/i18n"; 
 
 export default function ViewMedia() {
+  const { t } = useTranslation();
+
   const [baseImageUrl, setBaseImageUrl] = useState<string | null>(null);
   const [imageWithTextUrl, setImageWithTextUrl] = useState<string | null>(null);
-  const [editText, setEditText] = useState("Customize Your Memory");
+  const [editText, setEditText] = useState(t("edit.defaultText"));
 
   const cardUrl = "https://res.cloudinary.com/dynfn6e5m/image/upload/v1744844090/card1_rfpr2p.png";
 
@@ -41,18 +46,16 @@ export default function ViewMedia() {
     <div className="flex flex-col min-h-screen">
       <Header />
 
-      {/* Main content area with flex-grow */}
-      <main className="flex flex-col flex-1 items-center justify-start bg-[url('/images/dark_mode_background.svg')] dark:bg-[url('/images/light_mode_background.svg')] bg-cover bg-center">
+      <main className="flex flex-col flex-1 items-center justify-start bg-[url('/images/dark_mode_background.svg')] bg-cover bg-center">
         {/* Marquee Section */}
         <div className="relative w-full overflow-hidden pt-4 pb-0">
           <div className="flex animate-marquee-slow whitespace-nowrap">
-            {/* Duplicate content for seamless loop */}
             {[...Array(2)].map((_, idx) => (
               <span
                 key={idx}
                 className="text-white text-[4vw] sm:text-[26px] md:text-[30px] font-medium font-satoshi tracking-[0.22em] pr-10"
               >
-                {Array.from({ length: 20 }, () => "KEEP MEMORIES ALIVE - ").join("")}
+                {Array.from({ length: 20 }, () => `${t("marquee.keepMemories")} - `).join("")}
               </span>
             ))}
           </div>
@@ -67,49 +70,47 @@ export default function ViewMedia() {
                     imageUrl={baseImageUrl || ""}
                     cardUrl={cardUrl}
                     overlayText={editText}
-                    disableShadow
                   />
                 </div>
               </div>
             ) : (
-              <p className="text-white font-satoshi">Loading image...</p>
+              <p className="text-white font-satoshi">{t("loading")}</p>
             )}
 
             <h2 className="text-[#E87518] text-[3vw] sm:text-[10px] md:text-[12px] font-bold mt-[-3rem] mb-4 text-center font-satoshi tracking-[0.15em]">
-              CLICK ON THE PHOTO TO FLIP
+              {t("flipInstruction")}
             </h2>
           </div>
         </div>
 
-        {/* Spacer to push buttons to bottom */}
         <div className="flex-grow" />
-        
-        {/* Button Section pinned above the Footer */}
-        <div className="w-full max-w-md px-4 pb-6">
-          <div className="flex justify-between flex-wrap px-1 gap-x-0.5 gap-y-1">
-            {imageWithTextUrl && (
-              <ShareButton
-                imageUrl={baseImageUrl || ""}
-                cardUrl={cardUrl}
-                overlayText={editText}
-                className="mx-2 font-satoshi text-[5vw] sm:text-[16px] md:text-[18px] font-normal"
-              />
-            )}
-            {imageWithTextUrl && (
-              <DownloadButton
-                imageUrl={baseImageUrl || ""}
-                cardUrl={cardUrl}
-                overlayText={editText}
-                className="mx-2 font-satoshi text-[5vw] sm:text-[16px] md:text-[18px] font-normal"
-              />
-            )}
-            <EditButton
-              textToEdit={editText}
-              onSave={handleTextUpdate}
-              className="ml-2 font-satoshi text-[5vw] sm:text-[16px] md:text-[18px] font-normal"
+
+        <div className="w-full max-w-md px-12 pb-0 mt-5px">
+        <div className="flex justify-between flex-wrap px-1 gap-x-[2px] gap-y-[4px]">
+          {imageWithTextUrl && (
+            <ShareButton
+              imageUrl={baseImageUrl || ""}
+              cardUrl={cardUrl}
+              overlayText={editText}
+              className="mx-1 font-satoshi text-[5vw] sm:text-[16px] md:text-[18px] font-normal"
             />
-          </div>
+          )}
+          {imageWithTextUrl && (
+            <DownloadButton
+              imageUrl={baseImageUrl || ""}
+              cardUrl={cardUrl}
+              overlayText={editText}
+              className="mx-1 font-satoshi text-[5vw] sm:text-[16px] md:text-[18px] font-normal"
+            />
+          )}
+          <EditButton
+            textToEdit={editText}
+            onSave={handleTextUpdate}
+            className="mx-1 font-satoshi text-[5vw] sm:text-[16px] md:text-[18px] font-normal"
+          />
         </div>
+      </div>
+
       </main>
 
       <Footer />

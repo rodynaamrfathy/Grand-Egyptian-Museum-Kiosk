@@ -1,0 +1,21 @@
+{
+    "hero": {
+      "line1": "THE HOUSE OF",
+      "line2": "OVER",
+      "line3": "ARTIFACTS"
+    },
+    "buttons": {
+      "meetRamses": "MEET RAMSES",
+      "photoBooth": "PHOTO BOOTH"
+    },
+    "alertPhotoBooth": "Looks like you want to try the Photo Booth!",
+    "flipInstruction": "TAP TO FLIP",
+    "edit": {
+      "defaultText": "Customize Your Memory"
+    },
+    "loading": "Loading image...",
+    "marquee": {
+      "keepMemories": "KEEP MEMORIES ALIVE"
+    }
+  }
+  

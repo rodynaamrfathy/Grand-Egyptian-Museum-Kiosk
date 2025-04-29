@@ -1,0 +1,21 @@
+{
+    "hero": {
+      "line1": "يحتوي على ",
+      "line2": "أكثر من",
+      "line3": "قطعة أثرية فريدة"
+    },
+    "buttons": {
+      "meetRamses": "تكلم مع رمسيس",
+      "photoBooth": "منصة التصوير"
+    },
+    "alertPhotoBooth": "يبدو أنك تريد تجربة غرفة الصور!",
+    "flipInstruction": "اضغط على الصورة لتقلبها",
+    "edit": {
+      "defaultText": "خصص ذاكرتك"
+    },
+    "loading": "جاري تحميل الصورة...",
+    "marquee": {
+      "keepMemories": "احفظ الذكريات حية"
+    }
+  }
+  
