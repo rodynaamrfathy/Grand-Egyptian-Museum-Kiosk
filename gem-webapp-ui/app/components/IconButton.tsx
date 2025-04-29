@@ -2,7 +2,7 @@
 
 // dark mode
 
-/*import React from "react";
+import React from "react";
 
 interface IconButtonProps {
   iconPath: string;
@@ -23,12 +23,12 @@ const IconButton: React.FC<IconButtonProps> = ({ iconPath, label, onClick }) => 
   );
 };
 
-export default IconButton;*/
+export default IconButton;
 
 
 // light mode dec shadow
 
-import React from "react";
+/*import React from "react";
 
 interface IconButtonProps {
   iconPath: string;
@@ -55,4 +55,4 @@ const IconButton: React.FC<IconButtonProps> = ({ iconPath, label, onClick }) => 
   );
 };
 
-export default IconButton;
+export default IconButton;*/

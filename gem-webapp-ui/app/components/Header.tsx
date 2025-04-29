@@ -4,8 +4,8 @@ import Image from "next/image";
 
 export default function Header() {
   return (
-    //dark:bg-[#141414]
-    <header className="flex justify-between items-center p-4 shadow-md bg-white  top-0 z-40">
+    
+    <header className="flex justify-between items-center p-4 shadow-md bg-[#141414]  top-0 z-40">
       <Image src="/images/LOGO.svg" alt="GEM Logo" width={50} height={50} />
       <ChangeLanguageButton />
     </header>

@@ -58,7 +58,7 @@ useEffect(() => {
                 src={cardUrl}
                 alt="Post Card"
                 fill
-                className="object-contain shadow-xl max-h-[90%] max-w-[90%] m-auto"
+                className="object-contain shadow-xl max-h-[90%] max-w-[90%] m-auto mb-2 mt-2"
                 priority
                 onError={() => setCardError(true)}
               />
@@ -87,7 +87,7 @@ useEffect(() => {
               src={imageUrl}
               alt="Uploaded"
               fill
-              className="object-contain shadow-xl max-h-[90%] max-w-[90%] m-auto"
+              className="object-contain shadow-xl max-h-[90%] max-w-[90%] ml-auto mr-auto mb-2 mt-2"
               onError={() => setImageError(true)}
             />
           )}

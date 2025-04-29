@@ -19,7 +19,7 @@ export default function ViewMedia() {
     const imageUrlFromUrl = urlParams.get("image");
     if (imageUrlFromUrl) {
       setBaseImageUrl(imageUrlFromUrl);
-      setImageWithTextUrl(getCloudinaryImageWithText(cardUrl, editText)); 
+      setImageWithTextUrl(getCloudinaryImageWithText(cardUrl, editText));
     }
   }, [editText]);
 
@@ -38,38 +38,55 @@ export default function ViewMedia() {
   };
 
   return (
-    <div className="flex flex-col min-h-screen relative">
+    <div className="flex flex-col min-h-screen">
       <Header />
 
-      <main className="relative z-10 h-full w-full flex flex-col items-center justify-between bg-[url('/images/light_mode_background.svg')] dark:bg-[url('/images/light_mode_background.svg')] bg-cover bg-center">
-        <h2 className="text-black text-[4vw] sm:text-[20px] md:text-[24px] font-medium text-center font-satoshi tracking-[0.22em] pt-2">
-          SAVE YOUR MEMORY
-        </h2>
-
-        <div className="flex-1 flex items-center justify-center w-full max-w-[80vw] my-2 relative">
-          {imageWithTextUrl ? (
-            <div className="relative w-full max-w-[300px] aspect-[0.5968] flex items-center justify-center mx-auto">
-              <div className="" />
-
-              <div className="w-full h-full">
-                <ImageFlip
-                  imageUrl={baseImageUrl || ""}
-                  cardUrl={cardUrl}
-                  overlayText={editText}
-                />
-              </div>
-            </div>
-          ) : (
-            <p className="text-white font-satoshi">Loading image...</p>
-          )}
+      {/* Main content area with flex-grow */}
+      <main className="flex flex-col flex-1 items-center justify-start bg-[url('/images/dark_mode_background.svg')] dark:bg-[url('/images/light_mode_background.svg')] bg-cover bg-center">
+        {/* Marquee Section */}
+        <div className="relative w-full overflow-hidden pt-4 pb-0">
+          <div className="flex animate-marquee-slow whitespace-nowrap">
+            {/* Duplicate content for seamless loop */}
+            {[...Array(2)].map((_, idx) => (
+              <span
+                key={idx}
+                className="text-white text-[4vw] sm:text-[26px] md:text-[30px] font-medium font-satoshi tracking-[0.22em] pr-10"
+              >
+                {Array.from({ length: 20 }, () => "KEEP MEMORIES ALIVE - ").join("")}
+              </span>
+            ))}
+          </div>
         </div>
 
-        <div className="w-full max-w-md px-4 pb-4">
-          <h2 className="text-black text-[5vw] text-[15px] sm:text-[15px] md:text-[18px] font-bold mb-1 text-left font-satoshi tracking-[0.15em] px-5">
-            CLICK ON THE PHOTO TO FLIP
-          </h2>
+        <div className="flex flex-1 items-center justify-center w-full px-4">
+          <div className="flex flex-col items-center justify-center w-full max-w-[90vw] sm:max-w-[380px] md:max-w-[500px]">
+            {imageWithTextUrl ? (
+              <div className="relative w-full aspect-[0.5968] flex items-center justify-center">
+                <div className="w-full h-full">
+                  <ImageFlip
+                    imageUrl={baseImageUrl || ""}
+                    cardUrl={cardUrl}
+                    overlayText={editText}
+                    disableShadow
+                  />
+                </div>
+              </div>
+            ) : (
+              <p className="text-white font-satoshi">Loading image...</p>
+            )}
 
-          <div className="flex justify-between flex-wrap px-4">
+            <h2 className="text-[#E87518] text-[3vw] sm:text-[10px] md:text-[12px] font-bold mt-[-3rem] mb-4 text-center font-satoshi tracking-[0.15em]">
+              CLICK ON THE PHOTO TO FLIP
+            </h2>
+          </div>
+        </div>
+
+        {/* Spacer to push buttons to bottom */}
+        <div className="flex-grow" />
+        
+        {/* Button Section pinned above the Footer */}
+        <div className="w-full max-w-md px-4 pb-6">
+          <div className="flex justify-between flex-wrap px-1 gap-x-0.5 gap-y-1">
             {imageWithTextUrl && (
               <ShareButton
                 imageUrl={baseImageUrl || ""}
@@ -78,7 +95,6 @@ export default function ViewMedia() {
                 className="mx-2 font-satoshi text-[5vw] sm:text-[16px] md:text-[18px] font-normal"
               />
             )}
-            
             {imageWithTextUrl && (
               <DownloadButton
                 imageUrl={baseImageUrl || ""}
@@ -87,7 +103,6 @@ export default function ViewMedia() {
                 className="mx-2 font-satoshi text-[5vw] sm:text-[16px] md:text-[18px] font-normal"
               />
             )}
-            
             <EditButton
               textToEdit={editText}
               onSave={handleTextUpdate}

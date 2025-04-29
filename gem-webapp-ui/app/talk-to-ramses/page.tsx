@@ -9,7 +9,7 @@ export default function TalkToRamses() {
       <Header />
 
       {/* Main Content */}
-      <main className="flex-1 bg-[url('/images/light_mode_background.svg')] dark:bg-[url('/images/dark_mode_background.svg')] bg-cover bg-center">
+      <main className="flex-1 bg-[url('/images/dark_mode_background.svg')] dark:bg-[url('/images/dark_mode_background.svg')] bg-cover bg-center">
       
       </main>
       

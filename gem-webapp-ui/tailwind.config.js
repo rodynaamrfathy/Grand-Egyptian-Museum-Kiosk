@@ -2,6 +2,15 @@
 module.exports = {
   theme: {
     extend: {
+      keyframes: {
+        marquee: {
+          '0%': { transform: 'translateX(0)' },
+          '100%': { transform: 'translateX(-100%)' },
+        },
+      },
+      animation: {
+        'marquee-slow': 'marquee 60s linear infinite',
+      },
       fontFamily: {
         satoshi: ['Satoshi', 'sans-serif'],
         mariam: ['Mariam', 'sans-serif'],
