@@ -2,15 +2,15 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
+import SlidingBanner from "./components/SlidingBanner";
 
 export default function Home() {
   const [imageUrl, setImageUrl] = useState("");
   const [showAlert, setShowAlert] = useState(false);
-  const [activeIndex, setActiveIndex] = useState(0);
-  const scrollRef = useRef<HTMLDivElement>(null);
+  const [animateButtons, setAnimateButtons] = useState(true);
 
   useEffect(() => {
     const urlParams = new URLSearchParams(window.location.search);
@@ -18,6 +18,12 @@ export default function Home() {
     if (queryImageUrl) {
       setImageUrl(queryImageUrl);
     }
+
+    const timeout = setTimeout(() => {
+      setAnimateButtons(false);
+    }, 3150);
+
+    return () => clearTimeout(timeout);
   }, []);
 
   const handlePhotoBoothClick = (e: React.MouseEvent) => {
@@ -25,20 +31,6 @@ export default function Home() {
       e.preventDefault();
       setShowAlert(true);
       setTimeout(() => setShowAlert(false), 5000);
-    }
-  };
-
-  const scrollLeft = () => {
-    if (scrollRef.current) {
-      scrollRef.current.scrollBy({ left: -scrollRef.current.offsetWidth, behavior: "smooth" });
-      setActiveIndex((prev) => Math.max(prev - 1, 0));
-    }
-  };
-
-  const scrollRight = () => {
-    if (scrollRef.current) {
-      scrollRef.current.scrollBy({ left: scrollRef.current.offsetWidth, behavior: "smooth" });
-      setActiveIndex((prev) => Math.min(prev + 1, 1));
     }
   };
 
@@ -59,32 +51,12 @@ export default function Home() {
       {/* Main Content */}
       <main className="flex-1 bg-[url('/images/light_mode_background.svg')] dark:bg-[url('/images/dark_mode_background.svg')] bg-cover bg-center">
         <div className="flex flex-col space-y-5 md:space-y-8">
-          <section className="relative w-full aspect-[396/114] overflow-hidden">
-            {/* Arrows */}
-            <button onClick={scrollLeft} className="absolute left-2 top-1/2 -translate-y-1/2 z-10 text-white text-2xl">❮</button>
-            <button onClick={scrollRight} className="absolute right-2 top-1/2 -translate-y-1/2 z-10 text-white text-2xl">❯</button>
-
-            {/* Scrollable Slides */}
-            <div
-              ref={scrollRef}
-              className="w-full h-full overflow-x-auto flex snap-x snap-mandatory scrollbar-hide scroll-smooth"
-            >
-              <div
-                className="relative flex-shrink-0 w-full aspect-[396/114] bg-cover bg-center flex flex-col items-center justify-center text-center text-white px-4 snap-start"
-                style={{ backgroundImage: 'url(/images/ScrollBanner.svg)' }}
-              ></div>
-              <div
-                className="relative flex-shrink-0 w-full aspect-[396/114] bg-cover bg-center flex flex-col items-center justify-center text-center text-white px-4 snap-start"
-                style={{ backgroundImage: 'url(/images/ScrollBanner2.svg)' }}
-              ></div>
-            </div>
-
-            {/* Indicators */}
-            <div className="absolute bottom-2 left-1/2 -translate-x-1/2 flex space-x-2 z-10">
-              <span className={`w-4 h-1 rounded-full ${activeIndex === 0 ? 'bg-[#EE7103]' : 'bg-gray-400'}`}></span>
-              <span className={`w-4 h-1 rounded-full ${activeIndex === 1 ? 'bg-[#EE7103]' : 'bg-gray-400'}`}></span>
-            </div>
-          </section>
+          <SlidingBanner
+            slides={[
+              { imageUrl: "/images/ScrollBanner.svg" },
+              { imageUrl: "/images/ScrollBanner2.svg" }
+            ]}
+          />
 
           {/* Highlight Text Section */}
           <section className="text-center px-4">
@@ -105,7 +77,7 @@ export default function Home() {
             </div>
 
             <Link href="/talk-to-ramses" className="relative z-10 group">
-              <div className="relative w-[80vw] max-w-[355px] h-auto">
+              <div className={`relative w-[80vw] max-w-[355px] h-auto ${animateButtons ? 'animate-pulse' : 'transition-all duration-500'}`}>
                 <Image
                   src="/images/button1.svg"
                   alt="Meet Ramses Button"
@@ -135,7 +107,7 @@ export default function Home() {
               onClick={handlePhotoBoothClick}
               className="relative z-10 group"
             >
-              <div className="relative w-[80vw] max-w-[355px] h-auto">
+              <div className={`relative w-[80vw] max-w-[355px] h-auto ${animateButtons ? 'animate-pulse' : 'transition-all duration-500'}`}>
                 <Image
                   src="/images/button2.svg"
                   alt="Photo Booth Button"
