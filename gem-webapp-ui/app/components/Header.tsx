@@ -4,8 +4,9 @@ import Image from "next/image";
 
 export default function Header() {
   return (
-    <header className="flex justify-between items-center p-4 shadow-md bg-white dark:bg-[#141414] sticky top-0 z-40">
-      <Image src="/images/img-3185-1.png" alt="GEM Logo" width={50} height={50} />
+    //dark:bg-[#141414]
+    <header className="flex justify-between items-center p-4 shadow-md bg-white  top-0 z-40">
+      <Image src="/images/LOGO.svg" alt="GEM Logo" width={50} height={50} />
       <ChangeLanguageButton />
     </header>
   );

@@ -4,7 +4,8 @@ import ShareButton from "../components/ShareButton";
 import DownloadButton from "../components/DownloadButton";
 import EditButton from "../components/EditButton";
 import ImageFlip from "./ImageFlip";
-import VideoBackground from "../components/VideoBackground";
+import Header from "../components/Header";
+import Footer from "../components/Footer";
 
 export default function ViewMedia() {
   const [baseImageUrl, setBaseImageUrl] = useState<string | null>(null);
@@ -37,20 +38,18 @@ export default function ViewMedia() {
   };
 
   return (
-    <div className="relative h-screen bg-black-100 text-white-900 px-4">
-      <VideoBackground />
+    <div className="flex flex-col min-h-screen relative">
+      <Header />
 
-      <main className="relative z-10 h-full w-full flex flex-col items-center justify-between">
-        <h2 className="text-[4vw] sm:text-[20px] md:text-[24px] font-medium text-center font-satoshi tracking-[0.22em] pt-2">
-        <br />
-          CAPTURE YOUR MEMORY
-          <br />
+      <main className="relative z-10 h-full w-full flex flex-col items-center justify-between bg-[url('/images/light_mode_background.svg')] dark:bg-[url('/images/light_mode_background.svg')] bg-cover bg-center">
+        <h2 className="text-black text-[4vw] sm:text-[20px] md:text-[24px] font-medium text-center font-satoshi tracking-[0.22em] pt-2">
+          SAVE YOUR MEMORY
         </h2>
 
         <div className="flex-1 flex items-center justify-center w-full max-w-[80vw] my-2 relative">
           {imageWithTextUrl ? (
             <div className="relative w-full max-w-[300px] aspect-[0.5968] flex items-center justify-center mx-auto">
-              <div className="absolute w-[90%] h-[90%] inset-0 bg-black/50 transform translate-y-[4px] blur-[24.5px] scale-[1.2] -z-10 rounded-lg" />
+              <div className="" />
 
               <div className="w-full h-full">
                 <ImageFlip
@@ -66,12 +65,8 @@ export default function ViewMedia() {
         </div>
 
         <div className="w-full max-w-md px-4 pb-4">
-          <h2 className="text-[5vw] sm:text-[20px] md:text-[22px] font-bold mb-1 text-left font-satoshi tracking-[0.15em] px-5">
-            CLICK!<br />
-          </h2>
-          <h2 className="text-[4vw] sm:text-[20px] md:text-[22px] font-medium mb-4 text-left font-satoshi tracking-[0.15em] px-5">
-            TO VIEW YOUR IMAGE <br />
-            ON THE BACK!
+          <h2 className="text-black text-[5vw] text-[15px] sm:text-[15px] md:text-[18px] font-bold mb-1 text-left font-satoshi tracking-[0.15em] px-5">
+            CLICK ON THE PHOTO TO FLIP
           </h2>
 
           <div className="flex justify-between flex-wrap px-4">
@@ -101,6 +96,8 @@ export default function ViewMedia() {
           </div>
         </div>
       </main>
+
+      <Footer />
     </div>
   );
 }
