@@ -1,18 +1,21 @@
-"use client";
+'use client';
 
-import { useState, useEffect } from "react";
-import { useTranslation } from "react-i18next";
-import ShareButton from "../components/ShareButton";
-import DownloadButton from "../components/DownloadButton";
-import EditButton from "../components/EditButton";
-import ImageFlip from "./ImageFlip";
-import Header from "../components/Header";
-import Footer from "../components/Footer";
-import "../../lib/i18n"; 
+import loadDynamic from 'next/dynamic';
+import { useState, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
+import Header from '../components/Header';
+import Footer from '../components/Footer';
+import ShareButton from '../components/ShareButton';
+import DownloadButton from '../components/DownloadButton';
+import EditButton from '../components/EditButton';
+import '../../lib/i18n';
+
+export const dynamic = 'force-dynamic';
+
+const ImageFlip = loadDynamic(() => import('./ImageFlip'), { ssr: false });
 
 export default function ViewMedia() {
   const { t } = useTranslation();
-
   const [baseImageUrl, setBaseImageUrl] = useState<string | null>(null);
   const [imageWithTextUrl, setImageWithTextUrl] = useState<string | null>(null);
   const [editText, setEditText] = useState(t("edit.defaultText"));
@@ -20,6 +23,7 @@ export default function ViewMedia() {
   const cardUrl = "https://res.cloudinary.com/dynfn6e5m/image/upload/v1744844090/card1_rfpr2p.png";
 
   useEffect(() => {
+    if (typeof window === 'undefined') return;
     const urlParams = new URLSearchParams(window.location.search);
     const imageUrlFromUrl = urlParams.get("image");
     if (imageUrlFromUrl) {
@@ -47,7 +51,6 @@ export default function ViewMedia() {
       <Header />
 
       <main className="flex flex-col flex-1 items-center justify-start bg-[url('/images/dark_mode_background.svg')] bg-cover bg-center">
-        {/* Marquee Section */}
         <div className="relative w-full overflow-hidden pt-4 pb-0">
           <div className="flex animate-marquee-slow whitespace-nowrap">
             {[...Array(2)].map((_, idx) => (
@@ -65,13 +68,11 @@ export default function ViewMedia() {
           <div className="flex flex-col items-center justify-center w-full max-w-[90vw] sm:max-w-[380px] md:max-w-[500px]">
             {imageWithTextUrl ? (
               <div className="relative w-full aspect-[0.5968] flex items-center justify-center">
-                <div className="w-full h-full">
-                  <ImageFlip
-                    imageUrl={baseImageUrl || ""}
-                    cardUrl={cardUrl}
-                    overlayText={editText}
-                  />
-                </div>
+                <ImageFlip
+                  imageUrl={baseImageUrl || ""}
+                  cardUrl={cardUrl}
+                  overlayText={editText}
+                />
               </div>
             ) : (
               <p className="text-white font-satoshi">{t("loading")}</p>
@@ -86,31 +87,16 @@ export default function ViewMedia() {
         <div className="flex-grow" />
 
         <div className="w-full max-w-md px-12 pb-0 mt-5px">
-        <div className="flex justify-between flex-wrap px-1 gap-x-[2px] gap-y-[4px]">
-          {imageWithTextUrl && (
-            <ShareButton
-              imageUrl={baseImageUrl || ""}
-              cardUrl={cardUrl}
-              overlayText={editText}
-              className="mx-1 font-satoshi text-[5vw] sm:text-[16px] md:text-[18px] font-normal"
-            />
-          )}
-          {imageWithTextUrl && (
-            <DownloadButton
-              imageUrl={baseImageUrl || ""}
-              cardUrl={cardUrl}
-              overlayText={editText}
-              className="mx-1 font-satoshi text-[5vw] sm:text-[16px] md:text-[18px] font-normal"
-            />
-          )}
-          <EditButton
-            textToEdit={editText}
-            onSave={handleTextUpdate}
-            className="mx-1 font-satoshi text-[5vw] sm:text-[16px] md:text-[18px] font-normal"
-          />
+          <div className="flex justify-between flex-wrap px-1 gap-x-[2px] gap-y-[4px]">
+            {imageWithTextUrl && (
+              <>
+                <ShareButton imageUrl={baseImageUrl!} cardUrl={cardUrl} overlayText={editText} />
+                <DownloadButton imageUrl={baseImageUrl!} cardUrl={cardUrl} overlayText={editText} />
+              </>
+            )}
+            <EditButton textToEdit={editText} onSave={handleTextUpdate} />
+          </div>
         </div>
-      </div>
-
       </main>
 
       <Footer />

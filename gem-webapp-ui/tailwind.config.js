@@ -1,5 +1,10 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
+  content: [
+    "./app/**/*.{js,ts,jsx,tsx,mdx}",
+    "./pages/**/*.{js,ts,jsx,tsx,mdx}",
+    "./components/**/*.{js,ts,jsx,tsx,mdx}",
+  ],
   theme: {
     extend: {
       keyframes: {
@@ -15,10 +20,9 @@ module.exports = {
         satoshi: ['Satoshi', 'sans-serif'],
         mariam: ['Mariam', 'sans-serif'],
         averia: ['Averia Libre', 'sans-serif'],
-        greta: ["'Greta Arabic AR LT'", "sans-serif"],
+        greta: ['Greta Arabic AR LT', 'sans-serif'],
       },
       fontWeight: {
-        // Add these if you want to use Tailwind's font-weight classes
         normal: '400',
         medium: '500',
         bold: '700',
@@ -26,13 +30,5 @@ module.exports = {
       },
     },
   },
-  content: [
-    "./app/**/*.{js,ts,jsx,tsx,mdx}",
-    "./pages/**/*.{js,ts,jsx,tsx,mdx}",
-    "./components/**/*.{js,ts,jsx,tsx,mdx}",
-  ],
-  theme: {
-    extend: {},
-  },
   plugins: [],
-}
+};

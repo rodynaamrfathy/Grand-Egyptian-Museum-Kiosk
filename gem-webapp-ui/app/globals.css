@@ -85,11 +85,44 @@
 
 @font-face {
   font-family: "Greta Arabic AR LT";
-  src: url("/fonts/GretaArabicARLT.woff2") format("woff2"),
-       url("/fonts/GretaArabicARLT.woff") format("woff");
+  src: url("/fonts/ArbFONTS-Greta-Arabic-AR-LT.ttf") format("truetype");
   font-weight: normal;
   font-style: normal;
+  font-display: swap;
 }
+
+@font-face {
+  font-family: "Greta Arabic AR LT";
+  src: url("/fonts/ArbFONTS-Greta-Arabic-AR-LT-Italic.ttf") format("truetype");
+  font-weight: normal;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Greta Arabic AR LT";
+  src: url("/fonts/ArbFONTS-Greta-Arabic-AR-LT-Medium.ttf") format("truetype");
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Greta Arabic AR LT";
+  src: url("/fonts/ArbFONTS-Greta-Arabic-AR-LT-Medium-Italic.ttf") format("truetype");
+  font-weight: 500;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Greta Arabic AR LT";
+  src: url("/fonts/ArbFONTS-Greta-Arabic-AR-LT-Bold-Italic.ttf") format("truetype");
+  font-weight: bold;
+  font-style: italic;
+  font-display: swap;
+}
+
 
 
 .font-mariam {
