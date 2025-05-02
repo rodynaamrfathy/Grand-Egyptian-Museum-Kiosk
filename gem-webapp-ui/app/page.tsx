@@ -111,7 +111,7 @@ export default function Home() {
                   height={63}
                   className="w-full h-auto group-hover:scale-105 transition-transform duration-300"
                 />
-                <span className="absolute inset-0 flex items-center justify-center text-white font-bold text-lg md:text-xl font-greta group-hover:scale-105 transition-transform duration-300">
+                <span className="absolute inset-0 flex items-center justify-center text-white font-bold text-lg md:text-xl group-hover:scale-105 transition-transform duration-300">
                   {t('buttons.meetRamses')}
                 </span>
               </div>
@@ -150,7 +150,7 @@ export default function Home() {
                   height={63}
                   className="w-full h-auto group-hover:scale-105 transition-transform duration-300"
                 />
-                <span className="absolute inset-0 flex items-center justify-center text-white font-bold text-lg md:text-xl font-greta group-hover:scale-105 transition-transform duration-300">
+                <span className="absolute inset-0 flex items-center justify-center text-white font-bold text-lg md:text-xl group-hover:scale-105 transition-transform duration-300">
                   {t('buttons.photoBooth')}
                 </span>
               </div>

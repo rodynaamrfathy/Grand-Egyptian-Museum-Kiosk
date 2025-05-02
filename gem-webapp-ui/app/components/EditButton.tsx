@@ -1,6 +1,7 @@
 "use client";
 import React, { useState } from "react";
 import IconButton from "./IconButton";
+import { useTranslation } from "react-i18next";
 
 interface EditButtonProps {
   textToEdit: string;
@@ -27,11 +28,13 @@ const EditButton: React.FC<EditButtonProps> = ({
     }
   };
 
+  const { t } = useTranslation();
+  
   return (
     <>
       <IconButton
-        iconPath="/images/Write.svg" 
-        label="WRITE"
+        iconPath="/images/Write.svg"
+        label={t("buttons.write")}
         onClick={handleClick}
       />
       

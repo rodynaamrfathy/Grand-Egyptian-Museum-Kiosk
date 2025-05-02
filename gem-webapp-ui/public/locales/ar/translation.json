@@ -6,7 +6,10 @@
     },
     "buttons": {
       "meetRamses": "تكلم مع رمسيس",
-      "photoBooth": "منصة التصوير"
+      "photoBooth": "منصة التصوير",
+      "share": "مشاركة",
+      "download": "تحميل",
+      "write": "تعديل"
     },
     "alertPhotoBooth": "يبدو أنك تريد تجربة غرفة الصور!",
     "flipInstruction": "اضغط على الصورة لتقلبها",

@@ -1,6 +1,7 @@
 "use client";
 import React from "react";
 import IconButton from "./IconButton";
+import { useTranslation } from "react-i18next";
 
 interface DownloadButtonProps {
   cardUrl: string;
@@ -102,12 +103,14 @@ const DownloadButton: React.FC<DownloadButtonProps> = ({
     }
   };
 
+  const { t } = useTranslation();
+  
   return (
-    <IconButton
-      iconPath="/images/Download.svg"
-      label="DOWNLOAD"
-      onClick={handleDownload}
-    />
+  <IconButton
+    iconPath="/images/Download.svg"
+    label={t("buttons.download")}
+    onClick={handleDownload}
+  />
   );
 };
 

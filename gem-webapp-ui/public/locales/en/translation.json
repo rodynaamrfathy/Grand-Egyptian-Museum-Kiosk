@@ -6,7 +6,10 @@
     },
     "buttons": {
       "meetRamses": "MEET RAMSSES II",
-      "photoBooth": "PHOTO BOOTH"
+      "photoBooth": "PHOTO BOOTH",
+      "share": "Share",
+      "download": "Download",
+      "write": "Edit"
     },
     "alertPhotoBooth": "Looks like you want to try the Photo Booth!",
     "flipInstruction": "TAP TO FLIP",

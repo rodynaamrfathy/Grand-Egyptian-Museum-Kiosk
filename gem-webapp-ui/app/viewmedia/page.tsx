@@ -56,7 +56,7 @@ export default function ViewMedia() {
             {[...Array(2)].map((_, idx) => (
               <span
                 key={idx}
-                className="text-white text-[4vw] sm:text-[26px] md:text-[30px] font-medium font-satoshi tracking-[0.22em] pr-10"
+                className="text-white text-[3vw] sm:text-[26px] md:text-[30px] font-medium font-satoshi tracking-[0.22em] pr-10"
               >
                 {Array.from({ length: 20 }, () => `${t("marquee.keepMemories")} - `).join("")}
               </span>
@@ -78,7 +78,7 @@ export default function ViewMedia() {
               <p className="text-white font-satoshi">{t("loading")}</p>
             )}
 
-            <h2 className="text-[#E87518] text-[3vw] sm:text-[10px] md:text-[12px] font-bold mt-[-3rem] mb-4 text-center font-satoshi tracking-[0.15em]">
+            <h2 className="text-[#E87518] text-[2.5vw] sm:text-[10px] md:text-[12px] font-bold mt-[-3rem] mb-4 text-center font-satoshi tracking-[0.15em]">
               {t("flipInstruction")}
             </h2>
           </div>

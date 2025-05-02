@@ -1,6 +1,8 @@
 "use client";
 import React from "react";
 import IconButton from "./IconButton";
+import { useTranslation } from "react-i18next";
+ 
 
 interface ShareButtonProps {
   cardUrl: string;
@@ -119,10 +121,12 @@ const ShareButton: React.FC<ShareButtonProps> = ({
     }
   };
 
+  const { t } = useTranslation();
+
   return (
     <IconButton
       iconPath="/images/Share.svg"
-      label="SHARE"
+      label={t("buttons.share")}
       onClick={handleShare}
     />
   );

@@ -85,42 +85,27 @@
 
 @font-face {
   font-family: "Greta Arabic AR LT";
-  src: url("/fonts/ArbFONTS-Greta-Arabic-AR-LT.ttf") format("truetype");
+  src: url("/fonts/ArbFONTS-Greta-Arabic-AR-LT.ttf") format("opentype");
   font-weight: normal;
   font-style: normal;
   font-display: swap;
 }
 
-@font-face {
-  font-family: "Greta Arabic AR LT";
-  src: url("/fonts/ArbFONTS-Greta-Arabic-AR-LT-Italic.ttf") format("truetype");
-  font-weight: normal;
-  font-style: italic;
-  font-display: swap;
-}
 
 @font-face {
-  font-family: "Greta Arabic AR LT";
-  src: url("/fonts/ArbFONTS-Greta-Arabic-AR-LT-Medium.ttf") format("truetype");
-  font-weight: 500;
+  font-family: "Greta Sans Pro";
+  src: url("/fonts/GretaSansPro-Regular.otf") format("opentype");
+  font-weight: normal;
   font-style: normal;
   font-display: swap;
 }
 
-@font-face {
-  font-family: "Greta Arabic AR LT";
-  src: url("/fonts/ArbFONTS-Greta-Arabic-AR-LT-Medium-Italic.ttf") format("truetype");
-  font-weight: 500;
-  font-style: italic;
-  font-display: swap;
+.font-greta-en {
+  font-family: "Greta Sans Pro", sans-serif;
 }
 
-@font-face {
-  font-family: "Greta Arabic AR LT";
-  src: url("/fonts/ArbFONTS-Greta-Arabic-AR-LT-Bold-Italic.ttf") format("truetype");
-  font-weight: bold;
-  font-style: italic;
-  font-display: swap;
+.font-greta-ar {
+  font-family: "Greta Arabic AR LT", serif;
 }
 
 
@@ -145,11 +130,23 @@
   }
 }
 
+/* Arabic - applied when html lang="ar" */
+html[lang="ar"] body {
+  font-family: 'Greta Arabic AR LT', 'Mariam', 'Averia', Arial, Helvetica, sans-serif;
+}
+
+/* English and other LTR languages */
+html[lang="en"] body {
+  font-family: 'Greta Sans Pro', 'Satoshi', 'Averia', Arial, Helvetica, sans-serif;
+}
+
+/* Default fallback if lang is not set */
 body {
   color: var(--foreground);
   background: var(--background);
-  font-family: 'Greta Arabic AR LT', 'Satoshi', 'Mariam', 'Averia', Arial, Helvetica, sans-serif;
+  font-family: 'Inter', 'Satoshi', 'Averia', Arial, Helvetica, sans-serif;
 }
+
 
 .perspective {
   perspective: 1000px;
@@ -184,3 +181,28 @@ body {
   animation: marquee-slow 20s linear infinite;
 }
 
+.custom-button {
+  width: 64px;
+  height: 64px;
+  border-radius: 46%;
+  background: #3d3d3d; /* dark gray base */
+  box-shadow:
+    inset -2px -2px 4px rgba(255, 255, 255, 0.15), /* soft light top-left bevel */
+    inset 2px 2px 6px rgba(0, 0, 0, 0.4),           /* soft dark bottom-right bevel */
+    0 6px 15px rgba(0, 0, 0, 0.8),                  /* strong outer dark shadow */
+    0 2px 6px rgba(0, 0, 0, 0.4);                   /* secondary subtle outer shadow */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+}
+.custom-button:hover {
+  transform: scale(1.05);
+  background: #515151; 
+  box-shadow:
+    inset -2px -2px 4px rgba(255, 255, 255, 0.2),
+    inset 2px 2px 6px rgba(0, 0, 0, 0.5),
+    0 8px 20px rgba(0, 0, 0, 0.85),
+    0 4px 10px rgba(0, 0, 0, 0.5);
+}
