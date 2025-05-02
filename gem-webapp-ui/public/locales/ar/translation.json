@@ -9,16 +9,36 @@
       "photoBooth": "منصة التصوير",
       "share": "مشاركة",
       "download": "تحميل",
-      "write": "تعديل"
+      "write": "تعديل",
+      "close": "إغلاق",
+      "save": "حفظ",
+      "cancel": "إلغاء",
+      "ok": "حسناً",
+      "yes": "نعم",
+      "no": "لا",
+      "continue": "استمر",
+      "next": "التالي",
+      "previous": "السابق",
+      "start": "ابدأ",
+      "stop": "توقف",
+      "play": "تشغيل",
+      "pause": "إيقاف مؤقت",
+      "reset": "إعادة تعيين",
+      "confirm": "تأكيد",
+      "delete": "حذف"
     },
     "alertPhotoBooth": "يبدو أنك تريد تجربة غرفة الصور!",
     "flipInstruction": "اضغط على الصورة لتقلبها",
     "edit": {
-      "defaultText": "اكتب هنا"
+      "defaultText": "اكتب هنا",
+      "placeholder": "اكتب شيئًا..."
     },
     "loading": "جاري تحميل الصورة...",
     "marquee": {
       "keepMemories": "خلّد ذكرياتك "
+    },
+    "headers" : {
+      "editText": "تعديل النص"
     }
   }
   

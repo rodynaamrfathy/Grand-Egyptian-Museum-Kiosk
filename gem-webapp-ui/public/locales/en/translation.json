@@ -9,16 +9,30 @@
       "photoBooth": "PHOTO BOOTH",
       "share": "Share",
       "download": "Download",
-      "write": "Edit"
+      "write": "Edit",
+      "close": "Close",
+      "save": "Save",
+      "cancel": "Cancel",
+      "ok": "OK",
+      "yes": "Yes",
+      "no": "No",
+      "continue": "Continue",
+      "next": "Next",
+      "previous": "Previous",
+      "start": "Start"
     },
     "alertPhotoBooth": "Looks like you want to try the Photo Booth!",
     "flipInstruction": "TAP TO FLIP",
     "edit": {
-      "defaultText": "Customize Your Memory"
+      "defaultText": "Customize Your Memory",
+      "placeholder": "Type something..."
     },
     "loading": "Loading image...",
     "marquee": {
       "keepMemories": "KEEP MEMORIES ALIVE"
+    },
+    "headers" : {
+      "editText": "Edit Text"
     }
   }
   
