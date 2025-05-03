@@ -1,13 +1,13 @@
-'use client';
-
+"use client";
 import loadDynamic from 'next/dynamic';
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 import ShareButton from '../components/ShareButton';
 import DownloadButton from '../components/DownloadButton';
 import EditButton from '../components/EditButton';
+import { createCardWithText } from '../utils/createCardWithText';
 import '../../lib/i18n';
 
 export const dynamic = 'force-dynamic';
@@ -17,10 +17,24 @@ const ImageFlip = loadDynamic(() => import('./ImageFlip'), { ssr: false });
 export default function ViewMedia() {
   const { t } = useTranslation();
   const [baseImageUrl, setBaseImageUrl] = useState<string | null>(null);
-  const [imageWithTextUrl, setImageWithTextUrl] = useState<string | null>(null);
-  const [editText, setEditText] = useState(t("edit.defaultText"));
+  const [editText, setEditText] = useState(t('edit.defaultText'));
+  const [cardBlob, setCardBlob] = useState<Blob | null>(null);
+  const [cardImageUrl, setCardImageUrl] = useState<string | null>(null);
 
-  const cardUrl = "https://res.cloudinary.com/dynfn6e5m/image/upload/v1744844090/card1_rfpr2p.png";
+  const cardTemplateUrl = "https://res.cloudinary.com/dynfn6e5m/image/upload/v1746278397/uploads/1746278397692.png";
+
+  const getCurrentDate = () => {
+    const date = new Date();
+    return `${String(date.getDate()).padStart(2, '0')}.${String(date.getMonth() + 1).padStart(2, '0')}.${date.getFullYear()}`;
+  };
+  const [currentDate] = useState(getCurrentDate());
+
+  const updateCard = async (text: string) => {
+    setEditText(text);
+    const blob = await createCardWithText(cardTemplateUrl, text, currentDate);
+    setCardBlob(blob);
+    setCardImageUrl(URL.createObjectURL(blob));
+  };
 
   useEffect(() => {
     if (typeof window === 'undefined') return;
@@ -28,23 +42,9 @@ export default function ViewMedia() {
     const imageUrlFromUrl = urlParams.get("image");
     if (imageUrlFromUrl) {
       setBaseImageUrl(imageUrlFromUrl);
-      setImageWithTextUrl(getCloudinaryImageWithText(cardUrl, editText));
+      updateCard(editText);
     }
-  }, [editText]);
-
-  const getCloudinaryImageWithText = (baseUrl: string, text: string): string => {
-    const encodedText = encodeURIComponent(text);
-    const overlay = `l_text:arial_40:${encodedText},co_rgb:ffffff,g_center,y_30/fl_layer_apply`;
-    return baseUrl.replace("/upload/", `/upload/${overlay}/`);
-  };
-
-  const handleTextUpdate = (newText: string) => {
-    setEditText(newText);
-    if (baseImageUrl) {
-      const newUrl = getCloudinaryImageWithText(baseImageUrl, newText);
-      setImageWithTextUrl(newUrl);
-    }
-  };
+  }, []);
 
   return (
     <div className="flex flex-col min-h-screen">
@@ -56,7 +56,7 @@ export default function ViewMedia() {
             {[...Array(2)].map((_, idx) => (
               <span
                 key={idx}
-                className="text-white text-[3vw] sm:text-[26px] md:text-[30px] font-medium font-satoshi tracking-[0.22em] pr-10"
+                className="text-white text-[3vw] sm:text-[26px] md:text-[30px] tracking-[0.22em] pr-10"
               >
                 {Array.from({ length: 20 }, () => `${t("marquee.keepMemories")} - `).join("")}
               </span>
@@ -66,19 +66,20 @@ export default function ViewMedia() {
 
         <div className="flex flex-1 items-center justify-center w-full px-4">
           <div className="flex flex-col items-center justify-center w-full max-w-[90vw] sm:max-w-[380px] md:max-w-[500px]">
-            {imageWithTextUrl ? (
+            {cardImageUrl ? (
               <div className="relative w-full aspect-[0.5968] flex items-center justify-center">
                 <ImageFlip
                   imageUrl={baseImageUrl || ""}
-                  cardUrl={cardUrl}
+                  cardImageUrl={cardImageUrl}
                   overlayText={editText}
+                  currentDate={currentDate}
                 />
               </div>
             ) : (
               <p className="text-white font-satoshi">{t("loading")}</p>
             )}
 
-            <h2 className="text-[#E87518] text-[2.5vw] sm:text-[10px] md:text-[12px] font-bold mt-[-3rem] mb-4 text-center font-satoshi tracking-[0.15em]">
+            <h2 className="text-[#E87518] text-[2.5vw] sm:text-[10px] md:text-[12px] mt-[-3rem] mb-4 text-center tracking-[0.15em]">
               {t("flipInstruction")}
             </h2>
           </div>
@@ -88,13 +89,13 @@ export default function ViewMedia() {
 
         <div className="w-full max-w-md px-12 pb-0 mt-5px">
           <div className="flex justify-between flex-wrap px-1 gap-x-[2px] gap-y-[4px]">
-            {imageWithTextUrl && (
+            {cardBlob && (
               <>
-                <ShareButton imageUrl={baseImageUrl!} cardUrl={cardUrl} overlayText={editText} />
-                <DownloadButton imageUrl={baseImageUrl!} cardUrl={cardUrl} overlayText={editText} />
+                <ShareButton cardBlob={cardBlob} imageUrl={baseImageUrl!} />
+                <DownloadButton cardBlob={cardBlob} imageUrl={baseImageUrl!} />
               </>
             )}
-            <EditButton textToEdit={editText} onSave={handleTextUpdate} />
+            <EditButton textToEdit={editText} onSave={updateCard} />
           </div>
         </div>
       </main>
