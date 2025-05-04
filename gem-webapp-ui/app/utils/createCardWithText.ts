@@ -8,7 +8,7 @@ export const createCardWithText = (
     img.crossOrigin = "anonymous";
     img.src = cardUrl;
 
-    img.onload = () => {
+    img.onload = async () => {
       const dpr = window.devicePixelRatio || 1;
 
       const canvas = document.createElement("canvas");
@@ -23,34 +23,48 @@ export const createCardWithText = (
         return;
       }
 
-      ctx.scale(dpr, dpr); // handle high DPI screens
+      ctx.scale(dpr, dpr);
 
-      // Draw card
+      // Draw the card image
       ctx.drawImage(img, 0, 0, img.width, img.height);
 
-      // Font selection
+      // Font setup
       const mainSize = Math.floor(img.width * 0.09);
       const dateSize = Math.floor(img.width * 0.03);
-      const isArabic = /[\u0600-\u06FF]/.test(overlayText); // Detect Arabic
+      const isArabic = /[\u0600-\u06FF]/.test(overlayText);
 
-      const mainFont = isArabic ? 'ArabicCustom' : 'Mariam';
-      const dateFont = 'Averia';
+      const mainFont = isArabic ? "ArabicCustom" : "Mariam";
+      const dateFont = "Averia";
 
-      // Main overlay text
+      await document.fonts.load(`bold ${mainSize}px '${mainFont}'`);
+      await document.fonts.load(`bold ${dateSize}px '${dateFont}'`);
+
+      // Set font and color
       ctx.font = `bold ${mainSize}px '${mainFont}', serif`;
       ctx.fillStyle = "#333333";
       ctx.textAlign = "center";
       ctx.textBaseline = "middle";
-      ctx.fillText(overlayText, img.width / 2, img.height * 0.40);
 
-      // Date
+      // Split text into lines (max 3 lines, 20 chars per line)
+      const lineLength = 25;
+      const lines = overlayText.match(new RegExp(`.{1,${lineLength}}`, 'g'))?.slice(0, 3) || [];
+
+      // Vertical position for first line
+      const baseY = img.height * 0.41;
+      const lineSpacing = mainSize * 1.1;
+
+      lines.forEach((line, index) => {
+        ctx.fillText(line, img.width / 2, baseY + index * lineSpacing);
+      });
+
+      // Draw the date
       ctx.font = `bold ${dateSize}px '${dateFont}', sans-serif`;
       ctx.fillStyle = "#393939";
       ctx.textAlign = "right";
       ctx.textBaseline = "bottom";
-      ctx.fillText(dateString, img.width * 0.82, img.height * 0.53);
+      ctx.fillText(dateString, img.width * 0.82, img.height * 0.506);
 
-      // Export
+      // Export canvas as PNG blob
       canvas.toBlob((blob) => {
         if (!blob) {
           reject(new Error("Blob creation failed"));

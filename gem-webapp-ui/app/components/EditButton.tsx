@@ -9,6 +9,10 @@ interface EditButtonProps {
   className?: string;
 }
 
+const MAX_LENGTH = 60;
+const MAX_LINES = 3;
+const CHARS_PER_LINE = 25;
+
 const EditButton: React.FC<EditButtonProps> = ({ 
   textToEdit, 
   onSave, 
@@ -28,8 +32,23 @@ const EditButton: React.FC<EditButtonProps> = ({
     }
   };
 
+  const handleTextChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    let value = e.target.value;
+
+    // Enforce max length
+    if (value.length > MAX_LENGTH) {
+      value = value.slice(0, MAX_LENGTH);
+    }
+
+    // Auto-insert line breaks every 20 characters
+    const regex = new RegExp(`.{1,${CHARS_PER_LINE}}`, "g");
+    const lines = value.match(regex) || [];
+
+    setText(lines.slice(0, MAX_LINES).join("\n"));
+  };
+
   const { t } = useTranslation();
-  
+
   return (
     <>
       <IconButton
@@ -45,15 +64,19 @@ const EditButton: React.FC<EditButtonProps> = ({
                           shadow-[0_4px_4px_rgba(0,0,0,0.25)] 
                           p-4 rounded-[32px] max-w-sm w-full text-white">
             <h3 className="font-bold mb-3 text-lg text-white text-center">
-            {t("headers.editText")}
+              {t("headers.editText")}
             </h3>
             <textarea
               className="w-full p-2 rounded-[16px] bg-white/10 border border-white/20 text-white placeholder-white/50 focus:outline-none"
               rows={3}
+              maxLength={MAX_LENGTH + MAX_LINES} // slightly over to account for newlines
               value={text}
               placeholder={t("edit.placeholder")}
-              onChange={(e) => setText(e.target.value)}
+              onChange={handleTextChange}
             />
+            <div className="text-right text-sm text-white/60 mt-1">
+              {text.replace(/\n/g, "").length}/{MAX_LENGTH} {t("edit.chars")}
+            </div>
             <div className="flex justify-end space-x-2 mt-3">
               <button
                 onClick={() => setIsOpen(false)}
