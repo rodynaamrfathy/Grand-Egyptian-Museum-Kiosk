@@ -100,6 +100,15 @@
   font-display: swap;
 }
 
+@font-face {
+  font-family: 'ArabicCustom';
+  src: url('/fonts/arabiccustom.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+
 .font-greta-en {
   font-family: "Greta Sans Pro", sans-serif;
 }
@@ -118,6 +127,10 @@
   font-family: 'Averia', sans-serif;
 }
 
+.font-arabiccustom {
+  font-family: 'arabiccustom', sans-serif;
+}
+
 :root {
   --background: #ffffff;
   --foreground: #937777;
@@ -132,12 +145,12 @@
 
 /* Arabic - applied when html lang="ar" */
 html[lang="ar"] body {
-  font-family: 'Greta Arabic AR LT', 'Mariam', 'Averia', Arial, Helvetica, sans-serif;
+  font-family: 'Greta Arabic AR LT', 'arabiccustom', 'Averia', Arial, Helvetica, sans-serif;
 }
 
 /* English and other LTR languages */
 html[lang="en"] body {
-  font-family: 'Greta Sans Pro', 'Satoshi', 'Averia', Arial, Helvetica, sans-serif;
+  font-family: 'Greta Sans Pro', 'Mariam', 'Averia', Arial, Helvetica, sans-serif;
 }
 
 /* Default fallback if lang is not set */

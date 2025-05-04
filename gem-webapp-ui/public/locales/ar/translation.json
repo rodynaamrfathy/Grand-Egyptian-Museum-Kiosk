@@ -1,4 +1,5 @@
 {
+  "alertRamsesUnavailable": "تم تقديم هذه التجربة بشكل حصري في فعالية Riseup 2025.",
     "hero": {
       "line1": "يحتوي على ",
       "line2": "أكثر من",
@@ -27,7 +28,7 @@
       "confirm": "تأكيد",
       "delete": "حذف"
     },
-    "alertPhotoBooth": "يبدو أنك تريد تجربة غرفة الصور!",
+    "alertPhotoBooth": "يبدو أنك تريد تجربة منصة التصوير!",
     "flipInstruction": "اضغط على الصورة لتقلبها",
     "edit": {
       "defaultText": "اكتب هنا",

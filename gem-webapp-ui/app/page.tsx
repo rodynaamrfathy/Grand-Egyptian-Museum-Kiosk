@@ -9,14 +9,16 @@ import Footer from './components/Footer';
 import SlidingBanner from './components/SlidingBanner';
 import '../lib/i18n';
 
-
-// Prevent static export timeout on Vercel
 export const dynamic = 'force-dynamic';
+
+// Toggle this flag to control Ramses availability
+const RamsesAvailable = false;
 
 export default function Home() {
   const { t } = useTranslation();
   const [imageUrl, setImageUrl] = useState('');
   const [showAlert, setShowAlert] = useState(false);
+  const [showRamsesAlert, setShowRamsesAlert] = useState(false);
   const [animateButtons, setAnimateButtons] = useState(true);
 
   useEffect(() => {
@@ -42,12 +44,16 @@ export default function Home() {
 
   return (
     <div className="flex flex-col min-h-screen relative">
+      {/* Alert: Photo Booth */}
       {showAlert && (
-        <div className="absolute inset-0 bg-black bg-opacity-70 flex items-center justify-center text-white z-50 p-6">
-          <div className="bg-gray-800 rounded-2xl w-[60%] p-6 flex flex-col items-center relative">
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+          <div className="bg-[#AFAFAF]/20 border border-white/10 
+                          backdrop-blur-lg 
+                          shadow-[0_4px_4px_rgba(0,0,0,0.25)] 
+                          p-6 rounded-[32px] w-[90%] max-w-md text-white flex flex-col items-center relative">
             <button
               onClick={() => setShowAlert(false)}
-              className="absolute top-2 right-2 text-white text-2xl font-bold"
+              className="absolute top-2 right-3 text-white text-2xl font-bold"
             >
               &times;
             </button>
@@ -57,7 +63,35 @@ export default function Home() {
               width={200}
               height={150}
             />
-            <p className="mt-4 text-xl font-bold text-center">{t('alertPhotoBooth')}</p>
+            <p className="mt-4 text-xl font-bold text-center">
+              {t('alertPhotoBooth')}
+            </p>
+          </div>
+        </div>
+      )}
+
+      {/* Alert: Ramses Unavailable */}
+      {showRamsesAlert && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+          <div className="bg-[#AFAFAF]/20 border border-white/10 
+                          backdrop-blur-lg 
+                          shadow-[0_4px_4px_rgba(0,0,0,0.25)] 
+                          p-6 rounded-[32px] w-[90%] max-w-md text-white flex flex-col items-center relative">
+            <button
+              onClick={() => setShowRamsesAlert(false)}
+              className="absolute top-2 right-3 text-white text-2xl font-bold"
+            >
+              &times;
+            </button>
+            <Image
+              src="/images/King_Ramses.svg"
+              alt="Ramses"
+              width={200}
+              height={150}
+            />
+            <p className="mt-4 text-xl font-bold text-center">
+              {t('alertRamsesUnavailable')}
+            </p>
           </div>
         </div>
       )}
@@ -98,24 +132,48 @@ export default function Home() {
               />
             </div>
 
-            <Link href="/talk-to-ramses" className="relative z-10 group">
-              <div
-                className={`relative w-[80vw] max-w-[355px] h-auto ${
-                  animateButtons ? 'animate-pulse' : 'transition-all duration-500'
-                }`}
+            {RamsesAvailable ? (
+              <Link href="/talk-to-ramses" className="relative z-10 group">
+                <div
+                  className={`relative w-[80vw] max-w-[355px] h-auto ${
+                    animateButtons ? 'animate-pulse' : 'transition-all duration-500'
+                  }`}
+                >
+                  <Image
+                    src="/images/button1.svg"
+                    alt="Meet Ramses Button"
+                    width={355}
+                    height={63}
+                    className="w-full h-auto group-hover:scale-105 transition-transform duration-300"
+                  />
+                  <span className="absolute inset-0 flex items-center justify-center text-white font-bold text-lg md:text-xl group-hover:scale-105 transition-transform duration-300">
+                    {t('buttons.meetRamses')}
+                  </span>
+                </div>
+              </Link>
+            ) : (
+              <button
+                onClick={() => setShowRamsesAlert(true)}
+                className="relative z-10 group"
               >
-                <Image
-                  src="/images/button1.svg"
-                  alt="Meet Ramses Button"
-                  width={355}
-                  height={63}
-                  className="w-full h-auto group-hover:scale-105 transition-transform duration-300"
-                />
-                <span className="absolute inset-0 flex items-center justify-center text-white font-bold text-lg md:text-xl group-hover:scale-105 transition-transform duration-300">
-                  {t('buttons.meetRamses')}
-                </span>
-              </div>
-            </Link>
+                <div
+                  className={`relative w-[80vw] max-w-[355px] h-auto ${
+                    animateButtons ? 'animate-pulse' : 'transition-all duration-500'
+                  }`}
+                >
+                  <Image
+                    src="/images/button1.svg"
+                    alt="Meet Ramses Button"
+                    width={355}
+                    height={63}
+                    className="w-full h-auto group-hover:scale-105 transition-transform duration-300"
+                  />
+                  <span className="absolute inset-0 flex items-center justify-center text-white font-bold text-lg md:text-xl group-hover:scale-105 transition-transform duration-300">
+                    {t('buttons.meetRamses')}
+                  </span>
+                </div>
+              </button>
+            )}
           </section>
 
           {/* Photo Booth Button */}

@@ -44,6 +44,9 @@ export default function ViewMedia() {
       setBaseImageUrl(imageUrlFromUrl);
       updateCard(editText);
     }
+    document.fonts.load("bold 24px 'ArabicCustom'").then(() => {
+      console.log("ArabicCustom font loaded");
+    });
   }, []);
 
   return (
