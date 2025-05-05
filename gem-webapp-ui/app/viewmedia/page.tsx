@@ -82,7 +82,7 @@ export default function ViewMedia() {
               <p className="text-white font-satoshi">{t("loading")}</p>
             )}
 
-            <h2 className="text-[#E87518] text-[2.5vw] sm:text-[10px] md:text-[12px] mt-[-3rem] mb-4 text-center tracking-[0.15em]">
+            <h2 className="text-[#E87518] text-[2.5vw] sm:text-[10px] md:text-[12px] mt-[-3rem] mb-4 text-center tracking-[0.15em] leading-none">
               {t("flipInstruction")}
             </h2>
           </div>

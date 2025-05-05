@@ -5,8 +5,8 @@ import { useTranslation } from "react-i18next";
 
 
 interface ShareButtonProps {
-  cardBlob: Blob;
   imageUrl: string;
+  cardBlob: Blob;
   className?: string;
 }
 
@@ -22,7 +22,7 @@ const ShareButton: React.FC<ShareButtonProps> = ({ cardBlob, imageUrl }) => {
       const shareData = {
         title: "Check out these images!",
         text: "I wanted to share these with you",
-        files: [cardFile, imageFile],
+        files: [imageFile, cardFile],
       };
 
       if (navigator.canShare && navigator.canShare(shareData)) {

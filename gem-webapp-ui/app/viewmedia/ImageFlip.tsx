@@ -9,7 +9,7 @@ interface ImageFlipProps {
   currentDate: string;
 }
 
-export default function ImageFlip({ imageUrl, cardImageUrl, overlayText, currentDate }: ImageFlipProps) {
+export default function ImageFlip({ imageUrl, cardImageUrl }: ImageFlipProps) {
   const [flipped, setFlipped] = useState(false);
   const [manualFlip, setManualFlip] = useState(false);
   const [cardError, setCardError] = useState(false);
@@ -29,8 +29,27 @@ export default function ImageFlip({ imageUrl, cardImageUrl, overlayText, current
   return (
     <div className="w-full h-full mx-auto cursor-pointer perspective" onClick={handleClick}>
       <div className={`relative w-full h-full transition-transform duration-[1500ms] transform-style preserve-3d ${flipped ? "rotate-y-180" : ""}`}>
-        {/* Front Side: Pre-rendered card image */}
+
+
+        {/* Font Side: Original uploaded image */}
         <div className="absolute inset-0 backface-hidden">
+          {!imageError ? (
+            <Image
+              src={imageUrl}
+              alt="Uploaded"
+              fill
+              className="object-contain shadow-xl max-h-[90%] max-w-[90%] ml-auto mr-auto mb-2 mt-2"
+              onError={() => setImageError(true)}
+            />
+          ) : (
+            <div className="absolute inset-0 bg-gray-200 flex items-center justify-center">
+              <span>Image failed to load</span>
+            </div>
+          )}
+        </div>
+
+        {/* back Side: Pre-rendered card image */}
+        <div className="absolute inset-0 backface-hidden rotate-y-180">
           <div className="w-full h-full relative">
             {!cardError ? (
               <Image
@@ -49,22 +68,6 @@ export default function ImageFlip({ imageUrl, cardImageUrl, overlayText, current
           </div>
         </div>
 
-        {/* Back Side: Original uploaded image */}
-        <div className="absolute inset-0 backface-hidden rotate-y-180">
-          {!imageError ? (
-            <Image
-              src={imageUrl}
-              alt="Uploaded"
-              fill
-              className="object-contain shadow-xl max-h-[90%] max-w-[90%] ml-auto mr-auto mb-2 mt-2"
-              onError={() => setImageError(true)}
-            />
-          ) : (
-            <div className="absolute inset-0 bg-gray-200 flex items-center justify-center">
-              <span>Image failed to load</span>
-            </div>
-          )}
-        </div>
       </div>
     </div>
   );

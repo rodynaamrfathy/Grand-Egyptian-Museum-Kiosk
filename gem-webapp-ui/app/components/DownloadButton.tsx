@@ -5,8 +5,8 @@ import { useTranslation } from "react-i18next";
 
 
 interface DownloadButtonProps {
-  cardBlob: Blob;
   imageUrl: string;
+  cardBlob: Blob;
 }
 
 const DownloadButton: React.FC<DownloadButtonProps> = ({ cardBlob, imageUrl }) => {
@@ -26,13 +26,19 @@ const DownloadButton: React.FC<DownloadButtonProps> = ({ cardBlob, imageUrl }) =
       const imageResponse = await fetch(imageUrl);
       const imageBlob = await imageResponse.blob();
       const imageFilename = imageUrl.split("/").pop() || "image.jpg";
+      
       await downloadFile(imageBlob, imageFilename);
-      await downloadFile(cardBlob, "memory_card.png");
+  
+      // Delay to ensure download triggers on mobile before second one
+      setTimeout(async () => {
+        await downloadFile(cardBlob, "memory_card.png");
+      }, 500); // Slight delay helps mobile browsers process the first download
     } catch (error) {
       console.error("Error downloading images:", error);
       alert("Failed to download one or more images.");
     }
   };
+  
 
   const { t } = useTranslation();
   
