@@ -40,6 +40,12 @@
     },
     "headers" : {
       "editText": "تعديل النص"
+    },
+    "status":
+    {
+      "downloading": "جاري تحميل الصورة...",
+      "uploading": "جاري تحميل الصورة...",
+      "downloaded": "تم تحميل الصورة"
     }
   }
   
