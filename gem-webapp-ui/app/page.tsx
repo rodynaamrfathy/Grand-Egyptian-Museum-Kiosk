@@ -58,7 +58,7 @@ export default function Home() {
               &times;
             </button>
             <Image
-              src="/images/photo-booth-banner.png"
+              src="/images/booth.png"
               alt="Photo Booth"
               width={200}
               height={150}
