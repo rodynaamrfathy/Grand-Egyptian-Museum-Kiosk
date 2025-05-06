@@ -20,6 +20,7 @@ export default function ViewMedia() {
   const [editText, setEditText] = useState(t('edit.defaultText'));
   const [cardBlob, setCardBlob] = useState<Blob | null>(null);
   const [cardImageUrl, setCardImageUrl] = useState<string | null>(null);
+  const [imageBlob, setImageBlob] = useState<Blob | null>(null); // ✅ move here
 
   const cardTemplateUrl = "https://res.cloudinary.com/dynfn6e5m/image/upload/v1746278397/uploads/1746278397692.png";
 
@@ -36,14 +37,25 @@ export default function ViewMedia() {
     setCardImageUrl(URL.createObjectURL(blob));
   };
 
+  const fetchImageAsBlob = async (url: string): Promise<Blob> => {
+    const response = await fetch(url);
+    if (!response.ok) throw new Error("Image fetch failed");
+    return await response.blob();
+  };
+
   useEffect(() => {
     if (typeof window === 'undefined') return;
     const urlParams = new URLSearchParams(window.location.search);
     const imageUrlFromUrl = urlParams.get("image");
+
     if (imageUrlFromUrl) {
       setBaseImageUrl(imageUrlFromUrl);
       updateCard(editText);
+      fetchImageAsBlob(imageUrlFromUrl)
+        .then(setImageBlob)
+        .catch(console.error);
     }
+
     document.fonts.load("bold 24px 'ArabicCustom'").then(() => {
       console.log("ArabicCustom font loaded");
     });
@@ -82,7 +94,7 @@ export default function ViewMedia() {
               <p className="text-white font-satoshi">{t("loading")}</p>
             )}
 
-        <h2 className="text-[#E87518] text-[2.5vw] sm:text-[10px] md:text-[12px] mt-[-3rem] mb-4 text-center tracking-[0.15em] leading-none">
+            <h2 className="text-[#E87518] text-[2.5vw] sm:text-[10px] md:text-[12px] mt-[-3rem] mb-4 text-center tracking-[0.15em] leading-none">
               {t("flipInstruction")}
             </h2>
           </div>
@@ -92,13 +104,10 @@ export default function ViewMedia() {
 
         <div className="w-full max-w-md px-12 pb-0 mt-5px">
           <div className="flex justify-between flex-wrap px-1 gap-x-[2px] gap-y-[4px]">
-            {cardBlob && (
+            {cardBlob && imageBlob && (
               <>
                 <ShareButton cardBlob={cardBlob} imageUrl={baseImageUrl!} />
-                <DownloadButton
-                  firstInput={baseImageUrl ?? "default-fallback-string"}
-                  blobInput={cardBlob}
-                />
+                <DownloadButton firstInput={imageBlob} blobInput={cardBlob} />
               </>
             )}
             <EditButton textToEdit={editText} onSave={updateCard} />
