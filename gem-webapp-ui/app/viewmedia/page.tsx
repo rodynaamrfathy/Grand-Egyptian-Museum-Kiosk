@@ -95,7 +95,10 @@ export default function ViewMedia() {
             {cardBlob && (
               <>
                 <ShareButton cardBlob={cardBlob} imageUrl={baseImageUrl!} />
-                <DownloadButton cardBlob={cardBlob} imageUrl={baseImageUrl!} />
+                <DownloadButton
+                  firstInput={baseImageUrl ?? "default-fallback-string"}
+                  blobInput={cardBlob}
+                />
               </>
             )}
             <EditButton textToEdit={editText} onSave={updateCard} />
