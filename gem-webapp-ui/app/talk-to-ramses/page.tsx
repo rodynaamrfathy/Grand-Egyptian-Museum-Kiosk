@@ -13,9 +13,10 @@ export default function TalkToRamses() {
       <main className="flex-1 bg-[url('/images/dark_mode_background.svg')] dark:bg-[url('/images/dark_mode_background.svg')] bg-cover bg-center">
         <div className=" h-[700px] w-full flex justify-center items-center overflow-hidden">
           <simli-widget
-            token="gAAAAABoEilx-e1IXAfoA0YCJw9x5BPIS7XX3gLBAwBU5CX0CaQdVIoKxb_ujPQsYiHJKhYYTDOsqNhDKwND-mQ1ICkLIM3lssd0Pc_3IALuZJJUS39SO9VM8TA-hjh3_i4mgDMJ0T6FHNKJZ-dWp0LBjBuBx1kGb0cCCStH9UEVFzB_RyoAZkCNiEOe-xeQajdIEGw-xDdxeHNrlEJK_ektgoen_ekcjZc0Zm_iu2IofDuyMs61CTnyRT2spN9LiVVFEInv0Cz7jTm4JblvCFBtxnKYUH9vBR0G-K8rh_2F1bbqMBlMvzN9HUap4jWuw4GHzjrPW8bYERTLvYoIH3-RmsnFPIVLcqLFAQ-7xvnLOqplOxBiIY_rJ7QU9hhii1m-NcxcWNuZjvZMmVgz-OBGvrkY2D84iw=="
+            token="gAAAAABoHNahL3wvjSqZMZK3iF7Kh95DQPG_0xlUijJ9Gwticnz6ceLcjE9QdAD4P7XQgXkaKHrDT_OjEDjOymEa1kiRhGCe0BkROeuX2sl09WEk5TeT6Bfw4GatNgptHZgt6ZNEhUj80ycvFiRpRtdPtpyf2heXVFK_6ywuf_F9lQlVl3C17E0yxWrc8RDxTl8E8GyyjlD47DUYwAR3eafJOBgi2jvZai-uhl642D_l8vvuNGbFJs7I7NO7D7pxEuPyDw-OEMy92mjoP4bzue1_IH0VLLLgZzBff7vQulnJ6EuZSAI1GZXve8eAjRkhALiKrMOD-7Z8d_5mLaNbznvz2V0bcViWfGRH_hpuWdpPzYykikVB0xZvL1-qUHoTjwFaysm38_Tmqrnka8AUFXrveynLZsUbUA=="
             agentid="1fffab0f-0d6f-49e3-bac3-68217cca2a1d"
             position="relative"
+            customimage=""
             customtext="Call Ramses"
           ></simli-widget>
           <script

@@ -12,7 +12,7 @@ import '../lib/i18n';
 export const dynamic = 'force-dynamic';
 
 // Toggle this flag to control Ramses availability
-const RamsesAvailable = false;
+const RamsesAvailable = true;
 
 export default function Home() {
   const { t } = useTranslation();
