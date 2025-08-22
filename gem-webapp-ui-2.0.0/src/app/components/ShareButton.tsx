@@ -43,10 +43,10 @@ export default function ShareButton({ className }: ShareButtonProps) {
   return (
     <button
       onClick={handleShare}
-      className={`w-full rounded-2xl py-4 px-6 shadow-lg hover:shadow-xl transition-all duration-300 flex items-center justify-center space-x-3 backdrop-blur bg-white/10 border border-white/20 ${className || ''}`}
+      className={`w-full rounded-2xl py-4 px-6 shadow-lg hover:shadow-xl transition-all duration-300 flex items-center justify-center space-x-3 backdrop-blur bg-white/10 border border-white/20 font-sans ${className || ''}`}
     >
       <Share2 className="w-5 h-5 text-white" />
-      <span className="text-white font-medium">Share</span>
+      <span className="text-white font-medium font-sans">Share</span>
     </button>
   );
 } 

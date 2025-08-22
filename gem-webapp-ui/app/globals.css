@@ -127,21 +127,11 @@
   font-family: 'Averia', sans-serif;
 }
 
-.font-arabiccustom {
-  font-family: 'arabiccustom', sans-serif;
+.font-cairo {
+  font-family: 'Cairo', sans-serif;
 }
 
-:root {
-  --background: #ffffff;
-  --foreground: #937777;
-}
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
 
 /* Arabic - applied when html lang="ar" */
 html[lang="ar"] body {
@@ -153,13 +143,22 @@ html[lang="en"] body {
   font-family: 'Greta Sans Pro', 'Mariam', 'Averia', Arial, Helvetica, sans-serif;
 }
 
-/* Default fallback if lang is not set */
-body {
-  color: var(--foreground);
-  background: var(--background);
-  font-family: 'Inter', 'Satoshi', 'Averia', Arial, Helvetica, sans-serif;
+
+
+/* ------------------------
+   Global Defaults & Theme
+------------------------- */
+:root {
+  --background: #ffffff;
+  --foreground: #937777;
 }
 
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #0a0a0a;
+    --foreground: #ededed;
+  }
+}
 
 .perspective {
   perspective: 1000px;
@@ -218,4 +217,11 @@ body {
     inset 2px 2px 6px rgba(0, 0, 0, 0.5),
     0 8px 20px rgba(0, 0, 0, 0.85),
     0 4px 10px rgba(0, 0, 0, 0.5);
+}
+
+/* Default fallback if lang is not set */
+body {
+  color: var(--foreground);
+  background: var(--background);
+  font-family: 'Inter', 'Satoshi', 'Averia', Arial, Helvetica, sans-serif;
 }
