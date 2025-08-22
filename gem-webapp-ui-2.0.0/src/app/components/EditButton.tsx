@@ -1,8 +1,10 @@
 "use client";
-import { Edit } from 'lucide-react';
-import React, { useState } from 'react';
+import { useState } from "react";
+import { Edit } from "lucide-react";
 
 interface EditButtonProps {
+  textToEdit: string;
+  onSave?: (newText: string) => void;
   className?: string;
 }
 
@@ -10,40 +12,58 @@ const MAX_LENGTH = 60;
 const MAX_LINES = 3;
 const CHARS_PER_LINE = 25;
 
-export default function EditButton({ className }: EditButtonProps) {
-  // Placeholder/demo value
-  const [text, setText] = useState("Edit me!");
+const EditButton: React.FC<EditButtonProps> = ({ textToEdit, onSave, className }) => {
   const [isEditOpen, setIsEditOpen] = useState(false);
+  const [text, setText] = useState(textToEdit);
 
   const handleEditClick = () => {
     setIsEditOpen(true);
-    setText(""); // clear the textarea
+    setText(textToEdit); // restore original text when opening
   };
+
   const handleEditSave = () => {
     setIsEditOpen(false);
-    // You can add onSave logic here
+    if (onSave) {
+      onSave(text);
+    }
   };
+
   const handleTextChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     let value = e.target.value;
-    if (value.length > MAX_LENGTH) value = value.slice(0, MAX_LENGTH);
+
+    // Restrict max length
+    if (value.length > MAX_LENGTH) {
+      value = value.slice(0, MAX_LENGTH);
+    }
+
+    // Auto-break lines every 25 chars
     const regex = new RegExp(`.{1,${CHARS_PER_LINE}}`, "g");
     const lines = value.match(regex) || [];
+
+    // Enforce max lines
     setText(lines.slice(0, MAX_LINES).join("\n"));
   };
 
   return (
     <>
+      {/* Main button */}
       <button
         onClick={handleEditClick}
-        className={`w-full rounded-2xl py-4 px-6 shadow-lg hover:shadow-xl transition-all duration-300 flex items-center justify-center space-x-3 backdrop-blur bg-white/10 border border-white/20 font-sans ${className || ''}`}
+        className={`w-full rounded-2xl py-4 px-6 shadow-lg hover:shadow-xl transition-all duration-300 flex items-center justify-center space-x-3 backdrop-blur bg-white/10 border border-white/20 font-sans ${className || ""}`}
       >
         <Edit className="w-5 h-5 text-white" />
         <span className="text-white font-medium font-sans">Write</span>
       </button>
+
+      {/* Modal editor */}
       {isEditOpen && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
           <div className="bg-[#AFAFAF]/20 border border-white/10 backdrop-blur-lg shadow-[0_4px_4px_rgba(0,0,0,0.25)] p-4 rounded-[32px] max-w-sm w-full text-white font-sans">
-            <h3 className="font-bold mb-3 text-lg text-white text-center font-sans">Edit Text</h3>
+            <h3 className="font-bold mb-3 text-lg text-white text-center font-sans">
+              Edit Text
+            </h3>
+
+            {/* Textarea */}
             <textarea
               className="w-full p-2 rounded-[16px] bg-white/10 border border-white/20 text-white placeholder-white/50 focus:outline-none font-sans"
               rows={3}
@@ -52,9 +72,13 @@ export default function EditButton({ className }: EditButtonProps) {
               placeholder="Edit your text here..."
               onChange={handleTextChange}
             />
+
+            {/* Character counter */}
             <div className="text-right text-sm text-white/60 mt-1 font-sans">
               {text.replace(/\n/g, "").length}/{MAX_LENGTH} chars
             </div>
+
+            {/* Buttons */}
             <div className="flex justify-end space-x-2 mt-3">
               <button
                 onClick={() => setIsEditOpen(false)}
@@ -75,4 +99,6 @@ export default function EditButton({ className }: EditButtonProps) {
       )}
     </>
   );
-} 
+};
+
+export default EditButton;

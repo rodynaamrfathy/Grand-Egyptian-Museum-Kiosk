@@ -1,4 +1,4 @@
-'use client';
+"use client";
 import Image from "next/image";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
@@ -10,7 +10,7 @@ import { useState } from "react";
 
 export default function Home() {
   const { imageBlob, loading, error } = useRemoteImage();
-  const [editText] = useState("edit text");
+  const [editText, setEditText] = useState("edit text"); // now editable
 
   const {
     customCardBlob,
@@ -21,7 +21,6 @@ export default function Home() {
   const blobUrl = imageBlob ? URL.createObjectURL(imageBlob) : null;
   const customCardUrl = customCardBlob ? URL.createObjectURL(customCardBlob) : null;
 
-  // UI
   return (
     <div className="flex flex-col min-h-screen font-cairo">
       <Header />
@@ -33,7 +32,13 @@ export default function Home() {
             {loading && <p className="text-white font-cairo">Loading image...</p>}
             {error && <p className="text-red-500 font-cairo">Error: {error}</p>}
             {blobUrl ? (
-              <Image src={blobUrl} alt="Loaded from URL" width={400} height={250} className="rounded-xl object-cover" />
+              <Image 
+                src={blobUrl} 
+                alt="Loaded from URL" 
+                width={400} 
+                height={250} 
+                className="rounded-xl object-cover" 
+              />
             ) : (
               <p className="text-white font-cairo">No image found in URL parameters.</p>
             )}
@@ -63,7 +68,10 @@ export default function Home() {
       <div className="fixed bottom-0 left-0 right-0 z-30 p-6 bg-gradient-to-t from-black to-transparent font-sans">
         <div className="max-w-md mx-auto space-y-3 flex flex-col items-center">
           <ShareButton />
-          <EditButton />
+          <EditButton 
+            textToEdit={editText} 
+            onSave={(newText) => setEditText(newText)} 
+          />
         </div>
       </div>
     </div>
