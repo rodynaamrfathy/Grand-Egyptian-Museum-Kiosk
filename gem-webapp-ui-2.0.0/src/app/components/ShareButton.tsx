@@ -1,34 +1,35 @@
-"use client";
-import { Share2 } from 'lucide-react';
-import React from 'react';
+import { Share2 } from "lucide-react";
 
 interface ShareButtonProps {
+  imageUrl: string;
+  cardBlob: Blob;
   className?: string;
 }
 
-export default function ShareButton({ className }: ShareButtonProps) {
-  // Placeholder/demo values
-  const imageUrl = "/images/demo.jpg";
-  const cardBlob = new Blob(["Demo card content"], { type: "image/png" });
-
+const ShareButton: React.FC<ShareButtonProps> = ({ cardBlob, imageUrl, className }) => {
   const handleShare = async () => {
     try {
       const cardFile = new File([cardBlob], "memory_card.png", { type: "image/png" });
+
       const imageResponse = await fetch(imageUrl);
       const imageBlob = await imageResponse.blob();
       const imageFile = new File([imageBlob], "image.jpg", { type: imageBlob.type });
+
       const shareData = {
         title: "Check out these images!",
         text: "I wanted to share these with you",
         files: [imageFile, cardFile],
       };
+
       if (navigator.canShare && navigator.canShare(shareData)) {
         await navigator.share(shareData);
       } else {
         const cardUrl = URL.createObjectURL(cardBlob);
         const imgUrl = URL.createObjectURL(imageBlob);
+
         window.open(cardUrl, "_blank");
         window.open(imgUrl, "_blank");
+
         setTimeout(() => {
           URL.revokeObjectURL(cardUrl);
           URL.revokeObjectURL(imgUrl);
@@ -49,4 +50,6 @@ export default function ShareButton({ className }: ShareButtonProps) {
       <span className="text-white font-medium font-sans">Share</span>
     </button>
   );
-} 
+};
+
+export default ShareButton;

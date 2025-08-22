@@ -67,7 +67,12 @@ export default function Home() {
       {/* Buttons */}
       <div className="fixed bottom-0 left-0 right-0 z-30 p-6 bg-gradient-to-t from-black to-transparent font-sans">
         <div className="max-w-md mx-auto space-y-3 flex flex-col items-center">
-          <ShareButton />
+          {imageBlob && customCardBlob && (
+            <ShareButton 
+              imageUrl={URL.createObjectURL(imageBlob)} 
+              cardBlob={customCardBlob} 
+            />
+          )}
           <EditButton 
             textToEdit={editText} 
             onSave={(newText) => setEditText(newText)} 
