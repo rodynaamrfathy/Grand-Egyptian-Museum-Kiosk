@@ -1,6 +1,7 @@
 "use client";
 import { useState } from "react";
 import { Edit } from "lucide-react";
+import SubmitButton from "./SubmitButton";
 
 interface EditButtonProps {
   textToEdit: string;
@@ -86,13 +87,10 @@ const EditButton: React.FC<EditButtonProps> = ({ textToEdit, onSave, className }
               >
                 Cancel
               </button>
-              <button
-                onClick={handleEditSave}
-                className="px-3 py-1.5 bg-white text-black rounded-[16px] hover:bg-blue-500 hover:text-white transition disabled:opacity-40 font-sans"
-                disabled={!text.trim()}
-              >
-                Save
-              </button>
+                <SubmitButton onClick={handleEditSave} disabled={!text.trim()} className="px-3 py-1.5">
+                  Save
+                </SubmitButton>
+
             </div>
           </div>
         </div>
