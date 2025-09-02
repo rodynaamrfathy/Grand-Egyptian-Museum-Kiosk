@@ -53,7 +53,7 @@ const EditButton: React.FC<EditButtonProps> = ({ textToEdit, onSave, className }
         className={`w-full rounded-2xl py-4 px-6 shadow-lg hover:shadow-xl transition-all duration-300 flex items-center justify-center space-x-3 backdrop-blur bg-white/10 border border-white/20 font-sans ${className || ""}`}
       >
         <Edit className="w-5 h-5 text-white" />
-        <span className="text-white font-medium font-sans">Write</span>
+        <span className="text-white font-medium font-sans">Customize Your Card</span>
       </button>
 
       {/* Modal editor */}
@@ -61,7 +61,7 @@ const EditButton: React.FC<EditButtonProps> = ({ textToEdit, onSave, className }
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
           <div className="bg-[#AFAFAF]/20 border border-white/10 backdrop-blur-lg shadow-[0_4px_4px_rgba(0,0,0,0.25)] p-4 rounded-[32px] max-w-sm w-full text-white font-sans">
             <h3 className="font-bold mb-3 text-lg text-white text-center font-sans">
-              Edit Text
+              Customize Your Card
             </h3>
 
             {/* Textarea */}

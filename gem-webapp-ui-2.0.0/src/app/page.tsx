@@ -30,7 +30,7 @@ export default function Home() {
       <Header />
       <main className="flex flex-col flex-1 items-center justify-start bg-[url('/dark_mode_background.svg')] bg-cover bg-center pb-50">
         <div className="max-w-md flex flex-col gap-6 mt-8 mx-auto items-center justify-center">
-          <div className="bg-white/10 rounded-2xl p-4 flex flex-col items-center">
+          <div className="bg-transparent rounded-2xl p-4 flex flex-col items-center">
             {loading && <p className="text-white font-cairo">Loading image...</p>}
             {error && <p className="text-red-500 font-cairo">Error: {error}</p>}
             {blobUrl ? (
@@ -38,9 +38,12 @@ export default function Home() {
             ) : (
               <p className="text-white font-cairo">No image found in URL parameters.</p>
             )}
+            <p className="text-[#E87518] mt-4 text-xl sm:text-l md:text-xl font-bold text-center w-full">
+              Long Press on Image to download!
+            </p>
           </div>
 
-          <div className="bg-white/10 rounded-2xl p-4 flex flex-col items-center mt-10">
+          <div className="bg-transparent rounded-2xl p-4 flex flex-col items-center mt-1">
             {cardLoading && <p className="text-white font-cairo">Loading card template...</p>}
             {cardError && <p className="text-red-500 font-cairo">Error: {cardError}</p>}
             {customCardUrl ? (
@@ -48,6 +51,9 @@ export default function Home() {
             ) : (
               <p className="text-white font-cairo">Generating card...</p>
             )}
+            <p className="text-[#E87518] mt-4 text-xl sm:text-l md:text-xl font-bold text-center w-full">
+              Long Press on Image to download!
+            </p>
           </div>
         </div>
       </main>
@@ -62,7 +68,7 @@ export default function Home() {
         </div>
       </div>
 
-      {!isEmailEntered && imageBlob && customCardBlob && (
+      {!isEmailEntered && (
         <EmailPopup
           onSubmit={() => setIsEmailEntered(true)}
           imageName="booth_image.png"    // replace with real image name if needed

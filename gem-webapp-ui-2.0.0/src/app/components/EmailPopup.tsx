@@ -18,6 +18,7 @@ export default function EmailPopup({
   filterName,
 }: EmailPopupProps) {
   const [email, setEmail] = useState("");
+  const [prevEmail, setPrevEmail] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
@@ -25,16 +26,18 @@ export default function EmailPopup({
   useEffect(() => {
     const storedEmail = localStorage.getItem("userEmail");
     if (storedEmail) {
-      setEmail(storedEmail);
-      onSubmit(storedEmail); // automatically mark as submitted
+      setPrevEmail(storedEmail);
     }
-  }, [onSubmit]);
+  }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    await saveEmail(email);
+  };
 
+  const saveEmail = async (emailToSave: string) => {
     const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!email.trim() || !emailPattern.test(email)) {
+    if (!emailToSave.trim() || !emailPattern.test(emailToSave)) {
       setError("Please enter a valid email address.");
       return;
     }
@@ -47,7 +50,7 @@ export default function EmailPopup({
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          email,
+          email: emailToSave,
           image_name: imageName,
           card_name: cardName,
           kiosk_name: kioskName,
@@ -58,8 +61,8 @@ export default function EmailPopup({
       const data = await res.json();
 
       if (res.ok && data.success) {
-        localStorage.setItem("userEmail", email);
-        onSubmit(email); // notify parent that email is submitted
+        localStorage.setItem("userEmail", emailToSave);
+        onSubmit(emailToSave); // notify parent
       } else {
         setError(data.error || "Failed to save email.");
       }
@@ -85,15 +88,24 @@ export default function EmailPopup({
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             className="w-full p-3 rounded-[16px] bg-white/10 border border-white/20 text-white placeholder-white/50 focus:outline-none font-sans"
-            required
           />
 
           {error && <p className="text-red-400 text-sm text-center">{error}</p>}
 
-          <div className="flex justify-center mt-2">
+          <div className="flex flex-col gap-2 mt-2">
             <SubmitButton type="submit" disabled={!email.trim() || loading}>
               {loading ? "Saving..." : "Submit"}
             </SubmitButton>
+
+            {prevEmail && (
+              <button
+                type="button"
+                onClick={() => saveEmail(prevEmail)}
+                className="bg-[#E87518] hover:bg-[#cc6014] text-white font-semibold py-2 px-4 rounded-lg shadow-md transition"
+              >
+                Use previous email ({prevEmail})
+              </button>
+            )}
           </div>
         </form>
       </div>
