@@ -9,6 +9,7 @@ import { useCustomCard } from "./hooks/useCustomCard";
 import { useState, useEffect } from "react";
 import EmailPopup from "./components/EmailPopup";
 import LottieAnimation from "./components/LottieAnimation"; // ✅ Import
+import GetImageByEmail from "./components/GetImageByEmail";
 
 export default function Home() {
   // Image
@@ -39,10 +40,15 @@ export default function Home() {
           <div className="relative bg-transparent rounded-2xl p-4 flex flex-col items-center">
             {/* ✅ Show animation only if blobUrl exists */}
             {blobUrl && (
-              <div className="absolute top-0 left-0 right-0 flex justify-center items-center z-20">
+              <div className="absolute bottom-0 left-1/2 right-0 flex justify-center items-center z-20">
                 <LottieAnimation />
               </div>
             )}
+
+            <p className="text-[#E87518] mb-5 mt-4 text-xl sm:text-l md:text-xl font-extrabold text-center w-full animate-bounce drop-shadow-[0_2px_2px_rgba(0,0,0,0.8)]">
+              ⬇ Long Press on Image to download! ⬇
+            </p>
+
 
             {loading && <p className="text-white font-cairo">Loading image...</p>}
             {error && <p className="text-red-500 font-cairo">Error: {error}</p>}
@@ -59,9 +65,6 @@ export default function Home() {
                 Your Image will appear here!, might be a connection error check again later.
               </p>
             )}
-            <p className="text-[#E87518] mt-4 text-xl sm:text-l md:text-xl font-bold text-center w-full">
-              Long Press on Image to download!
-            </p>
           </div>
 
           {/* Custom Card Section */}
@@ -72,6 +75,10 @@ export default function Home() {
                 <LottieAnimation />
               </div>
             )}
+
+            <p className="text-[#E87518] mb-5 mt-4 text-xl sm:text-l md:text-xl font-extrabold text-center w-full animate-bounce drop-shadow-[0_2px_2px_rgba(0,0,0,0.8)]">
+              ⬇ Long Press on Card to download! ⬇
+            </p>
 
             {cardLoading && <p className="text-white font-cairo">Loading card template...</p>}
             {cardError && <p className="text-red-500 font-cairo">Error: {cardError}</p>}
@@ -86,9 +93,6 @@ export default function Home() {
             ) : (
               <p className="text-white font-cairo">Generating card...</p>
             )}
-            <p className="text-[#E87518] mt-4 text-xl sm:text-l md:text-xl font-bold text-center w-full">
-              Long Press on Image to download!
-            </p>
           </div>
         </div>
       </main>
@@ -97,6 +101,13 @@ export default function Home() {
       {/* Share Button & Edit Button */}
       <div className="fixed bottom-5 left-0 right-0 z-30 p-6 from-black to-transparent font-sans">
         <div className="max-w-md mx-auto space-y-3 flex flex-col items-center">
+          {imageBlob && customCardBlob && (
+            <GetImageByEmail
+              imageUrl={URL.createObjectURL(imageBlob)}
+              cardBlob={customCardBlob}
+              className="w-full"
+            />
+          )}
           {imageBlob && customCardBlob && (
             <ShareButton
               imageUrl={URL.createObjectURL(imageBlob)}
