@@ -18,14 +18,12 @@ export default function LoopingText({
 
   useEffect(() => {
     const timer = setInterval(() => {
-      // Start fade out
-      setFade(false);
+      setFade(false); // fade out
 
-      // After fade-out, change text & fade back in
       setTimeout(() => {
         setIndex((prev) => (prev + 1) % texts.length);
-        setFade(true);
-      }, 300); // fade-out duration
+        setFade(true); // fade in
+      }, 300);
     }, interval);
 
     return () => clearInterval(timer);
@@ -37,18 +35,20 @@ export default function LoopingText({
   );
 
   return (
-    <div className={`relative flex justify-center items-center ${className}`}>
+    <div
+      className={`relative flex justify-center items-center text-center ${className} w-full max-w-full px-2`}
+    >
       {/* Invisible reference to lock dimensions */}
       <span className="invisible">{referenceText}</span>
 
       {/* Animated visible text */}
       <span
-        className={`absolute transition-all duration-300 ease-in-out text-center ${
+        className={`absolute transition-all duration-300 ease-in-out break-words ${
           fade ? "opacity-100 translate-y-0" : "opacity-0 translate-y-2"
-        }`}
+        } text-base sm:text-lg md:text-xl lg:text-2xl font-semibold`}
         style={{
           color: "#FFFFFF",
-          textShadow: "2px 2px 8px rgba(0,0,0,0.7)", // subtle shadow
+          textShadow: "2px 2px 8px rgba(0,0,0,0.7)",
         }}
       >
         {texts[index]}

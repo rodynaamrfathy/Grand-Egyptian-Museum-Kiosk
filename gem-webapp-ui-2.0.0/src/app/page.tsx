@@ -8,7 +8,6 @@ import { useRemoteImage } from "./hooks/useRemoteImage";
 import { useCustomCard } from "./hooks/useCustomCard";
 import { useState, useEffect } from "react";
 import EmailPopup from "./components/EmailPopup";
-import LottieAnimation from "./components/LottieAnimation"; // ✅ Import
 import GetImageByEmail from "./components/GetImageByEmail";
 import LoopingText from "./components/LoopingText";
 import FlippableCard from "./components/FlippableCardProps";
@@ -40,19 +39,19 @@ export default function Home() {
       <main className="flex flex-col flex-1 items-center justify-start bg-[url('/dark_mode_background.svg')] bg-cover bg-center pb-8">
         <div className="max-w-md flex flex-col gap-6 mt-8 mx-auto items-center justify-center">
           <LoopingText
-            texts={["Keep Your memories Alive", "Customize Your card", "share", "Get via Email"]}
+            texts={["Keep memories Alive", "Customize Your card", "share", "Get via Email"]}
             interval={3000}
             className="text-2xl font-semibold"
           />
           <div className="flex flex-col items-center">
-            <div className="mb-10">
+          <div className="flex flex-col items-center w-full">
             <FlippableCard
               frontImageUrl={blobUrl}
               backImageUrl={customCardUrl}
-              width={300}
-              height={590}
+              aspectRatioClass="aspect-[0.5968]" 
             />
-            </div>
+          </div>
+          
           {/* Share Button & Edit Button */}
               <div className="flex flex-col w-full max-w-md gap-4 mt-4 relative">
                 {imageBlob && customCardBlob && (
