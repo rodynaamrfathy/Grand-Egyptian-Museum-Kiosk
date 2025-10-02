@@ -8,7 +8,7 @@ export default function LottieAnimation() {
     animationData,
     loop: true,
     autoplay: true,
-    style: { height: 300, width: 300 },
+    style: { height: 400, width: 400 },
   };
 
   const { View } = useLottie(options);

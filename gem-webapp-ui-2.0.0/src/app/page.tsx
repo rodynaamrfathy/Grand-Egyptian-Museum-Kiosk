@@ -10,6 +10,10 @@ import { useState, useEffect } from "react";
 import EmailPopup from "./components/EmailPopup";
 import LottieAnimation from "./components/LottieAnimation"; // ✅ Import
 import GetImageByEmail from "./components/GetImageByEmail";
+import { Typewriter } from "react-simple-typewriter";
+import LoopingText from "./components/LoopingText";
+
+
 
 export default function Home() {
   // Image
@@ -35,19 +39,23 @@ export default function Home() {
       <Header />
       <main className="flex flex-col flex-1 items-center justify-start bg-[url('/dark_mode_background.svg')] bg-cover bg-center pb-50">
         <div className="max-w-md flex flex-col gap-6 mt-8 mx-auto items-center justify-center">
-          
+          <LoopingText
+            texts={["⬇ Long Press on Image to download! ⬇", "Keep Your memories Alive", "Customize Your card", "share", "Get via Email"]}
+            interval={3000}
+            className="text-2xl font-semibold"
+          />
           {/* Image Section */}
           <div className="relative bg-transparent rounded-2xl p-4 flex flex-col items-center">
             {/* ✅ Show animation only if blobUrl exists */}
             {blobUrl && (
-              <div className="absolute bottom-0 left-1/2 right-0 flex justify-center items-center z-20">
+              <div className="absolute bottom-0 left-90 right-0 flex justify-center items-center z-20">
                 <LottieAnimation />
               </div>
             )}
 
-            <p className="text-[#E87518] mb-5 mt-4 text-xl sm:text-l md:text-xl font-extrabold text-center w-full animate-bounce drop-shadow-[0_2px_2px_rgba(0,0,0,0.8)]">
+           {/* <p className="text-[#E87518] mb-5 mt-4 text-xl sm:text-l md:text-xl font-extrabold text-center w-full animate-bounce drop-shadow-[0_2px_2px_rgba(0,0,0,0.8)]">
               ⬇ Long Press on Image to download! ⬇
-            </p>
+            </p>*/}
 
 
             {loading && <p className="text-white font-cairo">Loading image...</p>}
@@ -71,14 +79,14 @@ export default function Home() {
           <div className="relative bg-transparent rounded-2xl p-4 flex flex-col items-center mt-1">
             {/* ✅ Show animation only if customCardUrl exists */}
             {customCardUrl && (
-              <div className="absolute bottom-0 left-50 right-0 flex justify-center items-center z-20">
+              <div className="absolute bottom-0 left-90 right-0 flex justify-center items-center z-20">
                 <LottieAnimation />
               </div>
             )}
 
-            <p className="text-[#E87518] mb-5 mt-4 text-xl sm:text-l md:text-xl font-extrabold text-center w-full animate-bounce drop-shadow-[0_2px_2px_rgba(0,0,0,0.8)]">
-              ⬇ Long Press on Card to download! ⬇
-            </p>
+            {/* <p className="text-[#E87518] mb-5 mt-4 text-xl sm:text-l md:text-xl font-extrabold text-center w-full animate-bounce drop-shadow-[0_2px_2px_rgba(0,0,0,0.8)]">
+              ⬇ Long Press on Image to download! ⬇
+            </p>*/}
 
             {cardLoading && <p className="text-white font-cairo">Loading card template...</p>}
             {cardError && <p className="text-red-500 font-cairo">Error: {cardError}</p>}
