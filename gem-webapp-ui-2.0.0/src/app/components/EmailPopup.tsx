@@ -101,7 +101,7 @@ export default function EmailPopup({
               <button
                 type="button"
                 onClick={() => saveEmail(prevEmail)}
-                className="bg-[#E87518] hover:bg-[#cc6014] text-white font-semibold py-2 px-4 rounded-lg shadow-md transition"
+                className="px-4 py-2 bg-[#E87518] text-white rounded-[16px] hover:bg-[#E87518] hover:text-white transition font-sans"
               >
                 Use previous email ({prevEmail})
               </button>

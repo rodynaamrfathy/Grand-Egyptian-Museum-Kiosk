@@ -3,6 +3,8 @@ import { useState } from "react";
 import { Edit } from "lucide-react";
 import SubmitButton from "./SubmitButton";
 
+import { useTranslation } from "react-i18next";
+
 interface EditButtonProps {
   textToEdit: string;
   onSave?: (newText: string) => void;
@@ -14,6 +16,8 @@ const MAX_LINES = 3;
 const CHARS_PER_LINE = 25;
 
 const EditButton: React.FC<EditButtonProps> = ({ textToEdit, onSave, className }) => {
+  const { t } = useTranslation();
+
   const [isEditOpen, setIsEditOpen] = useState(false);
   const [text, setText] = useState(textToEdit);
 
@@ -53,7 +57,9 @@ const EditButton: React.FC<EditButtonProps> = ({ textToEdit, onSave, className }
         className={`w-full rounded-2xl py-4 px-6 shadow-lg hover:shadow-xl transition-all duration-300 flex items-center justify-center space-x-3 backdrop-blur bg-white/10 border border-white/20 font-sans ${className || ""}`}
       >
         <Edit className="w-5 h-5 text-white" />
-        <span className="text-white font-medium font-sans">Customize Your Card</span>
+        <span className="text-white font-medium font-sans">
+          {t("edit.button")}
+        </span>
       </button>
 
       {/* Modal editor */}
@@ -61,7 +67,7 @@ const EditButton: React.FC<EditButtonProps> = ({ textToEdit, onSave, className }
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
           <div className="bg-[#AFAFAF]/20 border border-white/10 backdrop-blur-lg shadow-[0_4px_4px_rgba(0,0,0,0.25)] p-4 rounded-[32px] max-w-sm w-full text-white font-sans">
             <h3 className="font-bold mb-3 text-lg text-white text-center font-sans">
-              Customize Your Card
+              {t("edit.title")}
             </h3>
 
             {/* Textarea */}
@@ -70,13 +76,13 @@ const EditButton: React.FC<EditButtonProps> = ({ textToEdit, onSave, className }
               rows={3}
               maxLength={MAX_LENGTH + MAX_LINES}
               value={text}
-              placeholder="Edit your text here..."
+              placeholder={t("edit.placeholder")}
               onChange={handleTextChange}
             />
 
             {/* Character counter */}
             <div className="text-right text-sm text-white/60 mt-1 font-sans">
-              {text.replace(/\n/g, "").length}/{MAX_LENGTH} chars
+              {t("edit.chars", { count: text.replace(/\n/g, "").length, max: MAX_LENGTH })}
             </div>
 
             {/* Buttons */}
@@ -88,7 +94,7 @@ const EditButton: React.FC<EditButtonProps> = ({ textToEdit, onSave, className }
                 Cancel
               </button>
                 <SubmitButton onClick={handleEditSave} disabled={!text.trim()} className="px-3 py-1.5">
-                  Save
+                  {t("edit.save")}
                 </SubmitButton>
 
             </div>

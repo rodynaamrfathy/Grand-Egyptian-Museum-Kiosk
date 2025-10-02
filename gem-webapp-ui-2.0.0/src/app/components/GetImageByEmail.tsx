@@ -1,6 +1,7 @@
 "use client";
 import { Mail } from "lucide-react";
 import { useState, useEffect } from "react";
+import { useTranslation } from "react-i18next";
 
 interface EmailButtonProps {
   imageUrl: string;
@@ -9,6 +10,7 @@ interface EmailButtonProps {
 }
 
 const EmailButton: React.FC<EmailButtonProps> = ({ imageUrl, cardBlob, className }) => {
+  const { t } = useTranslation();
   const [userEmail, setUserEmail] = useState<string | null>(null);
 
   useEffect(() => {
@@ -18,12 +20,11 @@ const EmailButton: React.FC<EmailButtonProps> = ({ imageUrl, cardBlob, className
 
   const handleEmail = async () => {
     if (!userEmail) {
-      alert("No email found. Please enter your email first.");
+      alert(t("alerts.noEmail"));
       return;
     }
 
     try {
-      // For now: dev fallback → save in backend
       const res = await fetch("/api/save-email", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -36,15 +37,13 @@ const EmailButton: React.FC<EmailButtonProps> = ({ imageUrl, cardBlob, className
         }),
       });
 
-      if (!res.ok) throw new Error("Failed to save email");
+      if (!res.ok) throw new Error(t("alerts.saveError"));
 
       console.log("✅ Email + images saved to backend:", await res.json());
-      alert(`📧 Email ${userEmail} saved (dev mode, no SES yet)`);
-
-      // 🔜 Later replace with SES API call
+      alert(t("alerts.saveSuccess", { email: userEmail }));
     } catch (error) {
       console.error("Error preparing email:", error);
-      alert("Failed to prepare email.");
+      alert(t("alerts.prepareError"));
     }
   };
 
@@ -57,7 +56,7 @@ const EmailButton: React.FC<EmailButtonProps> = ({ imageUrl, cardBlob, className
     >
       <Mail className="w-5 h-5 text-white" />
       <span className="text-white font-medium font-sans">
-        {userEmail ? `Send to ${userEmail}` : "Send via Email"}
+        {userEmail ? t("share.emailWith", { email: userEmail }) : t("share.email")}
       </span>
     </button>
   );
